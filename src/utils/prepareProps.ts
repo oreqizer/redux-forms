@@ -3,28 +3,31 @@ import * as R from 'ramda';
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
 import { Value } from './getValue';
 
+import { InputProps, MetaProps } from "../types/Props";
 
-export interface IAll {
+
+export interface IAllProps {
   value: Value;
   checked?: boolean;
 }
 
-export interface ISeparated {
-  input: Object;
-  meta: Object;
+export type SeparatedProps = {
+  input: InputProps;
+  meta: MetaProps;
   custom: Object;
-}
+};
 
-const maybeCheckProps = (all: IAll): IAll => {
+
+const maybeCheckProps = (all: IAllProps): IAllProps => {
   if (typeof all.value === 'boolean') {
     return R.merge(all, { checked: all.value });
   }
   return all;
 };
 
-const separateProps = (all: IAll): ISeparated => ({
-  input: R.pick(INPUT_PROPS, all),
-  meta: R.pick(META_PROPS, all),
+const separateProps = (all: IAllProps): SeparatedProps => ({
+  input: R.pick<IAllProps, InputProps>(INPUT_PROPS, all),
+  meta: R.pick<IAllProps, MetaProps>(META_PROPS, all),
   custom: R.omit(IGNORE_PROPS, all),
 });
 

@@ -1,134 +1,136 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { connect } from 'react-redux';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import { Context } from "./reduxForm";
-import FormStore from "./containers/FormStore";
-import FieldStore from './containers/FieldStore';
 
+import contextWrap from './utils/contextWrap';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
+import { InputProps, MetaProps } from "./types/Props";
+
+import * as duck from './formsDuck';
 
 
 export type Validate = (value: Value) => string | null;
 
-export interface IProps {
-  name: string;
-  component: React.ComponentClass<any> | React.StatelessComponent<any> | string;
-  index?: number;
-  validate?: Validate;
-  defaultValue?: string;
+export type Normalize = (value: Value) => Value;
+
+export interface ISuppliedProps {
+  input: InputProps;
+  meta: MetaProps;
 }
 
-@observer
-export default class Field extends React.Component<IProps, void> {
+export type StateProps = {
+  field: duck.FieldObject,
+};
+
+export type ActionProps = {
+  addField: duck.AddFieldCreator,
+  removeField: duck.RemoveFieldCreator,
+  fieldChange: duck.FieldChangeCreator,
+  fieldFocus: duck.FieldFocusCreator,
+  fieldBlur: duck.FieldBlurCreator,
+};
+
+export interface IOwnProps {
+  name: string;
+  component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
+  validate?: Validate;
+  normalize?: Normalize;
+  defaultValue?: string;
+  // ours
+  _form: string;
+  _context: string;
+}
+
+export type Props = StateProps & ActionProps & IOwnProps;
+
+
+const dummyFn = (): any => ({});
+
+class Field extends React.Component<Props, void> {
   static defaultProps = {
+    name: '',
+    component: 'input',
     validate: () => null,
+    normalize: () => null,
     defaultValue: '',
+    field: duck.freshField,
+    _form: '',
+    _context: '',
+    addField: dummyFn,
+    removeField: dummyFn,
+    fieldChange: dummyFn,
+    fieldFocus: dummyFn,
+    fieldBlur: dummyFn,
   };
 
-  static contextTypes = {
-    mobxForms: React.PropTypes.shape({
-      form: React.PropTypes.instanceOf(FormStore).isRequired,
-      context: React.PropTypes.string.isRequired,
-      flatArray: React.PropTypes.bool.isRequired,
-    }).isRequired,
-  };
-
-  context: Context;
-
-  position: string;
-  field: FieldStore;
-
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
-  }
 
-  componentWillMount() {
-    const { name, index, defaultValue, validate } = this.props;
-
-    invariant(
-      this.context.mobxForms,
-      '[mobx-forms] Field must be in a component decorated with "mobxForm"'
-    );
-
-    const { form, context, flatArray } = this.context.mobxForms;
-
-    if (context === '') {
-      invariant(
-        typeof index !== 'number',
-        '[mobx-forms] "index" can only be passed to components inside ArrayField'
-      );
-    } else {
-      invariant(
-        typeof index === 'number',
-        '[mobx-forms] "index" must be passed to ArrayField components'
-      );
-    }
-
-    this.position = (!flatArray && (typeof index === 'number')) ? `${context}#${index}` : context;
-    this.field = new FieldStore({
-      value: <string> defaultValue,
-      error: (<Validate> validate)(<string> defaultValue),
-    });
-
-    if (flatArray && typeof index === 'number') {
-      form.addFieldIndex(this.position, index, this.field);
-    } else {
-      form.addField(this.position, name, this.field);
-    }
+    props.addField(props._form, props._context);
   }
 
   componentWillUnmount() {
-    const { index, name } = this.props;
-    const { form, flatArray } = this.context.mobxForms;
+    const { _form, _context } = this.props;
 
-    if (flatArray && typeof index === 'number') {
-      form.removeFieldIndex(this.position, index);
-    } else {
-      form.removeField(this.position, name);
-    }
+    this.props.removeField(_form, _context);
   }
 
   handleChange(ev: SynthEvent) {
-    const { validate, defaultValue } = this.props;
+    const { _form, _context, normalize, validate, defaultValue } = this.props;
 
-    const value = getValue(ev);
-    this.field.value = value;
-    this.field.error = (<Validate> validate)(value);
-    this.field.dirty = value !== defaultValue;
+    const value = (<Normalize> normalize)(getValue(ev));
+    const error = (<Validate> validate)(value);
+    const dirty = value === defaultValue;
+
+    this.props.fieldChange(_form, _context, value, error, dirty);
   }
 
   handleFocus() {
-    this.field.active = true;
-    this.field.visited = true;
+    const { _form, _context } = this.props;
+
+    this.props.fieldFocus(_form, _context);
   }
 
-  handleBlur() {
-    this.field.active = false;
-    this.field.touched = true;
+  handleBlur(ev: SynthEvent) {
+    const { _form, _context, normalize, validate, defaultValue } = this.props;
+
+    const value = (<Normalize> normalize)(getValue(ev));
+    const error = (<Validate> validate)(value);
+    const dirty = value === defaultValue;
+
+    this.props.fieldBlur(_form, _context, error, dirty);
   }
 
   render(): JSX.Element {
-    const { component } = this.props;
+    const { component, field, ...rest } = this.props;
 
-    const props = R.merge({
-      onChange: this.handleChange,
-      onFocus: this.handleFocus,
-      onBlur: this.handleBlur,
-    }, R.omit(['component'], this.props));
-
-    const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
+    // TODO adjust this, add callbacks etc.
+    const { input, meta, custom } = prepareProps(R.merge(rest, field));
 
     if (typeof component === 'string') {
       return React.createElement(component, R.merge(custom, input));
     }
 
-    return React.createElement(component, R.merge(custom, { input, meta }));
+    return React.createElement(<any> component, R.merge(custom, { input, meta }));
   }
 }
+
+const actions = {
+  addField: duck.addField,
+  removeField: duck.removeField,
+  fieldChange: duck.fieldChange,
+  fieldFocus: duck.fieldFocus,
+  fieldBlur: duck.fieldBlur,
+};
+
+export default connect<StateProps, ActionProps, Props>((state, props: Props) => ({
+  field: R.path<duck.FieldObject>(['forms', props._form, props._context], state.reduxForms),
+}), actions)(contextWrap<Props>(Field));
