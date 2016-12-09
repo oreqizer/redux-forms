@@ -1,17 +1,34 @@
 import reducer, * as duck from '../formsDuck';
 
 describe('#formsDuck', () => {
-  it('should create an ADD_FIELD action', () => {
-    expect(duck.addField('field')).toEqual({
-      type: duck.ADD_FIELD,
-      payload: { id: 'field' },
+  // Action creators
+  // ---
+
+  it('should create an ADD_FORM action', () => {
+    expect(duck.addForm('form')).toEqual({
+      type: duck.ADD_FORM,
+      payload: { name: 'form' },
+    });
+  });
+
+  it('should create a REMOVE_FORM action', () => {
+    expect(duck.removeForm('form')).toEqual({
+      type: duck.REMOVE_FORM,
+      payload: { name: 'form' },
     });
   });
 
   it('should create an ADD_FIELD action', () => {
-    expect(duck.removeField('field')).toEqual({
+    expect(duck.addField('form', 'field')).toEqual({
+      type: duck.ADD_FIELD,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a REMOVE_FIELD action', () => {
+    expect(duck.removeField('form', 'field')).toEqual({
       type: duck.REMOVE_FIELD,
-      payload: { id: 'field' },
+      payload: { form: 'form', id: 'field' },
     });
   });
 
@@ -21,19 +38,46 @@ describe('#formsDuck', () => {
     expect(state).toEqual(duck.initialState);
   });
 
-  it('should add a field', () => {
-    const state = reducer(duck.initialState, duck.addField('field'));
+  // Reducer
+  // ---
+
+  it('should add a form', () => {
+    const state = reducer({
+      forms: {},
+    }, duck.addForm('form'));
 
     expect(state).toEqual({
-      fields: { field: duck.field },
+      forms: { form: {} },
+    });
+  });
+
+  it('should remove a form', () => {
+    const state = reducer({
+      forms: { form: {} },
+    }, duck.removeForm('form'));
+
+    expect(state).toEqual({
+      forms: {},
+    });
+  });
+
+  it('should add a field', () => {
+    const state = reducer({
+      forms: { form: {} },
+    }, duck.addField('form', 'field'));
+
+    expect(state).toEqual({
+      forms: { form: { field: duck.field } },
     });
   });
 
   it('should remove a field', () => {
     const state = reducer({
-      fields: { field: duck.field },
-    }, duck.removeField('field'));
+      forms: { form: { field: duck.field } },
+    }, duck.removeField('form', 'field'));
 
-    expect(state).toEqual(duck.initialState);
+    expect(state).toEqual({
+      forms: { form: {} },
+    });
   });
 });
