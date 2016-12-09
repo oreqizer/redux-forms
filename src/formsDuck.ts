@@ -4,7 +4,7 @@ import { Value } from "./utils/getValue";
 export const ADD_FIELD = '@redux-forms/ADD_FIELD';
 export const REMOVE_FIELD = '@redux-forms/REMOVE_FIELD';
 
-const field = {
+export const field = {
   value: '',
   error: null,
   visited: false,
@@ -13,31 +13,31 @@ const field = {
   dirty: false,
 };
 
-const initialState = {
+export const initialState = {
   fields: {},
 };
 
 export default function formsReducer(state: State = initialState, action: Action): State {
   switch (action.type) {
     case ADD_FIELD:
-      return R.assocPath<Field, State>(['fields', action.payload.name], field, state);
+      return R.assocPath<Field, State>(['fields', action.payload.id], field, state);
 
     case REMOVE_FIELD:
-      return R.dissocPath<State>(['fields', action.payload.name], state);
+      return R.dissocPath<State>(['fields', action.payload.id], state);
 
     default:
       return state;
   }
 }
 
-export const addField = (name: string) => ({
+export const addField = (id: string): AddFieldAction => ({
   type: ADD_FIELD,
-  payload: { name },
+  payload: { id },
 });
 
-export const removeField = (name: string) => ({
+export const removeField = (id: string): RemoveFieldAction => ({
   type: REMOVE_FIELD,
-  payload: { name },
+  payload: { id },
 });
 
 export type Field = {
@@ -47,12 +47,16 @@ export type Field = {
   active: boolean;
   error: string | null;
   dirty: boolean;
-}
+};
 
 export type State = {
-  fields: { [key: string]: Field }
-}
+  fields: { [key: string]: Field },
+};
+
+export type AddFieldAction = { type: '@redux-forms/ADD_FIELD', payload: { id: string } };
+
+export type RemoveFieldAction = { type: '@redux-forms/REMOVE_FIELD', payload: { id: string } };
 
 export type Action =
-    { type: '@redux-forms/ADD_FIELD', payload: { form: string, name: string } }
-    | { type: '@redux-forms/REMOVE_FIELD', payload: { form: string, name: string } }
+    AddFieldAction |
+    RemoveFieldAction;
