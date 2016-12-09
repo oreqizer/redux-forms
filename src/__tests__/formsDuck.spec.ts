@@ -32,14 +32,35 @@ describe('#formsDuck', () => {
     });
   });
 
+  it('should create a FIELD_CHANGE action', () => {
+    expect(duck.fieldChange('form', 'field', 'value', 'error', true)).toEqual({
+      type: duck.FIELD_CHANGE,
+      payload: { form: 'form', field: 'field', value: 'value', error: 'error', dirty: true },
+    });
+  });
+
+  it('should create a FIELD_FOCUS action', () => {
+    expect(duck.fieldFocus('form', 'field')).toEqual({
+      type: duck.FIELD_FOCUS,
+      payload: { form: 'form', field: 'field' },
+    });
+  });
+
+  it('should create a FIELD_BLUR action', () => {
+    expect(duck.fieldBlur('form', 'field', 'error', true)).toEqual({
+      type: duck.FIELD_BLUR,
+      payload: { form: 'form', field: 'field', error: 'error', dirty: true },
+    });
+  });
+
+  // Reducer
+  // ---
+
   it('should return initial state', () => {
     const state = reducer(undefined, <any> {});
 
     expect(state).toEqual(duck.initialState);
   });
-
-  // Reducer
-  // ---
 
   it('should add a form', () => {
     const state = reducer({
@@ -67,13 +88,13 @@ describe('#formsDuck', () => {
     }, duck.addField('form', 'field'));
 
     expect(state).toEqual({
-      forms: { form: { field: duck.field } },
+      forms: { form: { field: duck.freshField } },
     });
   });
 
   it('should remove a field', () => {
     const state = reducer({
-      forms: { form: { field: duck.field } },
+      forms: { form: { field: duck.freshField } },
     }, duck.removeField('form', 'field'));
 
     expect(state).toEqual({
