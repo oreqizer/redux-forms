@@ -1,11 +1,9 @@
 import Field from './Field';
 import FieldArray from './FieldArray';
-import FormsStore from './FormsStore';
-import mobxForm from './mobxForm';
+import mobxForm from './reduxForm';
 
 export {
   Field,
   FieldArray,
-  FormsStore,
   mobxForm,
 };

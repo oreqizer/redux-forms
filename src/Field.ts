@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { Context } from "./mobxForm";
+import { Context } from "./reduxForm";
 import FormStore from "./containers/FormStore";
 import FieldStore from './containers/FieldStore';
 

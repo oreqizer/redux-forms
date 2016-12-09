@@ -11,8 +11,8 @@ const isEvent = (thing: any): thing is SynthEvent =>
     Boolean(thing && thing.preventDefault && thing.stopPropagation);
 
 const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
-    .filter(option => option.selected)
-    .map(option => option.value);
+    .filter((option) => option.selected)
+    .map((option) => option.value);
 
 const getValue = (ev: any): Value => {
   if (!isEvent(ev)) {

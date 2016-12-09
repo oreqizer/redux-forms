@@ -17,15 +17,16 @@ export type Context = {
   };
 }
 
+export type WrappedComponent<T> = React.ComponentClass<T> | React.SFC<T>;
+
 type StateProps = {
   reduxForms: Object,
 }
 
 type DispatchProps = {}
 
-type Props<T> = StateProps & DispatchProps & T
+type Props<T> = StateProps & DispatchProps & T;
 
-export type WrappedComponent<T> = React.ComponentClass<T> | React.SFC<T>;
 
 const getName = (Wrapped: WrappedComponent<any>): string =>
   Wrapped.displayName || Wrapped.name || 'Component';
@@ -39,12 +40,6 @@ const reduxForm = <T>({ form }: Options) => {
   return (Wrapped: WrappedComponent<Props<T>>): React.ComponentClass<T> => {
     class ReduxForm extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
       static displayName = `ReduxForm(${getName(Wrapped)})`;
-
-      static childContextTypes = {
-        reduxForms: React.PropTypes.shape({
-          context: React.PropTypes.string.isRequired,
-        }).isRequired,
-      };
 
       getChildContext() {
         return {

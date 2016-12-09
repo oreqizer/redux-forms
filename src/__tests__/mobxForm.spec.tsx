@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Provider } from 'mobx-react';
 import { mount } from 'enzyme';
 
-import mobxForm from '../mobxForm';
+import mobxForm from '../reduxForm';
 import FormsStore from "../FormsStore";
 
 const MyComp = () => (

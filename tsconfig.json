@@ -9,9 +9,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": [
-    "src/index.ts"
-  ],
   "exclude": [
     "node_modules",
     "**/__tests__"
