@@ -32,19 +32,21 @@ export type Validate = (value: Value) => string | null;
 
 export type Normalize = (value: Value) => Value;
 
-const omitCtx = R.omit(['form']);
-
 
 class Field extends React.PureComponent<IOwnProps, State> {
+  // Must contain all props of 'AllProps'
   static defaultProps = {
     name: '',
     component: 'input',
     validate: () => null,
     normalize: () => null,
     defaultValue: '',
-    field: duck.freshField,
+    // context
     _form: '',
-    _context: '',
+    _id: '',
+    // state
+    field: duck.freshField,
+    // actions
     addField: R.identity,
     removeField: R.identity,
     fieldChange: R.identity,
@@ -131,11 +133,11 @@ class Field extends React.PureComponent<IOwnProps, State> {
 
 type ConnectedProps = IOwnProps & ContextProps;
 
-export type StateProps = {
+type StateProps = {
   field: duck.FieldObject,
 };
 
-export type ActionProps = {
+type ActionProps = {
   addField: duck.AddFieldCreator,
   removeField: duck.RemoveFieldCreator,
   fieldChange: duck.FieldChangeCreator,
@@ -143,10 +145,10 @@ export type ActionProps = {
   fieldBlur: duck.FieldBlurCreator,
 };
 
-export type AllProps = ConnectedProps & StateProps & ActionProps;
+type AllProps = ConnectedProps & StateProps & ActionProps;
 
 
-const Connected = connectField<AllProps>(Field);  // TODO fix typing
+const Connected = connectField<AllProps>(Field);
 
 const actions = {
   addField: duck.addField,
