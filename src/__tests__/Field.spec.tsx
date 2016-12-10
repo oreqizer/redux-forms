@@ -6,8 +6,6 @@ import { shallow, mount } from 'enzyme';
 
 import Field from '../Field';
 
-import FormStore from '../containers/FormStore';
-
 const rawMeta = {
   active: false,
   dirty: false,

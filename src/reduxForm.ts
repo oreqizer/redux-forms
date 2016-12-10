@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
+import * as duck from './formsDuck';
+
 
 export type Options = {
-  form: string;
+  form: string,
+  persistent?: boolean,
 };
 
 export type Context = {
@@ -21,28 +24,47 @@ type StateProps = {
   reduxForms: Object,
 };
 
-type DispatchProps = {};
+type ActionProps = {
+  addForm: duck.AddFormCreator,
+  removeForm: duck.RemoveFormCreator,
+};
 
-type Props<T> = StateProps & DispatchProps & T;
+type Props<T> = StateProps & ActionProps & T;
 
 
-const getName = (Wrapped: WrappedComponent<any>): string =>
-  Wrapped.displayName || Wrapped.name || 'Component';
-
-const reduxForm = <T>({ form }: Options) => {
+const reduxForm = <T>(options: Options) => {
   invariant(
-      form && typeof form === 'string',
-      '[mobx-forms] "form" is a required string on the "mobxForm" decorator.',
+      options.form && typeof options.form === 'string',
+      '[mobx-forms] "form" is a required string on the "reduxForm" decorator.',
   );
 
   return (Wrapped: WrappedComponent<Props<T>>): React.ComponentClass<T> => {
     class ReduxForm extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
-      static displayName = `ReduxForm(${getName(Wrapped)})`;
+      static displayName = `ReduxForm(${Wrapped.displayName || 'Component'})`;
+
+      static childContextTypes = {
+        reduxForms: React.PropTypes.shape({
+          form: React.PropTypes.string.isRequired,
+          context: React.PropTypes.string.isRequired,
+        }).isRequired,
+      };
+
+      constructor(props: Props<T>) {
+        super(props);
+
+        props.addForm(options.form);
+      }
+
+      componentWillUnmount() {
+        if (!options.persistent) {
+          this.props.removeForm(options.form);
+        }
+      }
 
       getChildContext() {
         return {
           reduxForms: {
-            form,
+            form: options.form,
             context: '',
           },
         };
@@ -54,9 +76,12 @@ const reduxForm = <T>({ form }: Options) => {
       }
     }
 
-    return connect<StateProps, DispatchProps, T>((state) => ({
+    return connect<StateProps, ActionProps, T>((state) => ({
       reduxForms: state.reduxForms,
-    }))(ReduxForm);
+    }), {
+      addForm: duck.addForm,
+      removeForm: duck.removeForm,
+    })(ReduxForm);
   };
 };
 
