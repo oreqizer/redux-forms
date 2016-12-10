@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as R from 'ramda';
+import * as invariant from 'invariant';
 
 import { Context } from "../reduxForm";
 
@@ -13,15 +14,21 @@ export type ContextProps = {
   _id: string,
 };
 
+type WrappedField<T> = React.ComponentClass<T & NameProp & ContextProps>;
 
-export default function connectField<T>(
-    Wrapped: React.ComponentClass<T & NameProp & ContextProps>,
-): React.SFC<T & NameProp> {
-  const ConnectedField: React.SFC<T & NameProp> = (props: T & NameProp, { reduxForms }: Context) =>
-      React.createElement(Wrapped, R.merge(props, {
-        _form: reduxForms.form,
-        _id: reduxForms.context ? `${reduxForms.context}.${props.name}` : props.name,
-      }));
+type Connected<T> = React.SFC<T & NameProp>;
+
+
+export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
+  const ConnectedField: Connected<T> = (props: T & NameProp, { reduxForms }: Context) => {
+    invariant(reduxForms, '[redux-forms] Fields must be in a component decorated with "reduxForms"');
+
+    return React.createElement(Wrapped, R.merge(props, {
+      _form: reduxForms.form,
+      _id: reduxForms.context ? `${reduxForms.context}.${props.name}` : props.name,
+    }));
+  };
+
 
   ConnectedField.contextTypes = {
     reduxForms: React.PropTypes.shape({

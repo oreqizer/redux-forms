@@ -29,9 +29,10 @@ const Component = (props: any) => (
   />
 );
 
-const getContext = (context: string) => ({
+const getContext = (form: string, context: string) => ({
   context: {
     reduxForms: {
+      form,
       context,
     },
   },
@@ -51,8 +52,21 @@ describe('#Field', () => {
           component={Component}
         />
       </Provider>,
-    )).toThrowError(/Field must be in a component decorated/);
+    )).toThrowError(/component decorated with/);
   });
 
-  // TODO tests after finishing API
+  it('should mount a field with a string component', () => {
+    const field = mount(
+      <Provider store={getStore()}>
+        <Field
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      getContext('test', ''),
+    );
+
+    // TODO fix context + component withdrawal
+    console.log(field.props());
+  });
 });
