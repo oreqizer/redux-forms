@@ -59,46 +59,42 @@ describe('#formsDuck', () => {
   it('should return initial state', () => {
     const state = reducer(undefined, <any> {});
 
-    expect(state).toEqual(duck.initialState);
+    expect(state).toEqual({});
   });
 
   it('should add a form', () => {
-    const state = reducer({
-      forms: {},
-    }, duck.addForm('form'));
+    const state = reducer({}, duck.addForm('form'));
 
     expect(state).toEqual({
-      forms: { form: {} },
+      form: duck.initialForm,
     });
   });
 
   it('should remove a form', () => {
     const state = reducer({
-      forms: { form: {} },
+      form: duck.initialForm,
     }, duck.removeForm('form'));
 
-    expect(state).toEqual({
-      forms: {},
-    });
+    expect(state).toEqual({});
   });
 
   it('should add a field', () => {
     const state = reducer({
-      forms: { form: {} },
+      form: { fields: {} },
     }, duck.addField('form', 'field'));
 
     expect(state).toEqual({
-      forms: { form: { field: duck.freshField } },
+      form: { fields: { field: duck.freshField } },
     });
   });
 
   it('should remove a field', () => {
     const state = reducer({
-      forms: { form: { field: duck.freshField } },
+      form: { fields: { field: duck.freshField } },
     }, duck.removeField('form', 'field'));
 
     expect(state).toEqual({
-      forms: { form: {} },
+      form: { fields: {} },
     });
   });
 });

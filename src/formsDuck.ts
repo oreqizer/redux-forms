@@ -20,47 +20,47 @@ export const freshField = {
   dirty: false,
 };
 
-export const initialState = {
-  forms: {},
+export const initialForm = {
+  fields: {},
 };
 
-export default function formsReducer(state: State = initialState, a: Action): State {
+export default function formsReducer(state: State = {}, a: Action): State {
   switch (a.type) {
     // Form
     // ---
     case ADD_FORM:
-      return R.assocPath<Form, State>(['forms', a.payload.name], {}, state);
+      return R.assocPath<Form, State>([a.payload.name], initialForm, state);
 
     case REMOVE_FORM:
-      return R.dissocPath<State>(['forms', a.payload.name], state);
+      return R.dissocPath<State>([a.payload.name], state);
 
     case ADD_FIELD:
-      return R.assocPath<FieldObject, State>(['forms', a.payload.form, a.payload.id], freshField, state);
+      return R.assocPath<FieldObject, State>([a.payload.form, 'fields', a.payload.id], freshField, state);
 
     case REMOVE_FIELD:
-      return R.dissocPath<State>(['forms', a.payload.form, a.payload.id], state);
+      return R.dissocPath<State>([a.payload.form, 'fields', a.payload.id], state);
 
     // Field
     // ---
     case FIELD_CHANGE:
       return R.compose<State, State, State, State>(
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'value'], a.payload.value),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'error'], a.payload.error),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'dirty'], a.payload.dirty),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
       )(state);
 
     case FIELD_FOCUS:
       return R.compose<State, State, State>(
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'active'], true),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'visited'], true),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], true),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'visited'], true),
       )(state);
 
     case FIELD_BLUR:
       return R.compose<State, State, State, State, State>(
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'error'], a.payload.error),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'dirty'], a.payload.dirty),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'active'], false),
-          R.assocPath(['forms', a.payload.form, a.payload.field, 'touched'], true),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
       )(state);
 
     default:
@@ -176,10 +176,12 @@ export type FieldObject = {
   dirty: boolean;
 };
 
-export type Form = { [key: string]: FieldObject };
+export type Form = {
+  fields: { [key: string]: FieldObject },
+};
 
 export type State = {
-  forms: { [key: string]: Form },
+  [form: string]: Form,
 };
 
 export type Action =
