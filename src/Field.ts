@@ -133,6 +133,7 @@ const actions = {
   fieldBlur: duck.fieldBlur,
 };
 
+// TODO remove wrappers, deal directly with context
 export default connect<StateProps, ActionProps, IOwnProps>((state, props: IOwnProps & ContextProps) => ({
   field: R.path<duck.FieldObject>([props._form, 'fields', props._context], state.reduxForms),
 }), actions)(contextWrap<AllProps>(Field));

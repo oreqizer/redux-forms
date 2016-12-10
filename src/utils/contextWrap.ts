@@ -21,18 +21,18 @@ export default function contextWrap<T>(
 ): React.ComponentClass<T & NameProps> {
   class ContextWrap extends React.PureComponent<T & NameProps, void> {
     static contextTypes = {
-      mobxForms: React.PropTypes.shape({
+      reduxForms: React.PropTypes.shape({
         context: React.PropTypes.string.isRequired,
       }).isRequired,
     };
 
     context: Context;
 
-    constructor(props: T & NameProps) {
+    constructor(props: T & NameProps, context: Context) {
       super(props);
 
       invariant(
-          this.context.reduxForms,
+          context.reduxForms,
           '[redux-forms] Field must be in a component decorated with "reduxForm"',
       );
     }
@@ -43,7 +43,7 @@ export default function contextWrap<T>(
 
       return React.createElement(Wrapped, R.merge(this.props, {
         _form: form,
-        _context: `${context}.${name}`,
+        _context: context ? `${context}.${name}` : name,
       }));
     }
   }

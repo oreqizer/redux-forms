@@ -28,7 +28,9 @@
       "js",
       "json"
     ],
-    "scriptPreprocessor": "<rootDir>/jest-preprocessor.js",
+    "transform": {
+      ".tsx?": "<rootDir>/jest-preprocessor.js"
+    },
     "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$"
   },
   "repository": {
