@@ -10,16 +10,16 @@ export interface IProps {
   name: string;
 }
 
-export interface IContextProps {
-  _form: string;
-  _context: string;
-}
+export type ContextProps = {
+  _form: string,
+  _context: string,
+};
 
 
-export default function contextWrap<T>(
-    Wrapped: React.ComponentClass<T & IProps & IContextProps>,
-): React.ComponentClass<T & IProps> {
-  class ContextWrap extends React.PureComponent<T & IProps & IContextProps, void> {
+export default function contextWrap(
+    Wrapped: React.ComponentClass<IProps>,
+): React.ComponentClass<IProps> {
+  class ContextWrap extends React.PureComponent<IProps, void> {
     static contextTypes = {
       mobxForms: React.PropTypes.shape({
         context: React.PropTypes.string.isRequired,
@@ -28,7 +28,7 @@ export default function contextWrap<T>(
 
     context: Context;
 
-    constructor(props: T & IProps) {
+    constructor(props: IProps) {
       super(props);
 
       invariant(

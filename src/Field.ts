@@ -5,7 +5,7 @@ import * as invariant from 'invariant';
 
 import { Context } from "./reduxForm";
 
-import contextWrap from './utils/contextWrap';
+import contextWrap, { ContextProps } from './utils/contextWrap';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
 import { InputProps, MetaProps } from "./types/Props";
@@ -24,9 +24,6 @@ export interface IOwnProps {
   validate?: Validate;
   normalize?: Normalize;
   defaultValue?: string;
-  // ours
-  _form: string;
-  _context: string;
 }
 
 export type Validate = (value: Value) => string | null;
@@ -45,10 +42,10 @@ export type ActionProps = {
   fieldBlur: duck.FieldBlurCreator,
 };
 
-export type Props = StateProps & ActionProps & IOwnProps;
+export type AllProps = StateProps & ActionProps & ContextProps & IOwnProps;
 
 
-class Field extends React.Component<Props, void> {
+class Field extends React.Component<IOwnProps, void> {
   static defaultProps = {
     name: '',
     component: 'input',
@@ -65,7 +62,9 @@ class Field extends React.Component<Props, void> {
     fieldBlur: R.identity,
   };
 
-  constructor(props: Props) {
+  props: AllProps;
+
+  constructor(props: AllProps) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
@@ -130,6 +129,6 @@ const actions = {
   fieldBlur: duck.fieldBlur,
 };
 
-export default connect<StateProps, ActionProps, Props>((state, props: Props) => ({
+export default connect<StateProps, ActionProps, IOwnProps & ContextProps>((state, props) => ({
   field: R.path<duck.FieldObject>([props._form, 'fields', props._context], state.reduxForms),
-}), actions)(contextWrap<Props>(Field));
+}), actions)(contextWrap(Field));
