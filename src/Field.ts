@@ -8,6 +8,7 @@ import { Context } from "./reduxForm";
 import contextWrap, { ContextProps } from './utils/contextWrap';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
+import { IAllProps } from "./utils/prepareProps";
 import { InputProps, MetaProps } from "./types/Props";
 
 import * as duck from './formsDuck';
@@ -109,8 +110,11 @@ class Field extends React.Component<IOwnProps, void> {
   render(): JSX.Element {
     const { component, field, ...rest } = this.props;
 
-    // TODO adjust this, add callbacks etc.
-    const { input, meta, custom } = prepareProps(R.merge(rest, field));
+    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, field, {
+      onChange: this.handleChange,
+      onFocus: this.handleFocus,
+      onBlur: this.handleBlur,
+    }]));
 
     if (typeof component === 'string') {
       return React.createElement(component, R.merge(custom, input));

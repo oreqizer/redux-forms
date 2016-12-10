@@ -35,6 +35,17 @@ export const IGNORE_PROPS = [
   'index',
   'normalize',
   'validate',
+  // state
+  'field',
+  // actions
+  'addField',
+  'removeField',
+  'fieldChange',
+  'fieldFocus',
+  'fieldBlur',
+  // context
+  '_context',
+  '_form',
 ];
 
 export const ARRAY_IGNORE_PROPS = [
