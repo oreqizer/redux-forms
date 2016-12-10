@@ -5,11 +5,9 @@ import * as invariant from 'invariant';
 
 import { Context } from "./reduxForm";
 
-import contextWrap, { ContextProps } from './utils/contextWrap';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
-import { IAllProps } from "./utils/prepareProps";
-import { InputProps, MetaProps } from "./types/Props";
+import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
 import * as duck from './formsDuck';
 
@@ -19,7 +17,7 @@ export interface ISuppliedProps {
   meta: MetaProps;
 }
 
-export interface IOwnProps {
+export interface IProps {
   name: string;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
   validate?: Validate;
@@ -31,22 +29,10 @@ export type Validate = (value: Value) => string | null;
 
 export type Normalize = (value: Value) => Value;
 
-export type StateProps = {
-  field: duck.FieldObject,
-};
-
-export type ActionProps = {
-  addField: duck.AddFieldCreator,
-  removeField: duck.RemoveFieldCreator,
-  fieldChange: duck.FieldChangeCreator,
-  fieldFocus: duck.FieldFocusCreator,
-  fieldBlur: duck.FieldBlurCreator,
-};
-
-export type AllProps = StateProps & ActionProps & ContextProps & IOwnProps;
+const omitCtx = R.omit(['form']);
 
 
-class Field extends React.Component<IOwnProps, void> {
+export default class Field extends React.Component<IProps, void> {
   static defaultProps = {
     name: '',
     component: 'input',
@@ -63,54 +49,101 @@ class Field extends React.Component<IOwnProps, void> {
     fieldBlur: R.identity,
   };
 
-  props: AllProps;
+  static contextTypes = {
+    reduxForms: React.PropTypes.shape({
+      form: React.PropTypes.object.isRequired,
+      formName: React.PropTypes.string.isRequired,
+      context: React.PropTypes.string.isRequired,
+      // actions
+      addField: React.PropTypes.func.isRequired,
+      removeField: React.PropTypes.func.isRequired,
+      fieldChange: React.PropTypes.func.isRequired,
+      fieldFocus: React.PropTypes.func.isRequired,
+      fieldBlur: React.PropTypes.func.isRequired,
+    }).isRequired,
+  };
 
-  constructor(props: AllProps) {
+  props: IProps;
+  context: Context;
+  id: string;
+  field: duck.FieldObject;
+
+  constructor(props: IProps, c: Context) {
     super(props);
+
+    invariant(
+        c.reduxForms,
+        '[redux-forms] Field must be in a component decorated with "reduxForm"',
+    );
 
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
-    props.addField(props._form, props._context);
+    const { addField, form, formName, context } = c.reduxForms;
+
+    addField(formName, context);
+
+    this.id = context ? `${context}.${props.name}` : props.name;
+    this.field = R.path<duck.FieldObject>(['fields', this.id], form);
+  }
+
+  shouldComponentUpdate(nextProps: IProps, _: void, nextContext: Context) {
+    const { reduxForms } = this.context;
+
+    // Check all props (deep compare - props should be shallow)
+    const propsOk = R.equals(this.props, nextProps);
+
+    // Check field's identity
+    const fieldOk = this.field === R.path<duck.FieldObject>(
+        ['fields', this.id],
+        nextContext.reduxForms.form,
+    );
+
+    // Check if a shallow context property didn't change
+    const contextOk = R.equals(omitCtx(nextContext.reduxForms), omitCtx(reduxForms));
+
+    return R.any(R.not, [propsOk, fieldOk, contextOk]);
   }
 
   componentWillUnmount() {
-    const { _form, _context } = this.props;
+    const { removeField, formName, context } = this.context.reduxForms;
 
-    this.props.removeField(_form, _context);
+    removeField(formName, context);
   }
 
   handleChange(ev: SynthEvent) {
-    const { _form, _context, normalize, validate, defaultValue } = this.props;
+    const { fieldChange, formName, context } = this.context.reduxForms;
+    const { normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    this.props.fieldChange(_form, _context, value, error, dirty);
+    fieldChange(formName, context, value, error, dirty);
   }
 
   handleFocus() {
-    const { _form, _context } = this.props;
+    const { fieldFocus, formName, context } = this.context.reduxForms;
 
-    this.props.fieldFocus(_form, _context);
+    fieldFocus(formName, context);
   }
 
   handleBlur(ev: SynthEvent) {
-    const { _form, _context, normalize, validate, defaultValue } = this.props;
+    const { fieldBlur, formName, context } = this.context.reduxForms;
+    const { normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    this.props.fieldBlur(_form, _context, error, dirty);
+    fieldBlur(formName, context, error, dirty);
   }
 
   render(): JSX.Element {
-    const { component, field, ...rest } = this.props;
+    const { component, ...rest } = this.props;
 
-    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, field, {
+    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, this.field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -124,16 +157,3 @@ class Field extends React.Component<IOwnProps, void> {
     return React.createElement(<any> component, R.merge(custom, { input, meta }));
   }
 }
-
-const actions = {
-  addField: duck.addField,
-  removeField: duck.removeField,
-  fieldChange: duck.fieldChange,
-  fieldFocus: duck.fieldFocus,
-  fieldBlur: duck.fieldBlur,
-};
-
-// TODO remove wrappers, deal directly with context
-export default connect<StateProps, ActionProps, IOwnProps>((state, props: IOwnProps & ContextProps) => ({
-  field: R.path<duck.FieldObject>([props._form, 'fields', props._context], state.reduxForms),
-}), actions)(contextWrap<AllProps>(Field));

@@ -3,19 +3,7 @@ import * as R from 'ramda';
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
 import { Value } from './getValue';
 
-import { InputProps, MetaProps } from "../types/Props";
-
-
-export interface IAllProps {
-  value: Value;
-  checked?: boolean;
-}
-
-export type SeparatedProps = {
-  input: InputProps;
-  meta: MetaProps;
-  custom: Object;
-};
+import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props";
 
 
 const maybeCheckProps = (all: IAllProps): IAllProps => {
