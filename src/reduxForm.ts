@@ -13,15 +13,8 @@ export type Options = {
 
 export type Context = {
   reduxForms: {
-    form: duck.Form,
-    formName: string,
+    form: string,
     context: string,
-    // actions
-    addField: duck.AddFieldCreator,
-    removeField: duck.RemoveFieldCreator,
-    fieldChange: duck.FieldChangeCreator,
-    fieldFocus: duck.FieldFocusCreator,
-    fieldBlur: duck.FieldBlurCreator,
   };
 };
 
@@ -34,11 +27,6 @@ type StateProps = {
 type ActionProps = {
   addForm: duck.AddFormCreator,
   removeForm: duck.RemoveFormCreator,
-  addField: duck.AddFieldCreator,
-  removeField: duck.RemoveFieldCreator,
-  fieldChange: duck.FieldChangeCreator,
-  fieldFocus: duck.FieldFocusCreator,
-  fieldBlur: duck.FieldBlurCreator,
 };
 
 type Props<T> = StateProps & ActionProps & T;
@@ -48,11 +36,6 @@ const PROPS_TO_OMIT = [
   '_form',
   'addForm',
   'removeForm',
-  'addField',
-  'removeField',
-  'fieldChange',
-  'fieldFocus',
-  'fieldBlur',
 ];
 
 
@@ -68,15 +51,8 @@ const reduxForm = <T>(options: Options) => {
 
       static childContextTypes = {
         reduxForms: React.PropTypes.shape({
-          form: React.PropTypes.object.isRequired,
-          formName: React.PropTypes.string.isRequired,
+          form: React.PropTypes.string.isRequired,
           context: React.PropTypes.string.isRequired,
-          // actions
-          addField: React.PropTypes.func.isRequired,
-          removeField: React.PropTypes.func.isRequired,
-          fieldChange: React.PropTypes.func.isRequired,
-          fieldFocus: React.PropTypes.func.isRequired,
-          fieldBlur: React.PropTypes.func.isRequired,
         }).isRequired,
       };
 
@@ -93,26 +69,10 @@ const reduxForm = <T>(options: Options) => {
       }
 
       getChildContext() {
-        const {
-          _form,
-          addField,
-          removeField,
-          fieldChange,
-          fieldFocus,
-          fieldBlur,
-        } = this.props;
-
         return {
           reduxForms: {
-            form: _form,  // TODO check if existent soon enough
-            formName: options.form,
+            form: options.form,
             context: '',
-            // actions
-            addField,
-            removeField,
-            fieldChange,
-            fieldFocus,
-            fieldBlur,
           },
         };
       }
@@ -128,11 +88,6 @@ const reduxForm = <T>(options: Options) => {
     }), {
       addForm: duck.addForm,
       removeForm: duck.removeForm,
-      addField: duck.addField,
-      removeField: duck.removeField,
-      fieldChange: duck.fieldChange,
-      fieldFocus: duck.fieldFocus,
-      fieldBlur: duck.fieldBlur,
     })(ReduxForm);
   };
 };

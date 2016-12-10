@@ -25,6 +25,8 @@ export interface IProps {
   defaultValue?: string;
 }
 
+export type State = { field: duck.FieldObject };
+
 export type Validate = (value: Value) => string | null;
 
 export type Normalize = (value: Value) => Value;
@@ -32,7 +34,7 @@ export type Normalize = (value: Value) => Value;
 const omitCtx = R.omit(['form']);
 
 
-export default class Field extends React.Component<IProps, void> {
+export default class Field extends React.Component<IProps, State> {
   static defaultProps = {
     name: '',
     component: 'input',
@@ -64,9 +66,9 @@ export default class Field extends React.Component<IProps, void> {
   };
 
   props: IProps;
+  state: State;
   context: Context;
   id: string;
-  field: duck.FieldObject;
 
   constructor(props: IProps, c: Context) {
     super(props);
@@ -82,10 +84,12 @@ export default class Field extends React.Component<IProps, void> {
 
     const { addField, form, formName, context } = c.reduxForms;
 
-    addField(formName, context);
-
     this.id = context ? `${context}.${props.name}` : props.name;
-    this.field = R.path<duck.FieldObject>(['fields', this.id], form);
+    this.state = {
+      field: R.path<duck.FieldObject>(['fields', this.id], form),
+    };
+
+    addField(formName, this.id);
   }
 
   shouldComponentUpdate(nextProps: IProps, _: void, nextContext: Context) {
@@ -95,10 +99,8 @@ export default class Field extends React.Component<IProps, void> {
     const propsOk = R.equals(this.props, nextProps);
 
     // Check field's identity
-    const fieldOk = this.field === R.path<duck.FieldObject>(
-        ['fields', this.id],
-        nextContext.reduxForms.form,
-    );
+    const newField = R.path(['fields', this.id], nextContext.reduxForms.form);
+    const fieldOk = this.field === newField;
 
     // Check if a shallow context property didn't change
     const contextOk = R.equals(omitCtx(nextContext.reduxForms), omitCtx(reduxForms));
@@ -107,37 +109,37 @@ export default class Field extends React.Component<IProps, void> {
   }
 
   componentWillUnmount() {
-    const { removeField, formName, context } = this.context.reduxForms;
+    const { removeField, formName } = this.context.reduxForms;
 
-    removeField(formName, context);
+    removeField(formName, this.id);
   }
 
   handleChange(ev: SynthEvent) {
-    const { fieldChange, formName, context } = this.context.reduxForms;
+    const { fieldChange, formName } = this.context.reduxForms;
     const { normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldChange(formName, context, value, error, dirty);
+    fieldChange(formName, this.id, value, error, dirty);
   }
 
   handleFocus() {
-    const { fieldFocus, formName, context } = this.context.reduxForms;
+    const { fieldFocus, formName } = this.context.reduxForms;
 
-    fieldFocus(formName, context);
+    fieldFocus(formName, this.id);
   }
 
   handleBlur(ev: SynthEvent) {
-    const { fieldBlur, formName, context } = this.context.reduxForms;
+    const { fieldBlur, formName } = this.context.reduxForms;
     const { normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldBlur(formName, context, error, dirty);
+    fieldBlur(formName, this.id, error, dirty);
   }
 
   render(): JSX.Element {
