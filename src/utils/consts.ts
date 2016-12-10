@@ -44,8 +44,8 @@ export const IGNORE_PROPS = [
   'fieldFocus',
   'fieldBlur',
   // context
-  '_context',
   '_form',
+  '_id',
 ];
 
 export const ARRAY_IGNORE_PROPS = [
