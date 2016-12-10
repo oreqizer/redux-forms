@@ -129,6 +129,6 @@ const actions = {
   fieldBlur: duck.fieldBlur,
 };
 
-export default connect<StateProps, ActionProps, IOwnProps & ContextProps>((state, props) => ({
+export default connect<StateProps, ActionProps, IOwnProps>((state, props: IOwnProps & ContextProps) => ({
   field: R.path<duck.FieldObject>([props._form, 'fields', props._context], state.reduxForms),
-}), actions)(contextWrap(Field));
+}), actions)(contextWrap<AllProps>(Field));

@@ -6,9 +6,9 @@ import * as invariant from 'invariant';
 import { Context } from "../reduxForm";
 
 
-export interface IProps {
-  name: string;
-}
+export type NameProps = {
+  name: string,
+};
 
 export type ContextProps = {
   _form: string,
@@ -16,10 +16,10 @@ export type ContextProps = {
 };
 
 
-export default function contextWrap(
-    Wrapped: React.ComponentClass<IProps>,
-): React.ComponentClass<IProps> {
-  class ContextWrap extends React.PureComponent<IProps, void> {
+export default function contextWrap<T>(
+    Wrapped: React.ComponentClass<T & NameProps & ContextProps>,
+): React.ComponentClass<T & NameProps> {
+  class ContextWrap extends React.PureComponent<T & NameProps, void> {
     static contextTypes = {
       mobxForms: React.PropTypes.shape({
         context: React.PropTypes.string.isRequired,
@@ -28,7 +28,7 @@ export default function contextWrap(
 
     context: Context;
 
-    constructor(props: IProps) {
+    constructor(props: T & NameProps) {
       super(props);
 
       invariant(
