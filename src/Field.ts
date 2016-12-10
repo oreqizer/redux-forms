@@ -5,6 +5,7 @@ import * as invariant from 'invariant';
 
 import { Context } from "./reduxForm";
 
+import connectField, { ContextProps } from './utils/connectField';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
 import { InputProps, MetaProps, IAllProps } from "./types/Props";
@@ -17,7 +18,7 @@ export interface ISuppliedProps {
   meta: MetaProps;
 }
 
-export interface IProps {
+export interface IOwnProps {
   name: string;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
   validate?: Validate;
@@ -34,7 +35,7 @@ export type Normalize = (value: Value) => Value;
 const omitCtx = R.omit(['form']);
 
 
-export default class Field extends React.Component<IProps, State> {
+class Field extends React.PureComponent<IOwnProps, State> {
   static defaultProps = {
     name: '',
     component: 'input',
@@ -65,87 +66,54 @@ export default class Field extends React.Component<IProps, State> {
     }).isRequired,
   };
 
-  props: IProps;
-  state: State;
-  context: Context;
-  id: string;
+  props: AllProps;
 
-  constructor(props: IProps, c: Context) {
+  constructor(props: AllProps) {
     super(props);
-
-    invariant(
-        c.reduxForms,
-        '[redux-forms] Field must be in a component decorated with "reduxForm"',
-    );
 
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
-    const { addField, form, formName, context } = c.reduxForms;
-
-    this.id = context ? `${context}.${props.name}` : props.name;
-    this.state = {
-      field: R.path<duck.FieldObject>(['fields', this.id], form),
-    };
-
-    addField(formName, this.id);
-  }
-
-  shouldComponentUpdate(nextProps: IProps, _: void, nextContext: Context) {
-    const { reduxForms } = this.context;
-
-    // Check all props (deep compare - props should be shallow)
-    const propsOk = R.equals(this.props, nextProps);
-
-    // Check field's identity
-    const newField = R.path(['fields', this.id], nextContext.reduxForms.form);
-    const fieldOk = this.field === newField;
-
-    // Check if a shallow context property didn't change
-    const contextOk = R.equals(omitCtx(nextContext.reduxForms), omitCtx(reduxForms));
-
-    return R.any(R.not, [propsOk, fieldOk, contextOk]);
+    props.addField(props._form, props._id);
   }
 
   componentWillUnmount() {
-    const { removeField, formName } = this.context.reduxForms;
+    const { removeField, _form, _id } = this.props;
 
-    removeField(formName, this.id);
+    removeField(_form, _id);
   }
 
   handleChange(ev: SynthEvent) {
-    const { fieldChange, formName } = this.context.reduxForms;
-    const { normalize, validate, defaultValue } = this.props;
+    const { fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldChange(formName, this.id, value, error, dirty);
+    fieldChange(_form, _id, value, error, dirty);
   }
 
   handleFocus() {
-    const { fieldFocus, formName } = this.context.reduxForms;
+    const { fieldFocus, _form, _id } = this.props;
 
-    fieldFocus(formName, this.id);
+    fieldFocus(_form, _id);
   }
 
   handleBlur(ev: SynthEvent) {
-    const { fieldBlur, formName } = this.context.reduxForms;
-    const { normalize, validate, defaultValue } = this.props;
+    const { fieldBlur, _form, _id, normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldBlur(formName, this.id, error, dirty);
+    fieldBlur(_form, _id, error, dirty);
   }
 
   render(): JSX.Element {
-    const { component, ...rest } = this.props;
+    const { component, field, ...rest } = this.props;
 
-    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, this.field, {
+    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -159,3 +127,35 @@ export default class Field extends React.Component<IProps, State> {
     return React.createElement(<any> component, R.merge(custom, { input, meta }));
   }
 }
+
+
+type ConnectedProps = IOwnProps & ContextProps;
+
+export type StateProps = {
+  field: duck.FieldObject,
+};
+
+export type ActionProps = {
+  addField: duck.AddFieldCreator,
+  removeField: duck.RemoveFieldCreator,
+  fieldChange: duck.FieldChangeCreator,
+  fieldFocus: duck.FieldFocusCreator,
+  fieldBlur: duck.FieldBlurCreator,
+};
+
+export type AllProps = ConnectedProps & StateProps & ActionProps;
+
+
+const Connected = connectField<AllProps>(Field);  // TODO fix typing
+
+const actions = {
+  addField: duck.addField,
+  removeField: duck.removeField,
+  fieldChange: duck.fieldChange,
+  fieldFocus: duck.fieldFocus,
+  fieldBlur: duck.fieldBlur,
+};
+
+export default connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
+  field: R.path<duck.FieldObject>([props._form, 'fields', props._id], state.reduxForms),
+}), actions)(Connected);
