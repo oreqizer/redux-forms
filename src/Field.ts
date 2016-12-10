@@ -13,14 +13,25 @@ import { InputProps, MetaProps } from "./types/Props";
 import * as duck from './formsDuck';
 
 
-export type Validate = (value: Value) => string | null;
-
-export type Normalize = (value: Value) => Value;
-
 export interface ISuppliedProps {
   input: InputProps;
   meta: MetaProps;
 }
+
+export interface IOwnProps {
+  name: string;
+  component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
+  validate?: Validate;
+  normalize?: Normalize;
+  defaultValue?: string;
+  // ours
+  _form: string;
+  _context: string;
+}
+
+export type Validate = (value: Value) => string | null;
+
+export type Normalize = (value: Value) => Value;
 
 export type StateProps = {
   field: duck.FieldObject,
@@ -34,21 +45,8 @@ export type ActionProps = {
   fieldBlur: duck.FieldBlurCreator,
 };
 
-export interface IOwnProps {
-  name: string;
-  component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
-  validate?: Validate;
-  normalize?: Normalize;
-  defaultValue?: string;
-  // ours
-  _form: string;
-  _context: string;
-}
-
 export type Props = StateProps & ActionProps & IOwnProps;
 
-
-const dummyFn = (): any => ({});
 
 class Field extends React.Component<Props, void> {
   static defaultProps = {
@@ -60,11 +58,11 @@ class Field extends React.Component<Props, void> {
     field: duck.freshField,
     _form: '',
     _context: '',
-    addField: dummyFn,
-    removeField: dummyFn,
-    fieldChange: dummyFn,
-    fieldFocus: dummyFn,
-    fieldBlur: dummyFn,
+    addField: R.identity,
+    removeField: R.identity,
+    fieldChange: R.identity,
+    fieldFocus: R.identity,
+    fieldBlur: R.identity,
   };
 
   constructor(props: Props) {
@@ -119,6 +117,7 @@ class Field extends React.Component<Props, void> {
       return React.createElement(component, R.merge(custom, input));
     }
 
+    // React.SFC vs. React.ClassComponent collision
     return React.createElement(<any> component, R.merge(custom, { input, meta }));
   }
 }

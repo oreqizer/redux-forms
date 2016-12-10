@@ -49,7 +49,7 @@ const reduxForm = <T>({ form }: Options) => {
       }
 
       render() {
-        // <any>Wrapped here because, for whatever reason, it doesn't compute
+        // React.SFC vs. React.ClassComponent collision
         return React.createElement(<any> Wrapped, this.props);
       }
     }
