@@ -131,5 +131,5 @@ const actions = {
 };
 
 export default connect<StateProps, ActionProps, Props>((state, props: Props) => ({
-  field: R.path<duck.FieldObject>(['forms', props._form, props._context], state.reduxForms),
+  field: R.path<duck.FieldObject>([props._form, 'fields', props._context], state.reduxForms),
 }), actions)(contextWrap<Props>(Field));
