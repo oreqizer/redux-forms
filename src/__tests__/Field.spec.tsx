@@ -36,6 +36,12 @@ const getContext = (form: string, context: string) => ({
       context,
     },
   },
+  childContextTypes: {
+    reduxForms: React.PropTypes.shape({
+      form: React.PropTypes.string.isRequired,
+      context: React.PropTypes.string.isRequired,
+    }).isRequired,
+  },
 });
 
 const getStore = () => createStore(combineReducers({
@@ -56,7 +62,7 @@ describe('#Field', () => {
   });
 
   it('should mount a field with a string component', () => {
-    const field = mount(
+    const input = mount(
       <Provider store={getStore()}>
         <Field
           name="test"
@@ -64,9 +70,12 @@ describe('#Field', () => {
         />
       </Provider>,
       getContext('test', ''),
-    );
+    ).find('input');
 
-    // TODO fix context + component withdrawal
-    console.log(field.props());
+    expect(input.prop('name')).toBe('test');
+    expect(input.prop('value')).toBe('');
+    expect(input.prop('onChange')).toBeDefined();
+    expect(input.prop('onFocus')).toBeDefined();
+    expect(input.prop('onBlur')).toBeDefined();
   });
 });
