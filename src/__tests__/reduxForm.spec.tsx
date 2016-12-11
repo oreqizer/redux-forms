@@ -30,7 +30,7 @@ describe('#reduxForm', () => {
   });
 
   it('should provide original component static reference', () => {
-    const Expected = reduxForm({ form: 'test',  })(MyComp).WrappedComponent;
+    const Expected = reduxForm({ form: 'test' })(MyComp).WrappedComponent;
 
     expect(Expected).toBe(MyComp);
   });
@@ -136,12 +136,26 @@ describe('#reduxForm', () => {
     expect(removeForm).not.toBeCalled();
   });
 
-  it('should not pass any private props', () => {
-    const Decorated = reduxForm({ form: 'test', persistent: true })(MyComp).WrappedForm;
+  it('should not render without form', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
     const wrapper = mount(
       <Decorated
         _form={null}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.find(MyComp).length).toBe(0);
+  });
+
+  it('should not pass any private props', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
       />,

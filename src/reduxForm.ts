@@ -85,6 +85,10 @@ const reduxForm = <T>(options: Options) => {
       }
 
       render() {
+        if (!this.props._form) {
+          return null;
+        }
+
         // React.SFC vs. React.ClassComponent collision
         return React.createElement(<any> Wrapped, R.omit(PROPS_TO_OMIT, this.props));
       }
