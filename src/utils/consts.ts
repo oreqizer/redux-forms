@@ -36,13 +36,13 @@ export const IGNORE_PROPS = [
   'normalize',
   'validate',
   // state
-  'field',
+  '_field',
   // actions
-  'addField',
-  'removeField',
-  'fieldChange',
-  'fieldFocus',
-  'fieldBlur',
+  '_addField',
+  '_removeField',
+  '_fieldChange',
+  '_fieldFocus',
+  '_fieldBlur',
   // context
   '_form',
   '_id',
