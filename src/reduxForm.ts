@@ -20,13 +20,18 @@ export type Context = {
 
 export type WrappedComponent<T> = React.ComponentClass<T> | React.SFC<T>;
 
+export type Connected<T> = React.ComponentClass<T> & {
+  WrappedComponent: WrappedComponent<T>,
+  WrappedForm: React.ComponentClass<T>,
+};
+
 type StateProps = {
   _form: duck.Form,
 };
 
 type ActionProps = {
-  addForm: duck.AddFormCreator,
-  removeForm: duck.RemoveFormCreator,
+  _addForm: duck.AddFormCreator,
+  _removeForm: duck.RemoveFormCreator,
 };
 
 type Props<T> = StateProps & ActionProps & T;
@@ -34,8 +39,8 @@ type Props<T> = StateProps & ActionProps & T;
 
 const PROPS_TO_OMIT = [
   '_form',
-  'addForm',
-  'removeForm',
+  '_addForm',
+  '_removeForm',
 ];
 
 
@@ -45,7 +50,7 @@ const reduxForm = <T>(options: Options) => {
       '[mobx-forms] "form" is a required string on the "reduxForm" decorator.',
   );
 
-  return (Wrapped: WrappedComponent<Props<T>>): React.ComponentClass<T> => {
+  return (Wrapped: WrappedComponent<Props<T>>): Connected<Props<T>> => {
     class ReduxForm extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
       static displayName = `ReduxForm(${Wrapped.displayName || 'Component'})`;
 
@@ -59,12 +64,12 @@ const reduxForm = <T>(options: Options) => {
       constructor(props: Props<T>) {
         super(props);
 
-        props.addForm(options.form);
+        props._addForm(options.form);
       }
 
       componentWillUnmount() {
         if (!options.persistent) {
-          this.props.removeForm(options.form);
+          this.props._removeForm(options.form);
         }
       }
 
@@ -83,12 +88,23 @@ const reduxForm = <T>(options: Options) => {
       }
     }
 
-    return connect<StateProps, ActionProps, T>((state) => ({
+    const Connected = connect<StateProps, ActionProps, T>((state) => ({
       _form: R.prop<duck.Form>(options.form, state.reduxForms),
     }), {
-      addForm: duck.addForm,
-      removeForm: duck.removeForm,
-    })(ReduxForm);
+      _addForm: duck.addForm,
+      _removeForm: duck.removeForm,
+    })(ReduxForm) as Connected<Props<T>>;  // allows for 'WrappedComponent' and 'ReduxForm'
+
+    // Needed also here to overwrite connect's naming
+    Connected.displayName = `ReduxForm(${Wrapped.displayName || 'Component'})`;
+
+    // Expose the original component
+    Connected.WrappedComponent = Wrapped;
+
+    // Expose the wrapper for testing
+    Connected.WrappedForm = ReduxForm;
+
+    return Connected;
   };
 };
 

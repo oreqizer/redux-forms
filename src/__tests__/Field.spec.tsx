@@ -100,6 +100,29 @@ describe('#Field', () => {
     expect(wrapper.prop('field')).toBeUndefined();
   });
 
+  it('should unmount a field', () => {
+    const addField = jest.fn();
+    const removeField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={freshField}
+        _id="test"
+        _form="form"
+        _addField={addField}
+        _removeField={removeField}
+      />,
+    );
+
+    expect(addField).toBeCalledWith('form', 'test');
+    expect(removeField).not.toBeCalled();
+
+    wrapper.unmount();
+
+    expect(removeField).toBeCalledWith('form', 'test');
+  });
+
   it('should fire a change action', () => {
     const fieldChange = jest.fn();
     const wrapper = shallow(

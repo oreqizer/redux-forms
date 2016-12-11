@@ -2,72 +2,97 @@
 
 /* eslint-disable react/prop-types */
 import * as React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import reducer from '../formsDuck';
 import reduxForm from '../reduxForm';
 
+
+// NOTE:
+// When un-connecting ReduxForm from the decorator, mock the necessary props.
+// state:
+// _form: Form
+// actions:
+// _addForm: AddFormCreator
+// _removeForm: RemoveFormCreator
 
 const MyComp = () => (
   <div className="Component" />
 );
 
-const getStore = () => createStore(combineReducers<any>({
-  reduxForms: reducer,
-}));
+const formMock = { fields: {} };
 
 
 describe('#reduxForm', () => {
   it('should require name to be passed', () => {
-    const fakeOpts: any = {};
+    const badOpts: any = {};
 
-    expect(() => reduxForm(fakeOpts)).toThrowError(/is a required string/);
+    expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
   });
 
-  it('should mount an unnamed component correctly', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
+  it('should mount an unnamed component', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
+    const addForm = jest.fn();
     const decorated = mount(
-      <Provider store={getStore()}>
-        <Decorated />
-      </Provider>,
-    ).find(Decorated);
+      <Decorated
+        _form={formMock}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+      />,
+    );
 
-    expect(decorated.name()).toBe('Connect(ReduxForm(Component))');
+    expect(decorated.name()).toBe('ReduxForm(Component)');
   });
 
-  it('should name a component with a name correctly', () => {
+  it('should name a component with a name', () => {
     const Dummy: any = () => <MyComp />;
 
     Dummy.displayName = 'Dummy';
 
-    const Decorated = reduxForm({ form: 'test' })(Dummy);
+    const Decorated = reduxForm({ form: 'test' })(Dummy).WrappedForm;
 
     const decorated = mount(
-        <Provider store={getStore()}>
-          <Decorated />
-        </Provider>,
-    ).find(Decorated);
-
-    expect(decorated.name()).toBe('Connect(ReduxForm(Dummy))');
-  });
-
-  it('should set up a form correctly', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
-    const store = getStore();
-    const wrapper = mount(
-      <Provider store={store}>
-        <Decorated />
-      </Provider>,
+      <Decorated
+        _form={formMock}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+      />,
     );
 
-    expect(store.getState().reduxForms.test).toBeDefined();
+    expect(decorated.name()).toBe('ReduxForm(Dummy)');
+  });
+
+  it('should add a form', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const addForm = jest.fn();
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
+        _addForm={addForm}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect(addForm).toBeCalledWith('test');
+  });
+
+  it('should remove a form', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const removeForm = jest.fn();
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
+        _addForm={jest.fn()}
+        _removeForm={removeForm}
+      />,
+    );
+
+    expect(removeForm).not.toBeCalled();
 
     wrapper.unmount();
 
-    expect(store.getState().reduxForms.test).toBeUndefined();
+    expect(removeForm).toBeCalledWith('test');
   });
 });
