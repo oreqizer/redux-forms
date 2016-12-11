@@ -100,5 +100,6 @@ describe('#Field', () => {
     expect(component.prop('meta')).toEqual(freshMeta);
 
     expect(component.prop('component')).toBeUndefined();
+    expect(component.prop('field')).toBeUndefined();
   });
 });
