@@ -3,6 +3,7 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as sinon from 'sinon';
 
 import ConnectedField from '../Field';
 import { freshField } from '../formsDuck';
@@ -14,13 +15,13 @@ import { freshField } from '../formsDuck';
 // - _form: string
 // - _id: string
 // state:
-// - field: FieldObject
+// - _field: FieldObject
 // actions:
-// - addField: AddFieldCreator
-// - removeField: RemoveFieldCreator
-// - fieldChange: FieldChangeCreator
-// - fieldFocus: FieldFocusCreator
-// - fieldBlur: FieldBlurCreator
+// - _addField: AddFieldCreator
+// - _removeField: RemoveFieldCreator
+// - _fieldChange: FieldChangeCreator
+// - _fieldFocus: FieldFocusCreator
+// - _fieldBlur: FieldBlurCreator
 const Field = (ConnectedField as any).WrappedComponent;
 
 const freshMeta = {
@@ -44,11 +45,15 @@ const Component = (props: any) => (
 
 describe('#Field', () => {
   it('should mount a field with a string component', () => {
+    const addField = sinon.spy();
     const wrapper = shallow(
       <Field
         name="test"
         component="input"
-        field={freshField}
+        _field={freshField}
+        _id="test"
+        _form="form"
+        _addField={addField}
       />,
     );
 
@@ -66,7 +71,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        field={freshField}
+        _field={freshField}
       />,
     );
 
@@ -79,5 +84,17 @@ describe('#Field', () => {
 
     expect(wrapper.prop('component')).toBeUndefined();
     expect(wrapper.prop('field')).toBeUndefined();
+  });
+
+  it('should handle a change event', () => {
+    const fieldChange = sinon.spy();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={freshField}
+        _fieldChange={fieldChange}
+      />,
+    );
   });
 });
