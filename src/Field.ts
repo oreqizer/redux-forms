@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { Context } from "./reduxForm";
-
 import connectField, { ContextProps } from './utils/connectField';
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
@@ -52,20 +50,6 @@ class Field extends React.PureComponent<IOwnProps, State> {
     fieldChange: R.identity,
     fieldFocus: R.identity,
     fieldBlur: R.identity,
-  };
-
-  static contextTypes = {
-    reduxForms: React.PropTypes.shape({
-      form: React.PropTypes.object.isRequired,
-      formName: React.PropTypes.string.isRequired,
-      context: React.PropTypes.string.isRequired,
-      // actions
-      addField: React.PropTypes.func.isRequired,
-      removeField: React.PropTypes.func.isRequired,
-      fieldChange: React.PropTypes.func.isRequired,
-      fieldFocus: React.PropTypes.func.isRequired,
-      fieldBlur: React.PropTypes.func.isRequired,
-    }).isRequired,
   };
 
   props: AllProps;
