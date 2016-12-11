@@ -16,7 +16,9 @@ export type ContextProps = {
 
 type WrappedField<T> = React.ComponentClass<T & NameProp & ContextProps>;
 
-type Connected<T> = React.SFC<T & NameProp>;
+type Connected<T> = React.SFC<T & NameProp> & {
+  WrappedComponent?: WrappedField<T>,
+};
 
 
 export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
@@ -38,6 +40,8 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
   };
 
   ConnectedField.displayName = Wrapped.displayName;
+
+  ConnectedField.WrappedComponent = Wrapped;
 
   return ConnectedField;
 }

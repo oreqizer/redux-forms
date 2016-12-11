@@ -6,12 +6,27 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
 
-import reducer from '../formsDuck';
+import reducer, { freshField } from '../formsDuck';
 
-import Field from '../Field';
+import ConnectedField from '../Field';
 
 
-const rawMeta = {
+// NOTE:
+// We're unwrapping 'Field' from 'connect' and 'connectField'.
+// Props needed mocking:
+// - _form: string
+// - _id: string
+// state:
+// - field: FieldObject
+// actions:
+// - addField: AddFieldCreator
+// - removeField: RemoveFieldCreator
+// - fieldChange: FieldChangeCreator
+// - fieldFocus: FieldFocusCreator
+// - fieldBlur: FieldBlurCreator
+const Field = (ConnectedField as any).WrappedComponent;
+
+const freshMeta = {
   active: false,
   dirty: false,
   error: null,
@@ -29,7 +44,7 @@ const Component = (props: any) => (
   />
 );
 
-const getContext = (form: string, context: string) => ({
+const mountOptions = (form: string, context: string) => ({
   context: {
     reduxForms: {
       form,
@@ -50,26 +65,13 @@ const getStore = () => createStore(combineReducers({
 
 
 describe('#Field', () => {
-  it('should not mount in a non-decorated component', () => {
-    expect(() => mount(
-      <Provider store={getStore()}>
-        <Field
-          name="test"
-          component={Component}
-        />
-      </Provider>,
-    )).toThrowError(/component decorated with/);
-  });
-
   it('should mount a field with a string component', () => {
     const input = mount(
-      <Provider store={getStore()}>
-        <Field
-          name="test"
-          component="input"
-        />
-      </Provider>,
-      getContext('test', ''),
+      <Field
+        name="test"
+        component="input"
+        field={freshField}
+      />,
     ).find('input');
 
     expect(input.prop('name')).toBe('test');
@@ -77,5 +79,26 @@ describe('#Field', () => {
     expect(input.prop('onChange')).toBeDefined();
     expect(input.prop('onFocus')).toBeDefined();
     expect(input.prop('onBlur')).toBeDefined();
+
+    expect(input.prop('component')).toBeUndefined();
+  });
+
+  it('should mount a field with a custom component', () => {
+    const component = mount(
+      <Field
+        name="test"
+        component={Component}
+        field={freshField}
+      />,
+    ).find(Component);
+
+    expect(component.prop('input').value).toBe('');
+    expect(component.prop('input').onChange).toBeDefined();
+    expect(component.prop('input').onFocus).toBeDefined();
+    expect(component.prop('input').onBlur).toBeDefined();
+
+    expect(component.prop('meta')).toEqual(freshMeta);
+
+    expect(component.prop('component')).toBeUndefined();
   });
 });
