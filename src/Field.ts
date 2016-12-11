@@ -35,7 +35,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
     name: '',
     component: 'input',
     validate: () => null,
-    normalize: () => null,
+    normalize: R.identity,
     defaultValue: '',
     // context
     _form: '',
@@ -73,7 +73,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
-    const dirty = value === defaultValue;
+    const dirty = value !== defaultValue;
 
     _fieldChange(_form, _id, value, error, dirty);
   }
@@ -89,7 +89,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
-    const dirty = value === defaultValue;
+    const dirty = value !== defaultValue;
 
     _fieldBlur(_form, _id, error, dirty);
   }

@@ -2,8 +2,8 @@
 
 /* eslint-disable react/prop-types */
 import * as React from 'react';
-import { shallow } from 'enzyme';
-import * as sinon from 'sinon';
+import { shallow, mount } from 'enzyme';
+import * as R from 'ramda';
 
 import ConnectedField from '../Field';
 import { freshField } from '../formsDuck';
@@ -42,10 +42,16 @@ const Component = (props: any) => (
   />
 );
 
+const event = (value: string) => ({
+  preventDefault: R.identity,
+  stopPropagation: R.identity,
+  target: { value },
+});
+
 
 describe('#Field', () => {
   it('should mount a field with a string component', () => {
-    const addField = sinon.spy();
+    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -57,6 +63,8 @@ describe('#Field', () => {
       />,
     );
 
+    expect(addField).toBeCalledWith('form', 'test');
+
     expect(wrapper.prop('name')).toBe('test');
     expect(wrapper.prop('value')).toBe('');
     expect(wrapper.prop('onChange')).toBeDefined();
@@ -67,13 +75,19 @@ describe('#Field', () => {
   });
 
   it('should mount a field with a custom component', () => {
+    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
         component={Component}
         _field={freshField}
+        _id="test"
+        _form="form"
+        _addField={addField}
       />,
     );
+
+    expect(addField).toBeCalledWith('form', 'test');
 
     expect(wrapper.prop('input').value).toBe('');
     expect(wrapper.prop('input').onChange).toBeDefined();
@@ -86,15 +100,63 @@ describe('#Field', () => {
     expect(wrapper.prop('field')).toBeUndefined();
   });
 
-  it('should handle a change event', () => {
-    const fieldChange = sinon.spy();
+  it('should fire a change action', () => {
+    const fieldChange = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
         component={Component}
         _field={freshField}
+        _id="test"
+        _form="form"
         _fieldChange={fieldChange}
       />,
     );
+
+    expect(fieldChange).not.toBeCalled();
+
+    (wrapper.instance() as any).handleChange(event('doge'));
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, true);
+  });
+
+  it('should fire a focus action', () => {
+    const fieldFocus = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={freshField}
+        _id="test"
+        _form="form"
+        _fieldFocus={fieldFocus}
+      />,
+    );
+
+    expect(fieldFocus).not.toBeCalled();
+
+    (wrapper.instance() as any).handleFocus();
+
+    expect(fieldFocus).toBeCalledWith('form', 'test');
+  });
+
+  it('should fire a blur action', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={freshField}
+        _id="test"
+        _form="form"
+        _fieldBlur={fieldBlur}
+      />,
+    );
+
+    expect(fieldBlur).not.toBeCalled();
+
+    (wrapper.instance() as any).handleBlur(event('doge'));
+
+    expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
   });
 });

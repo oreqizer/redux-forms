@@ -16,7 +16,7 @@ const config = {
   },
   module: {
     loaders: [
-      { test: /\.tsx?$/, loader: `babel!ts`, exclude: /node_modules/ },
+      { test: /\.tsx?$/, loader: 'babel-loader!ts-loader', exclude: /node_modules/ },
     ],
   },
   resolve: {
@@ -41,7 +41,7 @@ if (env === 'production') {
         screw_ie8: true,
         warnings: false,
       },
-    })
+    }),
   );
 }
 
