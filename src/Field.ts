@@ -24,14 +24,12 @@ export interface IOwnProps {
   defaultValue?: string;
 }
 
-export type State = { field: duck.FieldObject };
-
 export type Validate = (value: Value) => string | null;
 
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.PureComponent<IOwnProps, State> {
+class Field extends React.PureComponent<IOwnProps, void> {
   // Must contain all props of 'AllProps'
   static defaultProps = {
     name: '',
@@ -43,13 +41,13 @@ class Field extends React.PureComponent<IOwnProps, State> {
     _form: '',
     _id: '',
     // state
-    field: duck.freshField,
+    _field: duck.freshField,
     // actions
-    addField: R.identity,
-    removeField: R.identity,
-    fieldChange: R.identity,
-    fieldFocus: R.identity,
-    fieldBlur: R.identity,
+    _addField: R.identity,
+    _removeField: R.identity,
+    _fieldChange: R.identity,
+    _fieldFocus: R.identity,
+    _fieldBlur: R.identity,
   };
 
   props: AllProps;
@@ -61,45 +59,45 @@ class Field extends React.PureComponent<IOwnProps, State> {
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
-    props.addField(props._form, props._id);
+    props._addField(props._form, props._id);
   }
 
   componentWillUnmount() {
-    const { removeField, _form, _id } = this.props;
+    const { _removeField, _form, _id } = this.props;
 
-    removeField(_form, _id);
+    _removeField(_form, _id);
   }
 
   handleChange(ev: SynthEvent) {
-    const { fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
+    const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldChange(_form, _id, value, error, dirty);
+    _fieldChange(_form, _id, value, error, dirty);
   }
 
   handleFocus() {
-    const { fieldFocus, _form, _id } = this.props;
+    const { _fieldFocus, _form, _id } = this.props;
 
-    fieldFocus(_form, _id);
+    _fieldFocus(_form, _id);
   }
 
   handleBlur(ev: SynthEvent) {
-    const { fieldBlur, _form, _id, normalize, validate, defaultValue } = this.props;
+    const { _fieldBlur, _form, _id, normalize, validate, defaultValue } = this.props;
 
     const value = (<Normalize> normalize)(getValue(ev));
     const error = (<Validate> validate)(value);
     const dirty = value === defaultValue;
 
-    fieldBlur(_form, _id, error, dirty);
+    _fieldBlur(_form, _id, error, dirty);
   }
 
   render(): JSX.Element {
-    const { component, field, ...rest } = this.props;
+    const { component, _field, ...rest } = this.props;
 
-    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, field, {
+    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -118,15 +116,15 @@ class Field extends React.PureComponent<IOwnProps, State> {
 type ConnectedProps = IOwnProps & ContextProps;
 
 type StateProps = {
-  field: duck.FieldObject,
+  _field: duck.FieldObject,
 };
 
 type ActionProps = {
-  addField: duck.AddFieldCreator,
-  removeField: duck.RemoveFieldCreator,
-  fieldChange: duck.FieldChangeCreator,
-  fieldFocus: duck.FieldFocusCreator,
-  fieldBlur: duck.FieldBlurCreator,
+  _addField: duck.AddFieldCreator,
+  _removeField: duck.RemoveFieldCreator,
+  _fieldChange: duck.FieldChangeCreator,
+  _fieldFocus: duck.FieldFocusCreator,
+  _fieldBlur: duck.FieldBlurCreator,
 };
 
 type AllProps = ConnectedProps & StateProps & ActionProps;
@@ -135,13 +133,13 @@ type AllProps = ConnectedProps & StateProps & ActionProps;
 const Connected = connectField<AllProps>(Field);
 
 const actions = {
-  addField: duck.addField,
-  removeField: duck.removeField,
-  fieldChange: duck.fieldChange,
-  fieldFocus: duck.fieldFocus,
-  fieldBlur: duck.fieldBlur,
+  _addField: duck.addField,
+  _removeField: duck.removeField,
+  _fieldChange: duck.fieldChange,
+  _fieldFocus: duck.fieldFocus,
+  _fieldBlur: duck.fieldBlur,
 };
 
 export default connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
-  field: R.path<duck.FieldObject>([props._form, 'fields', props._id], state.reduxForms),
+  _field: R.path<duck.FieldObject>([props._form, 'fields', props._id], state.reduxForms),
 }), actions)(Connected);
