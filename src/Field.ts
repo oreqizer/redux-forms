@@ -140,6 +140,9 @@ const actions = {
   _fieldBlur: duck.fieldBlur,
 };
 
+// TODO:
+// - move 'connect' to 'connectField'
+// - add a guard there to check if '_field' actually exists
 export default connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
   _field: R.path<duck.FieldObject>([props._form, 'fields', props._id], state.reduxForms),
 }), actions)(Connected);
