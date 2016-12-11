@@ -29,13 +29,19 @@ describe('#reduxForm', () => {
     expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
   });
 
+  it('should provide original component static reference', () => {
+    const Expected = reduxForm({ form: 'test',  })(MyComp).WrappedComponent;
+
+    expect(Expected).toBe(MyComp);
+  });
+
   it('should mount an unnamed component', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
     const addForm = jest.fn();
     const decorated = mount(
       <Decorated
-        _form={formMock}
+        _form={null}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
       />,
@@ -53,7 +59,7 @@ describe('#reduxForm', () => {
 
     const decorated = mount(
       <Decorated
-        _form={formMock}
+        _form={null}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
       />,
@@ -68,7 +74,7 @@ describe('#reduxForm', () => {
     const addForm = jest.fn();
     const wrapper = mount(
       <Decorated
-        _form={formMock}
+        _form={null}
         _addForm={addForm}
         _removeForm={jest.fn()}
       />,
@@ -83,7 +89,7 @@ describe('#reduxForm', () => {
     const removeForm = jest.fn();
     const wrapper = mount(
       <Decorated
-        _form={formMock}
+        _form={null}
         _addForm={jest.fn()}
         _removeForm={removeForm}
       />,
@@ -94,5 +100,53 @@ describe('#reduxForm', () => {
     wrapper.unmount();
 
     expect(removeForm).toBeCalledWith('test');
+  });
+
+  it('should not add a form if already present', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const addForm = jest.fn();
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
+        _addForm={addForm}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect(addForm).not.toBeCalled();
+  });
+
+  it('should not remove a form if persistent', () => {
+    const Decorated = reduxForm({ form: 'test', persistent: true })(MyComp).WrappedForm;
+
+    const removeForm = jest.fn();
+    const wrapper = mount(
+      <Decorated
+        _form={null}
+        _addForm={jest.fn()}
+        _removeForm={removeForm}
+      />,
+    );
+
+    expect(removeForm).not.toBeCalled();
+
+    wrapper.unmount();
+
+    expect(removeForm).not.toBeCalled();
+  });
+
+  it('should not pass any private props', () => {
+    const Decorated = reduxForm({ form: 'test', persistent: true })(MyComp).WrappedForm;
+
+    const wrapper = mount(
+      <Decorated
+        _form={null}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.find(MyComp).props()).toEqual({});
   });
 });

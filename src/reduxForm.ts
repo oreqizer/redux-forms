@@ -26,7 +26,7 @@ export type Connected<T> = React.ComponentClass<T> & {
 };
 
 type StateProps = {
-  _form: duck.Form,
+  _form: duck.Form | null,
 };
 
 type ActionProps = {
@@ -64,7 +64,9 @@ const reduxForm = <T>(options: Options) => {
       constructor(props: Props<T>) {
         super(props);
 
-        props._addForm(options.form);
+        if (!props._form) {
+          props._addForm(options.form);
+        }
       }
 
       componentWillUnmount() {
