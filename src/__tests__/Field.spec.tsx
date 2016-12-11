@@ -2,13 +2,10 @@
 
 /* eslint-disable react/prop-types */
 import * as React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { shallow, mount } from 'enzyme';
-
-import reducer, { freshField } from '../formsDuck';
+import { shallow } from 'enzyme';
 
 import ConnectedField from '../Field';
+import { freshField } from '../formsDuck';
 
 
 // NOTE:
@@ -44,62 +41,43 @@ const Component = (props: any) => (
   />
 );
 
-const mountOptions = (form: string, context: string) => ({
-  context: {
-    reduxForms: {
-      form,
-      context,
-    },
-  },
-  childContextTypes: {
-    reduxForms: React.PropTypes.shape({
-      form: React.PropTypes.string.isRequired,
-      context: React.PropTypes.string.isRequired,
-    }).isRequired,
-  },
-});
-
-const getStore = () => createStore(combineReducers({
-  reduxForms: reducer,
-}));
-
 
 describe('#Field', () => {
   it('should mount a field with a string component', () => {
-    const input = mount(
+    const wrapper = shallow(
       <Field
         name="test"
         component="input"
         field={freshField}
       />,
-    ).find('input');
+    );
 
-    expect(input.prop('name')).toBe('test');
-    expect(input.prop('value')).toBe('');
-    expect(input.prop('onChange')).toBeDefined();
-    expect(input.prop('onFocus')).toBeDefined();
-    expect(input.prop('onBlur')).toBeDefined();
+    expect(wrapper.prop('name')).toBe('test');
+    expect(wrapper.prop('value')).toBe('');
+    expect(wrapper.prop('onChange')).toBeDefined();
+    expect(wrapper.prop('onFocus')).toBeDefined();
+    expect(wrapper.prop('onBlur')).toBeDefined();
 
-    expect(input.prop('component')).toBeUndefined();
+    expect(wrapper.prop('component')).toBeUndefined();
   });
 
   it('should mount a field with a custom component', () => {
-    const component = mount(
+    const wrapper = shallow(
       <Field
         name="test"
         component={Component}
         field={freshField}
       />,
-    ).find(Component);
+    );
 
-    expect(component.prop('input').value).toBe('');
-    expect(component.prop('input').onChange).toBeDefined();
-    expect(component.prop('input').onFocus).toBeDefined();
-    expect(component.prop('input').onBlur).toBeDefined();
+    expect(wrapper.prop('input').value).toBe('');
+    expect(wrapper.prop('input').onChange).toBeDefined();
+    expect(wrapper.prop('input').onFocus).toBeDefined();
+    expect(wrapper.prop('input').onBlur).toBeDefined();
 
-    expect(component.prop('meta')).toEqual(freshMeta);
+    expect(wrapper.prop('meta')).toEqual(freshMeta);
 
-    expect(component.prop('component')).toBeUndefined();
-    expect(component.prop('field')).toBeUndefined();
+    expect(wrapper.prop('component')).toBeUndefined();
+    expect(wrapper.prop('field')).toBeUndefined();
   });
 });
