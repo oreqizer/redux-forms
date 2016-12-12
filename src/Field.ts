@@ -89,8 +89,8 @@ class Field extends React.PureComponent<IOwnProps, void> {
       defaultValue !== next.defaultValue
     ) {
       const value = next.normalize(next._field.value);
-      const error = next.validate(next._field.value);
-      const dirty = next.defaultValue === next._field.value;
+      const error = next.validate(value);
+      const dirty = next.defaultValue !== value;
 
       _fieldChange(_form, _id, value, error, dirty);
     }

@@ -42,6 +42,10 @@ const Component = (props: any) => (
   />
 );
 
+const pattern = '__val__ km';
+const validate = (value: string) => value.includes('km') ? null : 'bad format';
+const normalize = (value: string) => pattern.replace('__val__', value);
+
 const event = (value: string) => ({
   preventDefault: R.identity,
   stopPropagation: R.identity,
@@ -131,8 +135,6 @@ describe('#Field', () => {
   });
 
   it('should add a field with a validator', () => {
-    const validate = (value: string) => value.length > 5 ? null : 'too short';
-
     const addField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -148,14 +150,11 @@ describe('#Field', () => {
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
-      error: 'too short',
+      error: 'bad format',
     });
   });
 
   it('should add a field with a normalizer', () => {
-    const pattern = '__val__ km';
-    const normalize = (value: string) => pattern.replace('__val__', value);
-
     const addField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -176,10 +175,6 @@ describe('#Field', () => {
   });
 
   it('should add a field with a validator and a normalizer', () => {
-    const pattern = '__val__ km';
-    const validate = (value: string) => value.includes('km') ? null : 'bad format';
-    const normalize = (value: string) => pattern.replace('__val__', value);
-
     const addField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -202,10 +197,6 @@ describe('#Field', () => {
   });
 
   it('should add a field with a default value, a validator and a normalizer', () => {
-    const pattern = '__val__ km';
-    const validate = (value: string) => value.includes('km') ? null : 'bad format';
-    const normalize = (value: string) => pattern.replace('__val__', value);
-
     const addField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -226,6 +217,203 @@ describe('#Field', () => {
       value: '250 km',
       error: null,
     });
+  });
+
+  it('should re-mount a clean field', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ _form: "form2", _id: "test2" });
+
+    expect(addField).toBeCalledWith('form2', 'test2', field);
+  });
+
+  it('should re-mount a field with a default value', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ defaultValue: 'doge' });
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: 'doge',
+    });
+  });
+
+  it('should re-mount a field with a validator', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ validate });
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      error: 'bad format',
+    });
+  });
+
+  it('should re-mount a field with a normalizer', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ normalize });
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: ' km',
+    });
+  });
+
+  it('should re-mount a field with a validator and a normalizer', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ validate, normalize });
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: ' km',
+      error: null,
+    });
+  });
+
+  it('should re-mount a field with a default value, a validator and a normalizer', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    wrapper.setProps({ validate, normalize, defaultValue: '250' });
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: '250 km',
+      error: null,
+    });
+  });
+
+  it('should change a field when default value changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    wrapper.setProps({ defaultValue: '250' });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', '', null, true);
+  });
+
+  it('should change a field when validate changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    wrapper.setProps({ validate });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', '', 'bad format', false);
+  });
+
+  it('should change a field when normalize changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    wrapper.setProps({ normalize });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', ' km', null, true);
+  });
+
+  it('should change a field when default value, validator and normalizer changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    wrapper.setProps({ validate, normalize, defaultValue: 'nope' });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', ' km', null, true);
   });
 
   it('should unmount a field', () => {
