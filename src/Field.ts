@@ -70,13 +70,9 @@ class Field extends React.PureComponent<IOwnProps, void> {
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
-    const value = props.normalize(props.defaultValue);
-    const newField = R.compose<FieldObj, FieldObj, FieldObj>(
-      R.set(R.lensProp('value'), value),
-      R.set(R.lensProp('error'), props.validate(value)),
-    )(field);
-
-    props._addField(props._form, props._id, newField);
+    if (!props._field) {
+      this.newField(props);
+    }
   }
 
   componentWillReceiveProps(next: AllProps) {
@@ -91,19 +87,8 @@ class Field extends React.PureComponent<IOwnProps, void> {
       _fieldChange,
     } = this.props;
 
-    if (_id !== next._id) {
-      _removeField(_form, _id);
-
-      const value = next.normalize(next.defaultValue);
-      const newField = R.compose<FieldObj, FieldObj, FieldObj>(
-        R.set(R.lensProp('value'), value),
-        R.set(R.lensProp('error'), next.validate(value)),
-      )(field);
-
-      _addField(_form, next._id, newField);
-    }
-
     if (!next._field) {
+      this.newField(next);
       return;
     }
 
@@ -124,6 +109,16 @@ class Field extends React.PureComponent<IOwnProps, void> {
     const { _removeField, _form, _id } = this.props;
 
     _removeField(_form, _id);
+  }
+
+  newField(props: AllProps) {
+    const value = props.normalize(props.defaultValue);
+    const newField = R.compose<FieldObj, FieldObj, FieldObj>(
+      R.set(R.lensProp('value'), value),
+      R.set(R.lensProp('error'), props.validate(value)),
+    )(field);
+
+    props._addField(props._form, props._id, newField);
   }
 
   handleChange(ev: SynthEvent) {
