@@ -1,0 +1,23 @@
+{
+  "name": "redux-forms-example",
+  "version": "0.0.0",
+  "description": "An example of redux-forms.",
+  "main": "index.jsx",
+  "scripts": {
+    "build": "webpack index.jsx bundle.js"
+  },
+  "author": "oreqizer",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-loader": "^6.2.9",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "webpack": "2.1.0-beta.25"
+  },
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0"
+  }
+}
