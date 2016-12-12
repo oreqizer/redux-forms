@@ -222,9 +222,9 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ defaultValue: 'doge' });
+    wrapper.setProps({ _id: "test2", defaultValue: 'doge' });
 
-    expect(addField).toBeCalledWith('form', 'test', {
+    expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
       value: 'doge',
     });
@@ -243,9 +243,9 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ validate });
+    wrapper.setProps({ _id: "test2", validate });
 
-    expect(addField).toBeCalledWith('form', 'test', {
+    expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
       error: 'bad format',
     });
@@ -264,9 +264,9 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ normalize });
+    wrapper.setProps({ _id: "test2", normalize });
 
-    expect(addField).toBeCalledWith('form', 'test', {
+    expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
       value: ' km',
     });
@@ -285,9 +285,9 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ validate, normalize });
+    wrapper.setProps({ _id: "test2", validate, normalize });
 
-    expect(addField).toBeCalledWith('form', 'test', {
+    expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
       value: ' km',
       error: 'bad format',
@@ -307,9 +307,9 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ validate, normalize, defaultValue: 'asdf' });
+    wrapper.setProps({ _id: "test2", validate, normalize, defaultValue: 'asdf' });
 
-    expect(addField).toBeCalledWith('form', 'test', {
+    expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
       value: 'asdf km',
       error: 'bad format',
