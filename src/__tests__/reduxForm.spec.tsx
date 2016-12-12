@@ -147,7 +147,7 @@ describe('#reduxForm', () => {
       />,
     );
 
-    expect(wrapper.find(MyComp).length).toBe(0);
+    expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   it('should not pass any private props', () => {

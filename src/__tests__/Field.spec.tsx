@@ -54,28 +54,8 @@ const event = (value: string) => ({
 
 
 describe('#Field', () => {
-  it('should pass props to a string component', () => {
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component="input"
-        _field={field}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />,
-    );
-
-    expect(wrapper.prop('name')).toBe('test');
-    expect(wrapper.prop('value')).toBe('');
-    expect(wrapper.prop('onChange')).toBeDefined();
-    expect(wrapper.prop('onFocus')).toBeDefined();
-    expect(wrapper.prop('onBlur')).toBeDefined();
-
-    expect(wrapper.prop('component')).toBeUndefined();
-  });
-
-  it('should pass props to a custom component', () => {
+  it('should not add a field', () => {
+    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -83,19 +63,11 @@ describe('#Field', () => {
         _field={field}
         _id="test"
         _form="form"
-        _addField={jest.fn()}
+        _addField={addField}
       />,
     );
 
-    expect(wrapper.prop('input').value).toBe('');
-    expect(wrapper.prop('input').onChange).toBeDefined();
-    expect(wrapper.prop('input').onFocus).toBeDefined();
-    expect(wrapper.prop('input').onBlur).toBeDefined();
-
-    expect(wrapper.prop('meta')).toEqual(freshMeta);
-
-    expect(wrapper.prop('component')).toBeUndefined();
-    expect(wrapper.prop('field')).toBeUndefined();
+    expect(addField).not.toBeCalled();
   });
 
   it('should add a clean field', () => {
@@ -667,5 +639,66 @@ describe('#Field', () => {
     (wrapper.instance() as any).handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', false);
+  });
+
+  it('should not render without a field', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component="input"
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
+  // TODO test rendering
+
+  it('should pass props to a string component', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component="input"
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.prop('name')).toBe('test');
+    expect(wrapper.prop('value')).toBe('');
+    expect(wrapper.prop('onChange')).toBeDefined();
+    expect(wrapper.prop('onFocus')).toBeDefined();
+    expect(wrapper.prop('onBlur')).toBeDefined();
+
+    expect(wrapper.prop('component')).toBeUndefined();
+  });
+
+  it('should pass props to a custom component', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.prop('input').value).toBe('');
+    expect(wrapper.prop('input').onChange).toBeDefined();
+    expect(wrapper.prop('input').onFocus).toBeDefined();
+    expect(wrapper.prop('input').onBlur).toBeDefined();
+
+    expect(wrapper.prop('meta')).toEqual(freshMeta);
+
+    expect(wrapper.prop('component')).toBeUndefined();
+    expect(wrapper.prop('field')).toBeUndefined();
   });
 });
