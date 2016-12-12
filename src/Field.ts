@@ -94,9 +94,10 @@ class Field extends React.PureComponent<IOwnProps, void> {
     if (_id !== next._id) {
       _removeField(_form, _id);
 
+      const value = next.normalize(next.defaultValue);
       const newField = R.compose<FieldObj, FieldObj, FieldObj>(
-        R.set(R.lensProp('value'), next.normalize(next.defaultValue)),
-        R.set(R.lensProp('error'), next.validate(next.defaultValue)),
+        R.set(R.lensProp('value'), value),
+        R.set(R.lensProp('error'), next.validate(value)),
       )(field);
 
       _addField(_form, _id, newField);
