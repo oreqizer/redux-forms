@@ -76,16 +76,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
   }
 
   componentWillReceiveProps(next: AllProps) {
-    const {
-      defaultValue,
-      normalize,
-      validate,
-      _form,
-      _id,
-      _addField,
-      _removeField,
-      _fieldChange,
-    } = this.props;
+    const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
       this.newField(next);

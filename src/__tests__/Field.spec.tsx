@@ -100,7 +100,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -117,7 +117,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
         defaultValue="doge"
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -139,7 +139,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
         validate={validate}
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -162,7 +162,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
         normalize={normalize}
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -187,7 +187,7 @@ describe('#Field', () => {
         component={Component}
         validate={validate}
         normalize={normalize}
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -214,7 +214,7 @@ describe('#Field', () => {
         defaultValue="250"
         validate={validate}
         normalize={normalize}
-        _field={field}
+        _field={null}
         _id="test"
         _form="form"
         _addField={addField}
@@ -229,7 +229,6 @@ describe('#Field', () => {
   });
 
   it('should unmount a field', () => {
-    const addField = jest.fn();
     const removeField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -238,12 +237,11 @@ describe('#Field', () => {
         _field={field}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
         _removeField={removeField}
       />,
     );
 
-    expect(addField).toBeCalledWith('form', 'test', field);
     expect(removeField).not.toBeCalled();
 
     wrapper.unmount();
