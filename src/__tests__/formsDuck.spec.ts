@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import reducer, * as duck from '../formsDuck';
 
 import { form, field } from '../utils/containers';
@@ -110,6 +108,23 @@ describe('#formsDuck', () => {
     });
   });
 
+  it('should not change unwanted props', () => {
+    const newField = {
+      ...field,
+      touched: true,
+      visited: true,
+      active: true,
+    };
+
+    const state: any = reducer({
+      form: { fields: { field: newField } },
+    }, duck.fieldChange('form', 'field', 'doge', 'error', true));
+
+    expect(state.form.fields.field.touched).toBe(true);
+    expect(state.form.fields.field.visited).toBe(true);
+    expect(state.form.fields.field.active).toBe(true);
+  });
+
   it('should focus a field', () => {
     const state: any = reducer({
       form: { fields: { field } },
@@ -125,9 +140,33 @@ describe('#formsDuck', () => {
     });
   });
 
-  it('should blur a field', () => {
+  it('should not focus unwanted props', () => {
+    const newField = {
+      ...field,
+      value: 'doge',
+      error: 'error',
+      dirty: true,
+      touched: true,
+    };
+
     const state: any = reducer({
-      form: { fields: { field: R.assoc('active', true, field) } },
+      form: { fields: { field: newField } },
+    }, duck.fieldFocus('form', 'field'));
+
+    expect(state.form.fields.field.value).toBe('doge');
+    expect(state.form.fields.field.error).toBe('error');
+    expect(state.form.fields.field.dirty).toBe(true);
+    expect(state.form.fields.field.touched).toBe(true);
+  });
+
+  it('should blur a field', () => {
+    const newField = {
+      ...field,
+      active: true,
+    };
+
+    const state: any = reducer({
+      form: { fields: { field: newField } },
     }, duck.fieldBlur('form', 'field', 'error', true));
 
     expect(state.form.fields.field).toEqual({
@@ -138,5 +177,20 @@ describe('#formsDuck', () => {
       visited: false,
       active: false,
     });
+  });
+
+  it('should not blur unwanted props', () => {
+    const newField = {
+      ...field,
+      value: 'doge',
+      visited: true,
+    };
+
+    const state: any = reducer({
+      form: { fields: { field: newField } },
+    }, duck.fieldBlur('form', 'field', 'error', true));
+
+    expect(state.form.fields.field.value).toBe('doge');
+    expect(state.form.fields.field.visited).toBe(true);
   });
 });
