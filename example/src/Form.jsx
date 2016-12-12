@@ -1,11 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-
-import { mobxForm, Field, FieldArray } from '../../lib';
+import { reduxForm, Field } from 'redux-forms';
 
 import Input from './Input';
 
-const InputArray = observer(props =>
+const InputArray = props => (
   <div>
     {props.fields.map((index) =>
       <Field
@@ -24,7 +22,7 @@ const InputArray = observer(props =>
   </div>
 );
 
-const DeepArray = observer(props =>
+const DeepArray = props => (
   <div>
     {props.fields.map(index =>
       <div key={index}>
@@ -68,29 +66,15 @@ const Form = props => (
       placeholder="longer than 5 chars"
       component={Input}
     />
-    <h4>flat FieldArray:</h4>
-    <FieldArray
-      name="flatarray"
-      component={InputArray}
-      flat
-    />
-    <h4>deep FieldArray:</h4>
-    <FieldArray
-      name="deeparray"
-      component={DeepArray}
-    />
     <br />
     <div>---</div>
     <br />
     <button onClick={() => console.log(props.form.values)}>
       values -> console
     </button>
-    <button onClick={() => console.log(props.form.errors)}>
-      errors -> console
-    </button>
   </div>
 );
 
-export default mobxForm({
+export default reduxForm({
   form: 'first',
 })(Form);

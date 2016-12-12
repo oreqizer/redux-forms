@@ -1,18 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'mobx-react';
-import { FormsStore } from '../lib';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { reducer } from 'redux-forms';
+import createLogger from 'redux-logger';
 
 import Form from './src/Form';
-import Form2 from './src/Form2';
+import Form2 from './src/FlatForm';
 
-const Root = () =>
-  <Provider mobxForms={new FormsStore()}>
+const logger = createLogger({ collapsed: true });
+const store = createStore(combineReducers({
+  reduxForms: reducer,
+}), null, applyMiddleware(logger));
+
+const Root = () => (
+  <Provider store={store}>
     <div>
       <Form />
       <Form2 />
     </div>
-  </Provider>;
+  </Provider>
+);
 
 const node = document.getElementById('root'); // eslint-disable-line no-undef
 

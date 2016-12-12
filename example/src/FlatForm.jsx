@@ -1,5 +1,5 @@
 import React from 'react';
-import { mobxForm, Field } from '../../lib';
+import { reduxForm, Field } from 'redux-forms';
 
 const Form = props =>
   <div>
@@ -26,6 +26,6 @@ const Form = props =>
     </button>
   </div>;
 
-export default mobxForm({
+export default reduxForm({
   form: 'second',
 })(Form);
