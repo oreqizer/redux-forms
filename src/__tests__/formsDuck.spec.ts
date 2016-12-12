@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import reducer, * as duck from '../formsDuck';
 
 import { form, field } from '../utils/containers';
@@ -78,22 +80,63 @@ describe('#formsDuck', () => {
   });
 
   it('should add a field', () => {
-    const state = reducer({
+    const state: any = reducer({
       form: { fields: {} },
     }, duck.addField('form', 'field', field));
 
-    expect(state).toEqual({
-      form: { fields: { field } },
-    });
+    expect(state.form.fields.field).toEqual(field);
   });
 
   it('should remove a field', () => {
-    const state = reducer({
+    const state: any = reducer({
       form: { fields: { field } },
     }, duck.removeField('form', 'field'));
 
-    expect(state).toEqual({
-      form: { fields: {} },
+    expect(state.form.fields).toEqual({});
+  });
+
+  it('should change a field', () => {
+    const state: any = reducer({
+      form: { fields: { field } },
+    }, duck.fieldChange('form', 'field', 'doge', 'error', true));
+
+    expect(state.form.fields.field).toEqual({
+      value: 'doge',
+      error: 'error',
+      dirty: true,
+      touched: false,
+      visited: false,
+      active: false,
+    });
+  });
+
+  it('should focus a field', () => {
+    const state: any = reducer({
+      form: { fields: { field } },
+    }, duck.fieldFocus('form', 'field'));
+
+    expect(state.form.fields.field).toEqual({
+      value: '',
+      error: null,
+      dirty: false,
+      touched: false,
+      visited: true,
+      active: true,
+    });
+  });
+
+  it('should blur a field', () => {
+    const state: any = reducer({
+      form: { fields: { field: R.assoc('active', true, field) } },
+    }, duck.fieldBlur('form', 'field', 'error', true));
+
+    expect(state.form.fields.field).toEqual({
+      value: '',
+      error: 'error',
+      dirty: true,
+      touched: true,
+      visited: false,
+      active: false,
     });
   });
 });
