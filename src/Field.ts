@@ -100,7 +100,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
         R.set(R.lensProp('error'), next.validate(value)),
       )(field);
 
-      _addField(_form, _id, newField);
+      _addField(_form, next._id, newField);
     }
 
     if (!next._field) {
