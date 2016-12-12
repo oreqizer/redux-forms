@@ -178,7 +178,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
 
 type ConnectedProps = IOwnProps & ContextProps;
 
-export type DefaultProps = {
+type DefaultProps = {
   validate: Validate,
   normalize: Normalize,
   defaultValue: string,
