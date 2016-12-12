@@ -8,7 +8,7 @@
     "test": "jest --verbose --no-cache",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "npm run tslint && npm run eslint",
+    "lint": "npm run tslint",
     "eslint": "eslint src/ --ext .ts,.tsx",
     "tslint": "tslint src/**.{ts,tsx}",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && npm run dts",
