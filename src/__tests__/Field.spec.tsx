@@ -50,8 +50,7 @@ const event = (value: string) => ({
 
 
 describe('#Field', () => {
-  it('should mount a field with a string component', () => {
-    const addField = jest.fn();
+  it('should pass props to a string component', () => {
     const wrapper = shallow(
       <Field
         name="test"
@@ -59,11 +58,9 @@ describe('#Field', () => {
         _field={field}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
-
-    expect(addField).toBeCalledWith('form', 'test', field);
 
     expect(wrapper.prop('name')).toBe('test');
     expect(wrapper.prop('value')).toBe('');
@@ -74,7 +71,30 @@ describe('#Field', () => {
     expect(wrapper.prop('component')).toBeUndefined();
   });
 
-  it('should mount a field with a custom component', () => {
+  it('should pass props to a custom component', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    expect(wrapper.prop('input').value).toBe('');
+    expect(wrapper.prop('input').onChange).toBeDefined();
+    expect(wrapper.prop('input').onFocus).toBeDefined();
+    expect(wrapper.prop('input').onBlur).toBeDefined();
+
+    expect(wrapper.prop('meta')).toEqual(freshMeta);
+
+    expect(wrapper.prop('component')).toBeUndefined();
+    expect(wrapper.prop('field')).toBeUndefined();
+  });
+
+  it('should add a clean field', () => {
     const addField = jest.fn();
     const wrapper = shallow(
       <Field
@@ -88,16 +108,124 @@ describe('#Field', () => {
     );
 
     expect(addField).toBeCalledWith('form', 'test', field);
+  });
 
-    expect(wrapper.prop('input').value).toBe('');
-    expect(wrapper.prop('input').onChange).toBeDefined();
-    expect(wrapper.prop('input').onFocus).toBeDefined();
-    expect(wrapper.prop('input').onBlur).toBeDefined();
+  it('should add a field with a default value', () => {
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        defaultValue="doge"
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
 
-    expect(wrapper.prop('meta')).toEqual(freshMeta);
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: 'doge',
+    });
+  });
 
-    expect(wrapper.prop('component')).toBeUndefined();
-    expect(wrapper.prop('field')).toBeUndefined();
+  it('should add a field with a validator', () => {
+    const validate = (value: string) => value.length > 5 ? null : 'too short';
+
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      error: 'too short',
+    });
+  });
+
+  it('should add a field with a normalizer', () => {
+    const pattern = '__val__ km';
+    const normalize = (value: string) => pattern.replace('__val__', value);
+
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        normalize={normalize}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: ' km',
+    });
+  });
+
+  it('should add a field with a validator and a normalizer', () => {
+    const pattern = '__val__ km';
+    const validate = (value: string) => value.includes('km') ? null : 'bad format';
+    const normalize = (value: string) => pattern.replace('__val__', value);
+
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        normalize={normalize}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: ' km',
+      error: null,
+    });
+  });
+
+  it('should add a field with a default value, a validator and a normalizer', () => {
+    const pattern = '__val__ km';
+    const validate = (value: string) => value.includes('km') ? null : 'bad format';
+    const normalize = (value: string) => pattern.replace('__val__', value);
+
+    const addField = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        defaultValue="250"
+        validate={validate}
+        normalize={normalize}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={addField}
+      />,
+    );
+
+    expect(addField).toBeCalledWith('form', 'test', {
+      ...field,
+      value: '250 km',
+      error: null,
+    });
   });
 
   it('should unmount a field', () => {

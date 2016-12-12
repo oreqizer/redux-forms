@@ -70,9 +70,10 @@ class Field extends React.PureComponent<IOwnProps, void> {
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
+    const value = props.normalize(props.defaultValue);
     const newField = R.compose<FieldObj, FieldObj, FieldObj>(
-      R.set(R.lensProp('value'), props.normalize(props.defaultValue)),
-      R.set(R.lensProp('error'), props.validate(props.defaultValue)),
+      R.set(R.lensProp('value'), value),
+      R.set(R.lensProp('error'), props.validate(value)),
     )(field);
 
     props._addField(props._form, props._id, newField);
