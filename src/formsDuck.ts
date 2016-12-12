@@ -1,5 +1,7 @@
 import * as R from 'ramda';
+
 import { Value } from "./utils/getValue";
+import { form, field, FormObj, FieldObj } from "./utils/containers";
 
 
 export const ADD_FORM = '@redux-forms/ADD_FORM';
@@ -12,34 +14,30 @@ export const FIELD_CHANGE = '@redux-forms/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-forms/FIELD_FOCUS';
 export const FIELD_BLUR = '@redux-forms/FIELD_BLUR';
 
-export const freshField = {
-  value: '',
-  error: null,
-  visited: false,
-  touched: false,
-  active: false,
-  dirty: false,
-};
-
-export const initialForm = {
-  fields: {},
-};
 
 export default function formsReducer(state: State = {}, a: Action): State {
   switch (a.type) {
     // Form
     // ---
     case ADD_FORM:
-      return R.assocPath<Form, State>([a.payload.name], initialForm, state);
+      return R.assocPath<FormObj, State>(
+        [a.payload.name], form, state,
+      );
 
     case REMOVE_FORM:
-      return R.dissocPath<State>([a.payload.name], state);
+      return R.dissocPath<State>(
+        [a.payload.name], state,
+      );
 
     case ADD_FIELD:
-      return R.assocPath<FieldObject, State>([a.payload.form, 'fields', a.payload.id], freshField, state);
+      return R.assocPath<FieldObj, State>(
+        [a.payload.form, 'fields', a.payload.id], a.payload.field, state,
+      );
 
     case REMOVE_FIELD:
-      return R.dissocPath<State>([a.payload.form, 'fields', a.payload.id], state);
+      return R.dissocPath<State>(
+        [a.payload.form, 'fields', a.payload.id], state,
+      );
 
     // Field
     // ---
@@ -97,13 +95,14 @@ export const removeForm: RemoveFormCreator = (name) => ({
 export type AddFieldAction = { type: '@redux-forms/ADD_FIELD', payload: {
   form: string,
   id: string,
+  field: FieldObj,
 } };
 
-export type AddFieldCreator = (form: string, id: string) => AddFieldAction;
+export type AddFieldCreator = (form: string, id: string, field: FieldObj) => AddFieldAction;
 
-export const addField: AddFieldCreator = (form, id) => ({
+export const addField: AddFieldCreator = (form, id, field) => ({
   type: ADD_FIELD,
-  payload: { form, id },
+  payload: { form, id, field },
 });
 
 
@@ -167,22 +166,8 @@ export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
   payload: { form, field, error, dirty },
 });
 
-
-export type FieldObject = {
-  value: Value;
-  visited: boolean;
-  touched: boolean;
-  active: boolean;
-  error: string | null;
-  dirty: boolean;
-};
-
-export type Form = {
-  fields: { [key: string]: FieldObject },
-};
-
 export type State = {
-  [form: string]: Form,
+  [form: string]: FormObj,
 };
 
 export type Action =

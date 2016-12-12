@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 import * as R from 'ramda';
 
 import ConnectedField from '../Field';
-import { freshField } from '../formsDuck';
+import { field } from '../utils/containers';
 
 
 // NOTE:
@@ -56,14 +56,14 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _addField={addField}
       />,
     );
 
-    expect(addField).toBeCalledWith('form', 'test');
+    expect(addField).toBeCalledWith('form', 'test', field);
 
     expect(wrapper.prop('name')).toBe('test');
     expect(wrapper.prop('value')).toBe('');
@@ -80,14 +80,14 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _addField={addField}
       />,
     );
 
-    expect(addField).toBeCalledWith('form', 'test');
+    expect(addField).toBeCalledWith('form', 'test', field);
 
     expect(wrapper.prop('input').value).toBe('');
     expect(wrapper.prop('input').onChange).toBeDefined();
@@ -107,7 +107,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _addField={addField}
@@ -115,7 +115,7 @@ describe('#Field', () => {
       />,
     );
 
-    expect(addField).toBeCalledWith('form', 'test');
+    expect(addField).toBeCalledWith('form', 'test', field);
     expect(removeField).not.toBeCalled();
 
     wrapper.unmount();
@@ -129,7 +129,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
@@ -149,7 +149,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _fieldFocus={fieldFocus}
@@ -169,7 +169,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        _field={freshField}
+        _field={field}
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}

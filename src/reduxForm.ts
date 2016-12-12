@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import * as duck from './formsDuck';
+import { FormObj } from "./utils/containers";
 
 
 export type Options = {
@@ -26,7 +27,7 @@ export type Connected<T> = React.ComponentClass<T> & {
 };
 
 type StateProps = {
-  _form: duck.Form | null,
+  _form: FormObj | null,
 };
 
 type ActionProps = {
@@ -85,6 +86,7 @@ const reduxForm = <T>(options: Options) => {
       }
 
       render() {
+        // Wait until form is initialized
         if (!this.props._form) {
           return null;
         }
@@ -95,7 +97,7 @@ const reduxForm = <T>(options: Options) => {
     }
 
     const Connected = connect<StateProps, ActionProps, T>((state) => ({
-      _form: R.prop<duck.Form>(options.form, state.reduxForms),
+      _form: R.prop<FormObj>(options.form, state.reduxForms),
     }), {
       _addForm: duck.addForm,
       _removeForm: duck.removeForm,

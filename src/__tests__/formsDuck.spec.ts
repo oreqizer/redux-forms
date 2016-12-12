@@ -1,5 +1,8 @@
 import reducer, * as duck from '../formsDuck';
 
+import { form, field } from '../utils/containers';
+
+
 describe('#formsDuck', () => {
   // Action creators
   // ---
@@ -19,9 +22,9 @@ describe('#formsDuck', () => {
   });
 
   it('should create an ADD_FIELD action', () => {
-    expect(duck.addField('form', 'field')).toEqual({
+    expect(duck.addField('form', 'field', field)).toEqual({
       type: duck.ADD_FIELD,
-      payload: { form: 'form', id: 'field' },
+      payload: { form: 'form', id: 'field', field },
     });
   });
 
@@ -65,15 +68,11 @@ describe('#formsDuck', () => {
   it('should add a form', () => {
     const state = reducer({}, duck.addForm('form'));
 
-    expect(state).toEqual({
-      form: duck.initialForm,
-    });
+    expect(state).toEqual({ form });
   });
 
   it('should remove a form', () => {
-    const state = reducer({
-      form: duck.initialForm,
-    }, duck.removeForm('form'));
+    const state = reducer({ form }, duck.removeForm('form'));
 
     expect(state).toEqual({});
   });
@@ -81,16 +80,16 @@ describe('#formsDuck', () => {
   it('should add a field', () => {
     const state = reducer({
       form: { fields: {} },
-    }, duck.addField('form', 'field'));
+    }, duck.addField('form', 'field', field));
 
     expect(state).toEqual({
-      form: { fields: { field: duck.freshField } },
+      form: { fields: { field } },
     });
   });
 
   it('should remove a field', () => {
     const state = reducer({
-      form: { fields: { field: duck.freshField } },
+      form: { fields: { field } },
     }, duck.removeField('form', 'field'));
 
     expect(state).toEqual({

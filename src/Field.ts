@@ -9,6 +9,7 @@ import getValue, { Value, SynthEvent } from './utils/getValue';
 import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
 import * as duck from './formsDuck';
+import { field, FieldObj } from "./utils/containers";
 
 
 export interface ISuppliedProps {
@@ -41,7 +42,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
     _form: '',
     _id: '',
     // state
-    _field: duck.freshField,
+    _field: null,
     // actions
     _addField: R.identity,
     _removeField: R.identity,
@@ -59,7 +60,52 @@ class Field extends React.PureComponent<IOwnProps, void> {
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
 
-    props._addField(props._form, props._id);
+    const newField = R.compose<FieldObj, FieldObj, FieldObj>(
+      R.set(R.lensProp('value'), props.normalize(props.defaultValue)),
+      R.set(R.lensProp('error'), props.validate(props.defaultValue)),
+    )(field);
+
+    props._addField(props._form, props._id, newField);
+  }
+
+  componentWillReceiveProps(next: AllProps) {
+    const {
+      defaultValue,
+      normalize,
+      validate,
+      _form,
+      _id,
+      _addField,
+      _removeField,
+      _fieldChange,
+    } = this.props;
+
+    if (_id !== next._id) {
+      _removeField(_form, _id);
+
+      const newField = R.compose<FieldObj, FieldObj, FieldObj>(
+        R.set(R.lensProp('value'), next.normalize(next.defaultValue)),
+        R.set(R.lensProp('error'), next.validate(next.defaultValue)),
+      )(field);
+
+      _addField(_form, _id, newField);
+    }
+
+    if (!next._field) {
+      return;
+    }
+
+    if (
+      validate !== next.validate ||
+      normalize !== next.normalize ||
+      defaultValue !== next.defaultValue
+    ) {
+      const value = next.normalize(next._field.value);
+      const error = next.validate(next._field.value);
+      const dirty = next.defaultValue === next._field.value;
+
+      _fieldChange(_form, _id, value, error, dirty);
+    }
   }
 
   componentWillUnmount() {
@@ -71,8 +117,8 @@ class Field extends React.PureComponent<IOwnProps, void> {
   handleChange(ev: SynthEvent) {
     const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
-    const value = (<Normalize> normalize)(getValue(ev));
-    const error = (<Validate> validate)(value);
+    const value = normalize(getValue(ev));
+    const error = validate(value);
     const dirty = value !== defaultValue;
 
     _fieldChange(_form, _id, value, error, dirty);
@@ -87,15 +133,20 @@ class Field extends React.PureComponent<IOwnProps, void> {
   handleBlur(ev: SynthEvent) {
     const { _fieldBlur, _form, _id, normalize, validate, defaultValue } = this.props;
 
-    const value = (<Normalize> normalize)(getValue(ev));
-    const error = (<Validate> validate)(value);
+    const value = normalize(getValue(ev));
+    const error = validate(value);
     const dirty = value !== defaultValue;
 
     _fieldBlur(_form, _id, error, dirty);
   }
 
-  render(): JSX.Element {
+  render() {
     const { component, _field, ...rest } = this.props;
+
+    // Wait until field is initialized
+    if (!_field) {
+      return null;
+    }
 
     const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, _field, {
       onChange: this.handleChange,
@@ -115,8 +166,14 @@ class Field extends React.PureComponent<IOwnProps, void> {
 
 type ConnectedProps = IOwnProps & ContextProps;
 
+export type DefaultProps = {
+  validate: Validate,
+  normalize: Normalize,
+  defaultValue: string,
+};
+
 type StateProps = {
-  _field: duck.FieldObject,
+  _field: FieldObj | null,
 };
 
 type ActionProps = {
@@ -127,7 +184,7 @@ type ActionProps = {
   _fieldBlur: duck.FieldBlurCreator,
 };
 
-type AllProps = ConnectedProps & StateProps & ActionProps;
+type AllProps = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
 
 const Connected = connectField<AllProps>(Field);
@@ -140,9 +197,6 @@ const actions = {
   _fieldBlur: duck.fieldBlur,
 };
 
-// TODO:
-// - move 'connect' to 'connectField'
-// - add a guard there to check if '_field' actually exists
 export default connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
-  _field: R.path<duck.FieldObject>([props._form, 'fields', props._id], state.reduxForms),
+  _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxForms),
 }), actions)(Connected);
