@@ -43,7 +43,7 @@ const Component = (props: any) => (
 );
 
 const pattern = '__val__ km';
-const validate = (value: string) => value.includes('km') ? null : 'bad format';
+const validate = (value: string) => value.includes('always error') ? null : 'bad format';
 const normalize = (value: string) => pattern.replace('__val__', value);
 
 const event = (value: string) => ({
@@ -192,7 +192,7 @@ describe('#Field', () => {
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
       value: ' km',
-      error: null,
+      error: 'bad format',
     });
   });
 
@@ -202,7 +202,7 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
-        defaultValue="250"
+        defaultValue="asdf"
         validate={validate}
         normalize={normalize}
         _field={null}
@@ -214,8 +214,8 @@ describe('#Field', () => {
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
-      value: '250 km',
-      error: null,
+      value: 'asdf km',
+      error: 'bad format',
     });
   });
 
@@ -318,7 +318,7 @@ describe('#Field', () => {
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
       value: ' km',
-      error: null,
+      error: 'bad format',
     });
   });
 
@@ -335,12 +335,12 @@ describe('#Field', () => {
       />,
     );
 
-    wrapper.setProps({ validate, normalize, defaultValue: '250' });
+    wrapper.setProps({ validate, normalize, defaultValue: 'asdf' });
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
-      value: '250 km',
-      error: null,
+      value: 'asdf km',
+      error: 'bad format',
     });
   });
 
@@ -413,7 +413,7 @@ describe('#Field', () => {
 
     wrapper.setProps({ validate, normalize, defaultValue: 'nope' });
 
-    expect(fieldChange).toBeCalledWith('form', 'test', ' km', null, true);
+    expect(fieldChange).toBeCalledWith('form', 'test', ' km', 'bad format', true);
   });
 
   it('should unmount a field', () => {
@@ -457,6 +457,92 @@ describe('#Field', () => {
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, true);
   });
 
+  it('should fire a change action with default value', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        defaultValue="doge"
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    expect(fieldChange).not.toBeCalled();
+
+    (wrapper.instance() as any).handleChange(event('doge'));
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, false);
+  });
+
+  it('should fire a validated change action', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    expect(fieldChange).not.toBeCalled();
+
+    (wrapper.instance() as any).handleChange(event('doge'));
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'doge', 'bad format', true);
+  });
+
+  it('should fire a normalized change action', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        normalize={normalize}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    expect(fieldChange).not.toBeCalled();
+
+    (wrapper.instance() as any).handleChange(event('doge'));
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'doge km', null, true);
+  });
+
+  it('should fire a validated and normalized change action with default value', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        normalize={normalize}
+        defaultValue="doge km"
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldChange={fieldChange}
+      />,
+    );
+
+    expect(fieldChange).not.toBeCalled();
+
+    (wrapper.instance() as any).handleChange(event('doge'));
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'doge km', 'bad format', false);
+  });
+
   it('should fire a focus action', () => {
     const fieldFocus = jest.fn();
     const wrapper = shallow(
@@ -495,5 +581,91 @@ describe('#Field', () => {
     (wrapper.instance() as any).handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
+  });
+
+  it('should fire a blur action with default value', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        defaultValue="doge"
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldBlur={fieldBlur}
+      />,
+    );
+
+    expect(fieldBlur).not.toBeCalled();
+
+    (wrapper.instance() as any).handleBlur(event('doge'));
+
+    expect(fieldBlur).toBeCalledWith('form', 'test', null, false);
+  });
+
+  it('should fire a validated blur action', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldBlur={fieldBlur}
+      />,
+    );
+
+    expect(fieldBlur).not.toBeCalled();
+
+    (wrapper.instance() as any).handleBlur(event('doge'));
+
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', true);
+  });
+
+  it('should fire a normalized blur action', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        normalize={normalize}
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldBlur={fieldBlur}
+      />,
+    );
+
+    expect(fieldBlur).not.toBeCalled();
+
+    (wrapper.instance() as any).handleBlur(event('doge'));
+
+    expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
+  });
+
+  it('should fire a validated and normalized blur action with default value', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        validate={validate}
+        normalize={normalize}
+        defaultValue="doge km"
+        _field={field}
+        _id="test"
+        _form="form"
+        _fieldBlur={fieldBlur}
+      />,
+    );
+
+    expect(fieldBlur).not.toBeCalled();
+
+    (wrapper.instance() as any).handleBlur(event('doge'));
+
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', false);
   });
 });
