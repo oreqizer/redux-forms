@@ -656,8 +656,6 @@ describe('#Field', () => {
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  // TODO test rendering
-
   it('should pass props to a string component', () => {
     const wrapper = shallow(
       <Field
