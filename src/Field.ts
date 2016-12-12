@@ -51,6 +51,16 @@ class Field extends React.PureComponent<IOwnProps, void> {
     _fieldBlur: R.identity,
   };
 
+  static propTypes = {
+    name: React.PropTypes.string.isRequired,
+    component: React.PropTypes.oneOfType([
+      React.PropTypes.string, React.PropTypes.func,
+    ]).isRequired,
+    validate: React.PropTypes.func,
+    normalize: React.PropTypes.func,
+    defaultValue: React.PropTypes.string,
+  };
+
   props: AllProps;
 
   constructor(props: AllProps) {
