@@ -1,5 +1,5 @@
 {
-  "name": "mobxForms",
+  "name": "redux-forms",
   "main": "dist/lib/index.d.ts",
-  "out": "../mobx-forms.d.ts"
+  "out": "../redux-forms.d.ts"
 }

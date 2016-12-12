@@ -23,7 +23,7 @@ const config = {
     extensions: ['.js', '.ts', '.tsx'],
   },
   output: {
-    library: 'MobxForms',
+    library: 'ReduxForms',
     libraryTarget: 'umd',
   },
   plugins: [
@@ -41,7 +41,7 @@ if (env === 'production') {
         screw_ie8: true,
         warnings: false,
       },
-    }),
+    })  // eslint-disable-line comma-dangle
   );
 }
 
