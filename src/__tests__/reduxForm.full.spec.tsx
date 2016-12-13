@@ -55,9 +55,9 @@ describe('#connect(reduxForm)', () => {
       <Provider store={store}>
         <Decorated />
       </Provider>,
-    ).find(Decorated);
+    );
 
-    expect(wrapper.name()).toBe('ReduxForm(Component)');
+    expect(wrapper.find(Decorated).name()).toBe('ReduxForm(Component)');
   });
 
   it('should name a component with a name', () => {
@@ -72,9 +72,9 @@ describe('#connect(reduxForm)', () => {
       <Provider store={store}>
         <Decorated />
       </Provider>,
-    ).find(Decorated);
+    );
 
-    expect(wrapper.name()).toBe('ReduxForm(Dummy)');
+    expect(wrapper.find(Decorated).name()).toBe('ReduxForm(Dummy)');
   });
 
   it('should add a form', () => {
