@@ -30,7 +30,9 @@
     "transform": {
       ".tsx?": "<rootDir>/jest-preprocessor.js"
     },
-    "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$"
+    "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "repository": {
     "type": "git",
