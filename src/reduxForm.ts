@@ -23,7 +23,7 @@ export type WrappedComponent<T> = React.ComponentClass<T> | React.SFC<T>;
 
 export type Connected<T> = React.ComponentClass<T> & {
   WrappedComponent: WrappedComponent<T>,
-  WrappedForm: React.ComponentClass<T>,
+  WrappedForm: React.ComponentClass<Props<T>>,
 };
 
 type StateProps = {
@@ -51,9 +51,9 @@ const reduxForm = <T>(options: Options) => {
       '[mobx-forms] "form" is a required string on the "reduxForm" decorator.',
   );
 
-  return (Wrapped: WrappedComponent<Props<T>>): Connected<Props<T>> => {
+  return (Wrapped: WrappedComponent<Props<T>>): Connected<T> => {
     class ReduxForm extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
-      static displayName = `ReduxForm(${Wrapped.displayName || 'Component'})`;
+      static displayName = 'ReduxForm';
 
       static childContextTypes = {
         reduxForms: React.PropTypes.shape({

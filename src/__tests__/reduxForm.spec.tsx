@@ -29,6 +29,18 @@ describe('#reduxForm', () => {
     expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
   });
 
+  it('should require form to be a string', () => {
+    const badOpts: any = { form: 123 };
+
+    expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
+  });
+
+  it('should have a correct name', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    expect(Decorated.displayName).toBe('ReduxForm');
+  });
+
   it('should provide original component static reference', () => {
     const Expected = reduxForm({ form: 'test' })(MyComp).WrappedComponent;
 
@@ -83,6 +95,21 @@ describe('#reduxForm', () => {
     expect(addForm).toBeCalledWith('test');
   });
 
+  it('should not add a form if already present', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const addForm = jest.fn();
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
+        _addForm={addForm}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect(addForm).not.toBeCalled();
+  });
+
   it('should remove a form', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
@@ -100,21 +127,6 @@ describe('#reduxForm', () => {
     wrapper.unmount();
 
     expect(removeForm).toBeCalledWith('test');
-  });
-
-  it('should not add a form if already present', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    const addForm = jest.fn();
-    const wrapper = mount(
-      <Decorated
-        _form={formMock}
-        _addForm={addForm}
-        _removeForm={jest.fn()}
-      />,
-    );
-
-    expect(addForm).not.toBeCalled();
   });
 
   it('should not remove a form if persistent', () => {
@@ -162,5 +174,24 @@ describe('#reduxForm', () => {
     );
 
     expect(wrapper.find(MyComp).props()).toEqual({});
+  });
+
+  it('should provide context', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const wrapper = mount(
+      <Decorated
+        _form={formMock}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+      />,
+    );
+
+    expect((wrapper.instance() as any).getChildContext()).toEqual({
+      reduxForms: {
+        form: 'test',
+        context: '',
+      },
+    });
   });
 });

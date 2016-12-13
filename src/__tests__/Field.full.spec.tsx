@@ -48,7 +48,7 @@ describe('#connect(Field)', () => {
       </Provider>,
     );
 
-    expect(wrapperFn).toThrowError(/decorated with "reduxForms"/);
+    expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
   });
 
   it('should have a correct name', () => {
