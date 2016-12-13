@@ -6,5 +6,8 @@ node_js:
   - "stable"
 
 script:
-  - npm test && codecov
+  - npm test
   - npm run lint
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
