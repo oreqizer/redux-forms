@@ -22,6 +22,8 @@ export default combineReducers({
 To create a form, decorate a component with `reduxForm`:
 
 ```javascript
+import { reduxForm } from 'redux-forms';
+
 // ... your component
 
 export default reduxForm({
@@ -52,6 +54,8 @@ Then you can mount your fields. Your fields can be either a string, or a custom 
 - `normalize: (val: string) => string` - function to normalize the input. e.g. accept only numbers
 
 ```javascript
+import { Field } from 'redux-forms';
+
 const Form = (props) => (
   <div className="Form">
     <h2>My form:</h2>
