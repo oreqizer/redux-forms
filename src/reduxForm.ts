@@ -62,11 +62,11 @@ const reduxForm = <T>(options: Options) => {
         }).isRequired,
       };
 
-      constructor(props: Props<T>) {
-        super(props);
+      componentWillMount() {
+        const { _form, _addForm } = this.props;
 
-        if (!props._form) {
-          props._addForm(options.form);
+        if (!_form) {
+          _addForm(options.form);
         }
       }
 
