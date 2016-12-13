@@ -59,7 +59,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -75,7 +75,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -91,7 +91,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         defaultValue="doge"
         _field={null}
         _id="test"
@@ -111,7 +111,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         _field={null}
         _id="test"
@@ -131,7 +131,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         normalize={normalize}
         _field={null}
         _id="test"
@@ -151,7 +151,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         normalize={normalize}
         _field={null}
@@ -173,7 +173,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         defaultValue="asdf"
         validate={validate}
         normalize={normalize}
@@ -195,7 +195,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -214,7 +214,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -233,7 +233,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -252,7 +252,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -271,7 +271,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -290,7 +290,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -312,7 +312,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -334,7 +334,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -356,7 +356,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -379,7 +379,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={null}
         _id="test"
         _form="form"
@@ -409,7 +409,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -427,7 +427,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -448,7 +448,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -468,7 +468,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         defaultValue="doge"
         _field={field}
         _id="test"
@@ -489,7 +489,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         _field={field}
         _id="test"
@@ -510,7 +510,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         normalize={normalize}
         _field={field}
         _id="test"
@@ -531,7 +531,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         normalize={normalize}
         defaultValue="doge km"
@@ -554,7 +554,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -574,7 +574,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         _field={field}
         _id="test"
         _form="form"
@@ -594,7 +594,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         defaultValue="doge"
         _field={field}
         _id="test"
@@ -615,7 +615,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         _field={field}
         _id="test"
@@ -636,7 +636,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         normalize={normalize}
         _field={field}
         _id="test"
@@ -657,7 +657,7 @@ describe('#Field', () => {
     const wrapper = shallow(
       <Field
         name="test"
-        component={Component}
+        component="input"
         validate={validate}
         normalize={normalize}
         defaultValue="doge km"

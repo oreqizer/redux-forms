@@ -61,6 +61,8 @@ class Field extends React.PureComponent<AllProps, void> {
     defaultValue: React.PropTypes.string,
   };
 
+  static displayName = 'Field';
+
   props: AllProps;
 
   constructor(props: AllProps) {
@@ -185,6 +187,7 @@ type ActionProps = {
 
 type AllProps = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
+
 const actions = {
   _addField: duck.addField,
   _removeField: duck.removeField,
@@ -193,9 +196,12 @@ const actions = {
   _fieldBlur: duck.fieldBlur,
 };
 
-
-const Connected = connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
   _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxForms),
 }), actions)(Field);
 
-export default connectField<IOwnProps>(Connected);
+const Contexted = connectField<IOwnProps>(Connected);
+
+Contexted.displayName = Field.displayName;
+
+export default Contexted;
