@@ -26,16 +26,16 @@ export type Connected<T> = React.ComponentClass<T> & {
   WrappedForm: React.ComponentClass<Props<T>>,
 };
 
-type StateProps = {
+export type StateProps = {
   _form: FormObj | null,
 };
 
-type ActionProps = {
+export type ActionProps = {
   _addForm: duck.AddFormCreator,
   _removeForm: duck.RemoveFormCreator,
 };
 
-type Props<T> = StateProps & ActionProps & T;
+export type Props<T> = StateProps & ActionProps & T;
 
 
 const PROPS_TO_OMIT = [
