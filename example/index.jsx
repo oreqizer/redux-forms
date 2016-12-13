@@ -17,7 +17,6 @@ const Root = () => (
   <Provider store={store}>
     <div>
       <Form />
-      <Form2 />
     </div>
   </Provider>
 );

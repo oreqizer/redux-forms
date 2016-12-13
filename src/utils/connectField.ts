@@ -14,9 +14,9 @@ export type ContextProps = {
   _id: string,
 };
 
-export type WrappedField<T> = React.ComponentClass<T & NameProp & ContextProps>;
+export type WrappedField<T> = React.ComponentClass<T & NameProp>;
 
-export type Connected<T> = React.SFC<T & NameProp> & {
+export type Connected<T> = React.SFC<T & NameProp & ContextProps> & {
   WrappedComponent?: WrappedField<T>,
 };
 

@@ -30,7 +30,7 @@ export type Validate = (value: Value) => string | null;
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.PureComponent<IOwnProps, void> {
+class Field extends React.PureComponent<AllProps, void> {
   // Must contain all props of 'AllProps'
   static defaultProps = {
     name: '',
@@ -88,11 +88,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
       return;
     }
 
-    if (
-      validate !== next.validate ||
-      normalize !== next.normalize ||
-      defaultValue !== next.defaultValue
-    ) {
+    if (defaultValue !== next.defaultValue) {
       const value = next.normalize(next._field.value);
       const error = next.validate(value);
       const dirty = next.defaultValue !== value;
@@ -189,9 +185,6 @@ type ActionProps = {
 
 type AllProps = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
-
-const Connected = connectField<AllProps>(Field);
-
 const actions = {
   _addField: duck.addField,
   _removeField: duck.removeField,
@@ -200,6 +193,9 @@ const actions = {
   _fieldBlur: duck.fieldBlur,
 };
 
-export default connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
+
+const Connected = connect<StateProps, ActionProps, IOwnProps>((state, props: ConnectedProps) => ({
   _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxForms),
-}), actions)(Connected);
+}), actions)(Field);
+
+export default connectField<IOwnProps>(Connected);

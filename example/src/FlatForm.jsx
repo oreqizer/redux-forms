@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm, Field } from 'redux-forms';
+import { reduxForm, Field } from '../../lib';
 
 const Form = props =>
   <div>

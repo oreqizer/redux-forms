@@ -22,7 +22,7 @@ import { field } from '../utils/containers';
 // - _fieldChange: FieldChangeCreator
 // - _fieldFocus: FieldFocusCreator
 // - _fieldBlur: FieldBlurCreator
-const Field = (ConnectedField as any).WrappedComponent;
+const Field = (ConnectedField as any).WrappedComponent.WrappedComponent;
 
 const freshMeta = {
   active: false,
@@ -420,60 +420,6 @@ describe('#Field', () => {
     wrapper.setProps({ defaultValue: '250' });
 
     expect(fieldChange).toBeCalledWith('form', 'test', '', null, true);
-  });
-
-  it('should change a field when validate changes', () => {
-    const fieldChange = jest.fn();
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component={Component}
-        _field={field}
-        _id="test"
-        _form="form"
-        _fieldChange={fieldChange}
-      />,
-    );
-
-    wrapper.setProps({ validate });
-
-    expect(fieldChange).toBeCalledWith('form', 'test', '', 'bad format', false);
-  });
-
-  it('should change a field when normalize changes', () => {
-    const fieldChange = jest.fn();
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component={Component}
-        _field={field}
-        _id="test"
-        _form="form"
-        _fieldChange={fieldChange}
-      />,
-    );
-
-    wrapper.setProps({ normalize });
-
-    expect(fieldChange).toBeCalledWith('form', 'test', ' km', null, true);
-  });
-
-  it('should change a field when default value, validator and normalizer changes', () => {
-    const fieldChange = jest.fn();
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component={Component}
-        _field={field}
-        _id="test"
-        _form="form"
-        _fieldChange={fieldChange}
-      />,
-    );
-
-    wrapper.setProps({ validate, normalize, defaultValue: 'nope' });
-
-    expect(fieldChange).toBeCalledWith('form', 'test', ' km', 'bad format', true);
   });
 
   it('should unmount a field', () => {
