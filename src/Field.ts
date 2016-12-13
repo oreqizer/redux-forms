@@ -69,9 +69,11 @@ class Field extends React.PureComponent<IOwnProps, void> {
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+  }
 
-    if (!props._field) {
-      this.newField(props);
+  componentWillMount() {
+    if (!this.props._field) {
+      this.newField(this.props);
     }
   }
 
@@ -79,7 +81,7 @@ class Field extends React.PureComponent<IOwnProps, void> {
     const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
-      if(_id !== next._id) {
+      if (_id !== next._id || _form !== next._form) {
         this.newField(next);
       }
 

@@ -191,8 +191,7 @@ describe('#Field', () => {
     });
   });
 
-  it('should re-mount a clean field', () => {
-    const addField = jest.fn();
+  it('should not re-mount when ids and forms match', () => {
     const wrapper = shallow(
       <Field
         name="test"
@@ -200,17 +199,94 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _form: "form2", _id: "test2" });
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: 'test', _form: 'form' });
+
+    expect(addField).not.toBeCalled();
+  });
+
+  it('should re-mount when ids differ', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: 'test2' });
+
+    expect(addField).toBeCalled();
+  });
+
+  it('should re-mount when forms differ', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _form: 'form2' });
+
+    expect(addField).toBeCalled();
+  });
+
+  it('should re-mount when ids and forms differ', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: 'form2', _form: 'form2' });
+
+    expect(addField).toBeCalled();
+  });
+
+  it('should re-mount a clean field', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component={Component}
+        _field={null}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _form: "form2", _id: "test2" });
 
     expect(addField).toBeCalledWith('form2', 'test2', field);
   });
 
   it('should re-mount a field with a default value', () => {
-    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -218,11 +294,13 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _id: "test2", defaultValue: 'doge' });
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: "test2", defaultValue: 'doge' });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -231,7 +309,6 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a validator', () => {
-    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -239,11 +316,13 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _id: "test2", validate });
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: "test2", validate });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -252,7 +331,6 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a normalizer', () => {
-    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -260,11 +338,13 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _id: "test2", normalize });
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: "test2", normalize });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -273,7 +353,6 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a validator and a normalizer', () => {
-    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -281,11 +360,13 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _id: "test2", validate, normalize });
+    const addField = jest.fn();
+
+    wrapper.setProps({ _addField: addField, _id: "test2", validate, normalize });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -295,7 +376,6 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a default value, a validator and a normalizer', () => {
-    const addField = jest.fn();
     const wrapper = shallow(
       <Field
         name="test"
@@ -303,11 +383,19 @@ describe('#Field', () => {
         _field={null}
         _id="test"
         _form="form"
-        _addField={addField}
+        _addField={jest.fn()}
       />,
     );
 
-    wrapper.setProps({ _id: "test2", validate, normalize, defaultValue: 'asdf' });
+    const addField = jest.fn();
+
+    wrapper.setProps({
+      _addField: addField,
+      _id: "test2",
+      validate,
+      normalize,
+      defaultValue: 'asdf',
+    });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,

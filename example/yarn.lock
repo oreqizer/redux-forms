@@ -1902,9 +1902,9 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-redux-forms@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-0.0.1.tgz#a957adfad63ffde840db74052bd1eb4115d95509"
+redux-forms@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-0.0.2.tgz#589b878c615d1b675855d589f0782d9ce2bfdd49"
   dependencies:
     invariant "^2.2.2"
     ramda "^0.22.1"
