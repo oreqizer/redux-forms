@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = props => console.log(props) || (
+const Input = props => (
   <div>
     <div>Error: {String(props.meta.error)}</div>
     <div>Dirty: {String(props.meta.dirty)}</div>

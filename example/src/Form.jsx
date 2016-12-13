@@ -50,6 +50,8 @@ const DeepArray = props => (
   </div>
 );
 
+const validate = value => value.length < 5 ? 'too short' : null;
+
 const Form = props => (
   <div>
     <h2>My form:</h2>
@@ -62,7 +64,7 @@ const Form = props => (
     <h4>second Field</h4>
     <Field
       name="test2"
-      validate={value => value.length < 5 ? 'too short' : null}
+      validate={validate}
       placeholder="longer than 5 chars"
       component={Input}
     />
