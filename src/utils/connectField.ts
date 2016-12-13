@@ -23,7 +23,7 @@ export type Connected<T> = React.SFC<T & NameProp> & {
 
 export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
   const ConnectedField: Connected<T> = (props: T & NameProp, { reduxForms }: Context) => {
-    invariant(reduxForms, '[redux-forms] Fields must be in a component decorated with "reduxForms"');
+    invariant(reduxForms, '[redux-forms] Fields must be in a component decorated with "reduxForm"');
 
     return React.createElement(Wrapped, R.merge(props, {
       _form: reduxForms.form,
