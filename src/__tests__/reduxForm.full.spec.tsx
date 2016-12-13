@@ -47,6 +47,36 @@ describe('#connect(reduxForm)', () => {
     expect(store.getState().reduxForms).toEqual({ test: form });
   });
 
+  it('should mount an unnamed component', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp);
+
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <Decorated />
+      </Provider>,
+    ).find(Decorated);
+
+    expect(wrapper.name()).toBe('ReduxForm(Component)');
+  });
+
+  it('should name a component with a name', () => {
+    const Dummy: any = () => <MyComp />;
+
+    Dummy.displayName = 'Dummy';
+
+    const Decorated = reduxForm({ form: 'test' })(Dummy);
+
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <Decorated />
+      </Provider>,
+    ).find(Decorated);
+
+    expect(wrapper.name()).toBe('ReduxForm(Dummy)');
+  });
+
   it('should add a form', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp);
 

@@ -47,39 +47,6 @@ describe('#reduxForm', () => {
     expect(Expected).toBe(MyComp);
   });
 
-  it('should mount an unnamed component', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    const addForm = jest.fn();
-    const decorated = mount(
-      <Decorated
-        _form={null}
-        _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-      />,
-    );
-
-    expect(decorated.name()).toBe('ReduxForm(Component)');
-  });
-
-  it('should name a component with a name', () => {
-    const Dummy: any = () => <MyComp />;
-
-    Dummy.displayName = 'Dummy';
-
-    const Decorated = reduxForm({ form: 'test' })(Dummy).WrappedForm;
-
-    const decorated = mount(
-      <Decorated
-        _form={null}
-        _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-      />,
-    );
-
-    expect(decorated.name()).toBe('ReduxForm(Dummy)');
-  });
-
   it('should add a form', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
