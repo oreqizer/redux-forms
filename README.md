@@ -35,9 +35,9 @@ Then you can mount your fields. Your fields can be either a string, or a custom 
 * `component` - will receive all the props you supplied, as well as a `meta` and `input` objects
 
 `input` prop contains all properties necessary for native components (`input`, `textarea`...).
-`meta` prop has information about the component. The info is:
+`meta` prop has information about the field. The info is:
 
-- `error: string | null`
+- `error: string | null` - an error message from your validation function, if any
 - `dirty: boolean` - value differs from default value
 - `active: boolean` - the element is currently active
 - `touched: boolean` - the element was blurred
