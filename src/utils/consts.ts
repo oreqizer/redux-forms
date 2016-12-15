@@ -49,8 +49,15 @@ export const IGNORE_PROPS = [
 ];
 
 export const ARRAY_IGNORE_PROPS = [
-  'name',
+  'flat',
   'component',
-  'validate',
-  'defaultValue',
+  // state
+  '_array',
+  '_counter',
+  // actions
+  '_push',
+  '_pop',
+  // context
+  '_form',
+  '_arrayId',
 ];
