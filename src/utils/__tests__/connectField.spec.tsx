@@ -11,6 +11,8 @@ const MyComp: any = () => (
   <div className="Component" />
 );
 
+MyComp.displayName = 'MyComp';
+
 const Decorated: any = connectField(MyComp);
 
 const flat = {
@@ -43,6 +45,16 @@ describe('#connectField', () => {
     const mountFn = () => mount(<Decorated />);
 
     expect(mountFn).toThrowError(/decorated with "reduxForm"/);
+  });
+
+  it('should keep the original name', () => {
+    const wrapper = mount(<Decorated name="field" />, flat);
+
+    expect(wrapper.name()).toBe('MyComp');
+  });
+
+  it('should provide a reference to the original', () => {
+    expect(Decorated.WrappedComponent).toBe(MyComp);
   });
 
   it('should provide form name', () => {

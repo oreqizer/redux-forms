@@ -57,7 +57,7 @@ export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connecte
 
     getChildContext() {
       const { name, flat } = this.props;
-      const { form, context } = this.context;
+      const { form, context } = this.context.reduxForms;
 
       return {
         reduxForms: {
