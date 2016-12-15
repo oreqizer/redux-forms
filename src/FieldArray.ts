@@ -1,46 +1,49 @@
 import * as React from 'react';
+import { connect } from '@types/react-redux';
+import * as R from 'ramda';
 
-import { Context } from "./reduxForm";
+import { Context } from './reduxForm';
+import connectFieldArray, { ContextProps } from './utils/connectFieldArray';
+import * as duck from './formsDuck';
 
 
-interface ISuppliedProps {
+export interface ISuppliedProps {
   // TODO
 }
 
-interface IOwnProps {
+export interface IOwnProps {
   name: string;
   flat?: boolean;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
 }
 
-class FieldArray extends React.PureComponent<IOwnProps, void> implements React.ChildContextProvider<Context> {
-  static contextTypes = {
-    reduxForms: React.PropTypes.shape({
-      form: React.PropTypes.string.isRequired,
-      context: React.PropTypes.string.isRequired,
-      flattened: React.PropTypes.bool.isRequired,
-    }).isRequired,
+class FieldArray extends React.PureComponent<AllProps, void> {
+  static propTypes = {
+    name: React.PropTypes.string.isRequired,
+    flat: React.PropTypes.bool,
+    component: React.PropTypes.oneOfType([
+      React.PropTypes.string, React.PropTypes.func,
+    ]).isRequired,
   };
 
-  static childContextTypes = {
-    reduxForms: React.PropTypes.shape({
-      form: React.PropTypes.string.isRequired,
-      context: React.PropTypes.string.isRequired,
-      flattened: React.PropTypes.bool.isRequired,
-    }).isRequired,
-  };
+  static displayName = 'FieldArray';
 
-  getChildContext() {
-    const { name, flat } = this.props;
-    const { form, context } = this.context;
+  constructor(props: AllProps) {
+    super(props);
 
-    return {
-      reduxForms: {
-        form,
-        context: context ? `${context}.${name}` : context,
-        flattened: Boolean(flat),
-      },
-    };
+    this.handlePush = this.handlePush.bind(this);
+    this.handlePop = this.handlePop.bind(this);
+  }
+
+  handlePush() {
+    const { name, _push, _form, _arrayId } = this.props;
+
+    // TODO solve array indexing
+    _push(_form, _arrayId, `_arrayId[TODO]`);
+  }
+
+  handlePop() {
+
   }
 
   render() {
@@ -50,3 +53,33 @@ class FieldArray extends React.PureComponent<IOwnProps, void> implements React.C
     return React.createElement(<any> component, this.props);
   }
 }
+
+
+type ConnectedProps = IOwnProps & ContextProps;
+
+type StateProps = {
+  _array: string[],
+};
+
+type ActionProps = {
+  _push: duck.PushCreator,
+  _pop: duck.PopCreator,
+};
+
+type AllProps = StateProps & ActionProps & ConnectedProps;
+
+
+const actions = {
+  _push: duck.push,
+  _pop: duck.pop,
+};
+
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
+  _array: R.path<string[]>([props._form, 'fieldArrays', props._arrayId], state),
+}), actions)(FieldArray);
+
+const Contexted = connectFieldArray<IOwnProps>(Connected);
+
+Contexted.displayName = FieldArray.displayName;
+
+export default Contexted;
