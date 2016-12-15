@@ -16,6 +16,7 @@ export type Context = {
   reduxForms: {
     form: string,
     context: string,
+    flattened: boolean,
   };
 };
 
@@ -59,6 +60,7 @@ const reduxForm = <T>(options: Options) => {
         reduxForms: React.PropTypes.shape({
           form: React.PropTypes.string.isRequired,
           context: React.PropTypes.string.isRequired,
+          flattened: React.PropTypes.bool.isRequired,
         }).isRequired,
       };
 
@@ -81,6 +83,7 @@ const reduxForm = <T>(options: Options) => {
           reduxForms: {
             form: options.form,
             context: '',
+            flattened: false,
           },
         };
       }

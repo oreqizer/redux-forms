@@ -36,6 +36,7 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
     reduxForms: React.PropTypes.shape({
       form: React.PropTypes.string.isRequired,
       context: React.PropTypes.string.isRequired,
+      flattened: React.PropTypes.bool.isRequired,
     }).isRequired,
   };
 
