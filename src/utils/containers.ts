@@ -3,7 +3,8 @@ import { Value } from "./getValue";
 
 export const form = {
   fields: {},
-  fieldArrays: {},
+  arrays: {},
+  counters: {},
 };
 
 export const field = {
@@ -29,5 +30,7 @@ export type FormObj = {
   // key - value pairs of field id and the field object
   fields: { [key: string]: FieldObj },
   // array of field ids that belong to given array
-  fieldArrays: { [key: string]: string[] },
+  arrays: { [key: string]: string[] },
+  // counters for array unique indexing
+  counters: { [key: string]: number },
 };
