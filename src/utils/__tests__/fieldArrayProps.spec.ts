@@ -28,7 +28,7 @@ const props = {
 
 describe('#fieldArrayProps', () => {
   it('should separate functions', () => {
-    const res = fieldArrayProps<any, any>(props, fns);
+    const res = fieldArrayProps(props, fns);
 
     expect(res.fields.map).toEqual(fns.map);
     expect(res.fields.push).toEqual(fns.push);
@@ -36,7 +36,7 @@ describe('#fieldArrayProps', () => {
   });
 
   it('should filter out ignored properties', () => {
-    const res = fieldArrayProps<any, any>(props, fns);
+    const res = fieldArrayProps(props, fns);
 
     expect(res).toEqual({
       fields: fns,
