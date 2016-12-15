@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from '@types/react-redux';
+import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import { Context } from './reduxForm';
@@ -39,10 +39,24 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     this.handlePop = this.handlePop.bind(this);
   }
 
+  componentWillMount() {
+    const { _array, _addArray, _form, _arrayId } = this.props;
+
+    if (!_array) {
+      _addArray(_form, _arrayId);
+    }
+  }
+
+  componentWillUnmount() {
+    const { _removeArray, _form, _arrayId } = this.props;
+
+    _removeArray(_form, _arrayId);
+  }
+
   handleMap<T>(fn: (arr: string[]) => T) {
     const { _array } = this.props;
 
-    return R.map(fn, _array);
+    return R.map(fn, (<string[]> _array));
   }
 
   handlePush() {
@@ -58,7 +72,11 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   render() {
-    const { component } = this.props;
+    const { component, _array } = this.props;
+
+    if (!_array) {
+      return null;
+    }
 
     // React.SFC vs. React.ClassComponent collision
     return React.createElement(<any> component, fieldArrayProps(this.props, {
@@ -73,11 +91,13 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 type ConnectedProps = IOwnProps & ContextProps;
 
 type StateProps = {
-  _array: string[],
-  _counter: number,
+  _array?: string[],
+  _counter?: number,
 };
 
 type ActionProps = {
+  _addArray: duck.AddArrayCreator,
+  _removeArray: duck.RemoveArrayCreator,
   _push: duck.PushCreator,
   _pop: duck.PopCreator,
 };
@@ -86,6 +106,8 @@ type AllProps = StateProps & ActionProps & ConnectedProps;
 
 
 const actions = {
+  _addArray: duck.addArray,
+  _removeArray: duck.removeArray,
   _push: duck.push,
   _pop: duck.pop,
 };
