@@ -49,6 +49,20 @@ describe('#formsDuck', () => {
     });
   });
 
+  it('should create a PUSH action', () => {
+    expect(duck.push('form', 'field', 'field[0]')).toEqual({
+      type: duck.PUSH,
+      payload: { form: 'form', id: 'field', name: 'field[0]' },
+    });
+  });
+
+  it('should create a POP action', () => {
+    expect(duck.pop('form', 'field')).toEqual({
+      type: duck.POP,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
   it('should create a FIELD_CHANGE action', () => {
     expect(duck.fieldChange('form', 'field', 'value', 'error', true)).toEqual({
       type: duck.FIELD_CHANGE,
@@ -121,6 +135,22 @@ describe('#formsDuck', () => {
     }, duck.removeArray('form', 'array'));
 
     expect(state.form.fieldArrays).toEqual({});
+  });
+
+  it('should push to an array', () => {
+    const state: any = reducer({
+      form: { ...form, fieldArrays: { array: ['array[0]'] } },
+    }, duck.push('form', 'array', 'array[1]'));
+
+    expect(state.form.fieldArrays.array).toEqual(['array[0]', 'array[1]']);
+  });
+
+  it('should pop from an array', () => {
+    const state: any = reducer({
+      form: { ...form, fieldArrays: { array: ['array[0]', 'array[1]'] } },
+    }, duck.pop('form', 'array'));
+
+    expect(state.form.fieldArrays.array).toEqual(['array[0]']);
   });
 
   it('should change a field', () => {

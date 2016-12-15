@@ -11,6 +11,8 @@ export const REMOVE_FIELD = '@redux-forms/REMOVE_FIELD';
 
 export const ADD_ARRAY = '@redux-forms/ADD_ARRAY';
 export const REMOVE_ARRAY = '@redux-forms/REMOVE_ARRAY';
+export const PUSH = '@redux-forms/PUSH';
+export const POP = '@redux-forms/POP';
 
 export const FIELD_CHANGE = '@redux-forms/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-forms/FIELD_FOCUS';
@@ -51,6 +53,20 @@ export default function formsReducer(state: State = {}, a: Action): State {
     case REMOVE_ARRAY:
       return R.dissocPath<State>(
         [a.payload.form, 'fieldArrays', a.payload.id], state,
+      );
+
+    case PUSH:
+      return R.over(
+        R.lensPath([a.payload.form, 'fieldArrays', a.payload.id]),
+        R.append(a.payload.name),
+        state,
+      );
+
+    case POP:
+      return R.over(
+        R.lensPath([a.payload.form, 'fieldArrays', a.payload.id]),
+        R.dropLast(1),
+        state,
       );
 
     // Field
@@ -159,6 +175,33 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 });
 
 
+export type PushAction = { type: '@redux-forms/PUSH', payload: {
+  form: string,
+  id: string,
+  name: string,
+} };
+
+export type PushCreator = (form: string, id: string, name: string) => PushAction;
+
+export const push: PushCreator = (form, id, name) => ({
+  type: PUSH,
+  payload: { form, id, name },
+});
+
+
+export type PopAction = { type: '@redux-forms/POP', payload: {
+  form: string,
+  id: string,
+} };
+
+export type PopCreator = (form: string, id: string) => PopAction;
+
+export const pop: PopCreator = (form, id) => ({
+  type: POP,
+  payload: { form, id },
+});
+
+
 export type FieldChangeAction = { type: '@redux-forms/FIELD_CHANGE', payload: {
   form: string,
   field: string,
@@ -217,6 +260,8 @@ export type Action =
     RemoveFieldAction |
     AddArrayAction |
     RemoveArrayAction |
+    PushAction |
+    PopAction |
     FieldChangeAction |
     FieldFocusAction |
     FieldBlurAction;
