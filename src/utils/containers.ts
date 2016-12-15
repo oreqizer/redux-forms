@@ -3,6 +3,7 @@ import { Value } from "./getValue";
 
 export const form = {
   fields: {},
+  fieldArrays: {},
 };
 
 export const field = {
@@ -25,5 +26,8 @@ export type FieldObj = {
 };
 
 export type FormObj = {
+  // key - value pairs of field id and the field object
   fields: { [key: string]: FieldObj },
+  // array of field ids that belong to given array
+  fieldArrays: { [key: string]: string[] },
 };

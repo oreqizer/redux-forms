@@ -6,9 +6,11 @@ import { form, field, FormObj, FieldObj } from "./utils/containers";
 
 export const ADD_FORM = '@redux-forms/ADD_FORM';
 export const REMOVE_FORM = '@redux-forms/REMOVE_FORM';
-
 export const ADD_FIELD = '@redux-forms/ADD_FIELD';
 export const REMOVE_FIELD = '@redux-forms/REMOVE_FIELD';
+
+export const ADD_ARRAY = '@redux-forms/ADD_ARRAY';
+export const REMOVE_ARRAY = '@redux-forms/REMOVE_ARRAY';
 
 export const FIELD_CHANGE = '@redux-forms/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-forms/FIELD_FOCUS';
@@ -37,6 +39,18 @@ export default function formsReducer(state: State = {}, a: Action): State {
     case REMOVE_FIELD:
       return R.dissocPath<State>(
         [a.payload.form, 'fields', a.payload.id], state,
+      );
+
+    // Array
+    // ---
+    case ADD_ARRAY:
+      return R.assocPath<string[], State>(
+        [a.payload.form, 'fieldArrays', a.payload.id], [], state,
+      );
+
+    case REMOVE_ARRAY:
+      return R.dissocPath<State>(
+        [a.payload.form, 'fieldArrays', a.payload.id], state,
       );
 
     // Field
@@ -119,6 +133,32 @@ export const removeField: RemoveFieldCreator = (form, id) => ({
 });
 
 
+export type AddArrayAction = { type: '@redux-forms/ADD_ARRAY', payload: {
+  form: string,
+  id: string,
+} };
+
+export type AddArrayCreator = (form: string, id: string) => AddArrayAction;
+
+export const addArray: AddArrayCreator = (form, id) => ({
+  type: ADD_ARRAY,
+  payload: { form, id },
+});
+
+
+export type RemoveArrayAction = { type: '@redux-forms/REMOVE_ARRAY', payload: {
+  form: string,
+  id: string,
+} };
+
+export type RemoveArrayCreator = (form: string, id: string) => RemoveArrayAction;
+
+export const removeArray: RemoveArrayCreator = (form, id) => ({
+  type: REMOVE_ARRAY,
+  payload: { form, id },
+});
+
+
 export type FieldChangeAction = { type: '@redux-forms/FIELD_CHANGE', payload: {
   form: string,
   field: string,
@@ -175,6 +215,8 @@ export type Action =
     RemoveFormAction |
     AddFieldAction |
     RemoveFieldAction |
+    AddArrayAction |
+    RemoveArrayAction |
     FieldChangeAction |
     FieldFocusAction |
     FieldBlurAction;
