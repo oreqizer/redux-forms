@@ -5,9 +5,8 @@ import * as invariant from 'invariant';
 import { Context } from "../reduxForm";
 
 
-export type ArrayProps = {
+export type NameProps = {
   name: string,
-  flat?: boolean,
 };
 
 export type ContextProps = {
@@ -15,22 +14,21 @@ export type ContextProps = {
   _arrayId: string,
 };
 
-export type WrappedField<T> = React.ComponentClass<T & ArrayProps & ContextProps>;
+export type WrappedField<T> = React.ComponentClass<T & NameProps & ContextProps>;
 
-export type Connected<T> = React.ComponentClass<T & ArrayProps> & {
+export type Connected<T> = React.ComponentClass<T & NameProps> & {
   WrappedComponent?: WrappedField<T>,
 };
 
 
 export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connected<T> {
   class ConnectedFieldArray
-  extends React.PureComponent<T & ArrayProps, void>
+  extends React.PureComponent<T & NameProps, void>
   implements React.ChildContextProvider<Context> {
     static contextTypes = {
       reduxForms: React.PropTypes.shape({
         form: React.PropTypes.string.isRequired,
         context: React.PropTypes.string.isRequired,
-        flattened: React.PropTypes.bool.isRequired,
       }).isRequired,
     };
 
@@ -38,7 +36,6 @@ export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connecte
       reduxForms: React.PropTypes.shape({
         form: React.PropTypes.string.isRequired,
         context: React.PropTypes.string.isRequired,
-        flattened: React.PropTypes.bool.isRequired,
       }).isRequired,
     };
 
@@ -46,7 +43,7 @@ export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connecte
 
     static WrappedComponent = Wrapped;
 
-    constructor(props: T & ArrayProps, context: Context) {
+    constructor(props: T & NameProps, context: Context) {
       super(props);
 
       invariant(
@@ -56,14 +53,13 @@ export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connecte
     }
 
     getChildContext() {
-      const { name, flat } = this.props;
+      const { name } = this.props;
       const { form, context } = this.context.reduxForms;
 
       return {
         reduxForms: {
           form,
-          context: context ? `${context}.${name}` : name,
-          flattened: Boolean(flat),
+          context: context + name,
         },
       };
     }
@@ -74,7 +70,7 @@ export default function connectFieldArray<T>(Wrapped: WrappedField<T>): Connecte
 
       return React.createElement(Wrapped, R.merge(this.props, {
         _form: form,
-        _arrayId: context ? `${context}.${name}` : name,
+        _arrayId: context + name,
       }));
     }
   }

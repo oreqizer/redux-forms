@@ -157,7 +157,6 @@ describe('#reduxForm', () => {
       reduxForms: {
         form: 'test',
         context: '',
-        flattened: false,
       },
     });
   });

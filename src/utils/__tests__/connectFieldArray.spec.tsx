@@ -32,7 +32,7 @@ const deep = {
   context: {
     reduxForms: {
       form: 'test',
-      context: 'nested[0]',
+      context: 'nested',
       flattened: false,
     },
   },
@@ -72,7 +72,7 @@ describe('#connectFieldArray', () => {
   });
 
   it('should provide a deep id', () => {
-    const wrapper = mount(<Decorated name="array" />, deep);
+    const wrapper = mount(<Decorated name="[0].array" />, deep);
 
     expect(wrapper.find(MyComp).prop('_arrayId')).toBe('nested[0].array');
   });
@@ -83,17 +83,15 @@ describe('#connectFieldArray', () => {
     expect(wrapper.instance().getChildContext().reduxForms).toEqual({
       form: 'test',
       context: 'array',
-      flattened: false,
     });
   });
 
   it('should provide a deep context', () => {
-    const wrapper: any = mount(<Decorated name="array" />, deep);
+    const wrapper: any = mount(<Decorated name="[0].array" />, deep);
 
     expect(wrapper.instance().getChildContext().reduxForms).toEqual({
       form: 'test',
       context: 'nested[0].array',
-      flattened: false,
     });
   });
 
@@ -103,7 +101,6 @@ describe('#connectFieldArray', () => {
     expect(wrapper.instance().getChildContext().reduxForms).toEqual({
       form: 'test',
       context: 'array',
-      flattened: true,
     });
   });
 });
