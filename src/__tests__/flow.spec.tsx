@@ -14,6 +14,7 @@ const FlatFields = (props: any) => (
   <div className="FlatFields">
     {props.fields.map((id: string) => (
       <Field
+        key={id}
         name={id}
         component="input"
       />
@@ -24,7 +25,7 @@ const FlatFields = (props: any) => (
 const DeepFields = (props: any) => (
   <div className="DeepFields">
     {props.fields.map((id: string) => (
-      <div className="DeepField">
+      <div className="DeepField" key={id}>
         <Field
           name={`${id}.name`}
           component="input"
@@ -78,5 +79,41 @@ describe('#flow', () => {
     expect(f.fields).toEqual({ title: field });
     expect(f.arrays).toEqual({ flatarray: [], deeparray: [] });
     expect(f.counters).toEqual({ flatarray: 0, deeparray: 0 });
+  });
+
+  it('should add a field to a flat array', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <Form />
+      </Provider>,
+    );
+
+    wrapper.find(FlatFields).prop('fields').push();
+
+    const f = getForm(store);
+    expect(f.fields).toEqual({ 'title': field, 'flatarray[0]': field });
+    expect(f.arrays).toEqual({ flatarray: ['[0]'], deeparray: [] });
+    expect(f.counters).toEqual({ flatarray: 1, deeparray: 0 });
+  });
+
+  it('should add a field to a deep array', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <Form />
+      </Provider>,
+    );
+
+    wrapper.find(DeepFields).prop('fields').push();
+
+    const f = getForm(store);
+    expect(f.arrays).toEqual({ flatarray: [], deeparray: ['[0]'] });
+    expect(f.counters).toEqual({ flatarray: 0, deeparray: 1 });
+    expect(f.fields).toEqual({
+      'title': field,
+      'deeparray[0].name': field,
+      'deeparray[0].surname': field,
+    });
   });
 });
