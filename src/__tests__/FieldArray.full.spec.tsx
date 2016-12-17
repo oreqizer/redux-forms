@@ -119,7 +119,7 @@ describe('#connect(FieldArray)', () => {
 
     wrapper.prop('fields').push();
 
-    expect(getForm(store).arrays).toEqual({ test: ['test[0]'] });
+    expect(getForm(store).arrays).toEqual({ test: ['[0]'] });
   });
 
   it('should pop a field', () => {
@@ -155,6 +155,6 @@ describe('#connect(FieldArray)', () => {
     wrapper.prop('fields').push();
     wrapper.prop('fields').push();
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['test[0]', 'test[1]']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['[0]', '[1]']);
   });
 });

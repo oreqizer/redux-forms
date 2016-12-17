@@ -65,7 +65,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-          R.append(a.payload.name),
+          R.append(`[${R.path([a.payload.form, 'counters', a.payload.id], state)}]`),
         ),
       )(state);
 
@@ -185,14 +185,13 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 export type PushAction = { type: '@redux-forms/PUSH', payload: {
   form: string,
   id: string,
-  name: string,
 } };
 
-export type PushCreator = (form: string, id: string, name: string) => PushAction;
+export type PushCreator = (form: string, id: string) => PushAction;
 
-export const push: PushCreator = (form, id, name) => ({
+export const push: PushCreator = (form, id) => ({
   type: PUSH,
-  payload: { form, id, name },
+  payload: { form, id },
 });
 
 

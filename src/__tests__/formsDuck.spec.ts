@@ -50,9 +50,9 @@ describe('#formsDuck', () => {
   });
 
   it('should create a PUSH action', () => {
-    expect(duck.push('form', 'field', 'field[0]')).toEqual({
+    expect(duck.push('form', 'field')).toEqual({
       type: duck.PUSH,
-      payload: { form: 'form', id: 'field', name: 'field[0]' },
+      payload: { form: 'form', id: 'field' },
     });
   });
 
@@ -146,12 +146,12 @@ describe('#formsDuck', () => {
     const state: any = reducer({
       form: {
         ...form,
-        arrays: { array: ['array[0]'] },
+        arrays: { array: ['[0]'] },
         counters: { array: 1 },
       },
-    }, duck.push('form', 'array', 'array[1]'));
+    }, duck.push('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual(['array[0]', 'array[1]']);
+    expect(state.form.arrays.array).toEqual(['[0]', '[1]']);
     expect(state.form.counters.array).toBe(2);
   });
 

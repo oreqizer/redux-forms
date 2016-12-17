@@ -60,9 +60,9 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePush() {
-    const { name, _counter, _push, _form, _arrayId } = this.props;
+    const { name, _push, _form, _arrayId } = this.props;
 
-    _push(_form, _arrayId, `${_arrayId}[${_counter}]`);
+    _push(_form, _arrayId);
   }
 
   handlePop() {
@@ -92,7 +92,6 @@ type ConnectedProps = IOwnProps & ContextProps;
 
 type StateProps = {
   _array?: string[],
-  _counter?: number,
 };
 
 type ActionProps = {
@@ -114,7 +113,6 @@ const actions = {
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
   _array: R.path<string[]>([props._form, 'arrays', props._arrayId], state.reduxForms),
-  _counter: R.path<number>([props._form, 'counters', props._arrayId], state.reduxForms),
 }), actions)(FieldArray);
 
 const Contexted = connectFieldArray<IOwnProps>(Connected);

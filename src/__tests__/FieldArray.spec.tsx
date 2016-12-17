@@ -47,7 +47,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _addArray={addArray}
       />,
     );
@@ -93,12 +93,12 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _addArray={jest.fn()}
       />,
     );
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['lol[0]', 'lol[1]']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['[0]', '[1]']);
   });
 
   it('should handle push', () => {
@@ -109,7 +109,7 @@ describe('#FieldArray', () => {
         component={Component}
         _form="form"
         _arrayId="arrayId"
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _counter={0}
         _addArray={jest.fn()}
         _push={push}
@@ -118,7 +118,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').push();
 
-    expect(push).toBeCalledWith('form', 'arrayId', 'arrayId[0]');
+    expect(push).toBeCalledWith('form', 'arrayId');
   });
 
   it('should handle pop', () => {
@@ -129,7 +129,7 @@ describe('#FieldArray', () => {
         component={Component}
         _form="form"
         _arrayId="arrayId"
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _addArray={jest.fn()}
         _pop={pop}
       />,
@@ -157,7 +157,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _addArray={jest.fn()}
       />,
     );
@@ -171,7 +171,7 @@ describe('#FieldArray', () => {
         name="array"
         component={Component}
         doge="wow"
-        _array={['lol[0]', 'lol[1]']}
+        _array={['[0]', '[1]']}
         _addArray={jest.fn()}
       />,
     );
