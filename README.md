@@ -1,7 +1,7 @@
-# redux-forms
+# redux-form-lite
 
-[![Build Status](https://travis-ci.org/oreqizer/redux-forms.svg?branch=master)](https://travis-ci.org/oreqizer/redux-forms)
-[![codecov](https://codecov.io/gh/oreqizer/redux-forms/branch/master/graph/badge.svg)](https://codecov.io/gh/oreqizer/redux-forms)
+[![Build Status](https://travis-ci.org/oreqizer/redux-form-lite.svg?branch=master)](https://travis-ci.org/oreqizer/redux-form-lite)
+[![codecov](https://codecov.io/gh/oreqizer/redux-form-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/oreqizer/redux-form-lite)
 
 A simple form manager for React and Redux. The API similarities to `redux-form` are intentional - this project is meant to take the best of `redux-form` while keeping it as lightweight as possible.
 
@@ -9,20 +9,20 @@ A simple form manager for React and Redux. The API similarities to `redux-form` 
 
 > These docs are temporary - fully covered documentation will come after the API is done.
 
-First, add `reduxForms` to your root reducer.
+First, add `reduxFormLite` to your root reducer.
 
 ```javascript
-import { reducer } from 'redux-forms';
+import { reducer } from 'redux-form-lite';
 
 export default combineReducers({
-  reduxForms: reducer,
+  reduxFormLite: reducer,
 });
 ```
 
 To create a form, decorate a component with `reduxForm`:
 
 ```javascript
-import { reduxForm } from 'redux-forms';
+import { reduxForm } from 'redux-form-lite';
 
 // ... your component
 
@@ -54,7 +54,7 @@ Then you can mount your fields. Your fields can be either a string, or a custom 
 - `normalize: (val: string) => string` - function to normalize the input. e.g. accept only numbers
 
 ```javascript
-import { Field } from 'redux-forms';
+import { Field } from 'redux-form-lite';
 
 const Form = (props) => (
   <div className="Form">

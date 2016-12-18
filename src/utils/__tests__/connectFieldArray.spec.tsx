@@ -17,27 +17,27 @@ const Decorated: any = connectFieldArray(MyComp);
 
 const flat = {
   context: {
-    reduxForms: {
+    reduxFormLite: {
       form: 'test',
       context: '',
       flattened: false,
     },
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.object.isRequired,
   },
 };
 
 const deep = {
   context: {
-    reduxForms: {
+    reduxFormLite: {
       form: 'test',
       context: 'nested',
       flattened: false,
     },
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.object.isRequired,
   },
 };
 
@@ -80,7 +80,7 @@ describe('#connectFieldArray', () => {
   it('should provide a regular context', () => {
     const wrapper: any = mount(<Decorated name="array" />, flat);
 
-    expect(wrapper.instance().getChildContext().reduxForms).toEqual({
+    expect(wrapper.instance().getChildContext().reduxFormLite).toEqual({
       form: 'test',
       context: 'array',
     });
@@ -89,7 +89,7 @@ describe('#connectFieldArray', () => {
   it('should provide a deep context', () => {
     const wrapper: any = mount(<Decorated name="[0].array" />, deep);
 
-    expect(wrapper.instance().getChildContext().reduxForms).toEqual({
+    expect(wrapper.instance().getChildContext().reduxFormLite).toEqual({
       form: 'test',
       context: 'nested[0].array',
     });
@@ -98,7 +98,7 @@ describe('#connectFieldArray', () => {
   it('should add flattened to context', () => {
     const wrapper: any = mount(<Decorated flat name="array" />, flat);
 
-    expect(wrapper.instance().getChildContext().reduxForms).toEqual({
+    expect(wrapper.instance().getChildContext().reduxFormLite).toEqual({
       form: 'test',
       context: 'array',
     });

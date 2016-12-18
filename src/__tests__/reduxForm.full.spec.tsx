@@ -25,12 +25,12 @@ const MyComp = () => (
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxForms: reducer,
+  reduxFormLite: reducer,
 }), {
-  reduxForms: { test: form },
+  reduxFormLite: { test: form },
 });
 
-const getForm = (state: any) => state.getState().reduxForms.test;
+const getForm = (state: any) => state.getState().reduxFormLite.test;
 
 
 describe('#connect(reduxForm)', () => {
@@ -44,7 +44,7 @@ describe('#connect(reduxForm)', () => {
       </Provider>,
     );
 
-    expect(store.getState().reduxForms).toEqual({ test: form });
+    expect(store.getState().reduxFormLite).toEqual({ test: form });
   });
 
   it('should mount an unnamed component', () => {
@@ -87,7 +87,7 @@ describe('#connect(reduxForm)', () => {
       </Provider>,
     );
 
-    expect(store.getState().reduxForms).toEqual({ test: form });
+    expect(store.getState().reduxFormLite).toEqual({ test: form });
   });
 
   it('should remove a form', () => {
@@ -102,7 +102,7 @@ describe('#connect(reduxForm)', () => {
 
     wrapper.unmount();
 
-    expect(store.getState().reduxForms).toEqual({});
+    expect(store.getState().reduxFormLite).toEqual({});
   });
 
   it('should supply a form prop', () => {

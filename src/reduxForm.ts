@@ -13,7 +13,7 @@ export type Options = {
 };
 
 export type Context = {
-  reduxForms: {
+  reduxFormLite: {
     form: string,
     context: string,
   };
@@ -56,7 +56,7 @@ const reduxForm = <T>(options: Options) => {
       static displayName = 'ReduxForm';
 
       static childContextTypes = {
-        reduxForms: React.PropTypes.shape({
+        reduxFormLite: React.PropTypes.shape({
           form: React.PropTypes.string.isRequired,
           context: React.PropTypes.string.isRequired,
         }).isRequired,
@@ -78,7 +78,7 @@ const reduxForm = <T>(options: Options) => {
 
       getChildContext() {
         return {
-          reduxForms: {
+          reduxFormLite: {
             form: options.form,
             context: '',
           },
@@ -97,7 +97,7 @@ const reduxForm = <T>(options: Options) => {
     }
 
     const Connected = connect<StateProps, ActionProps, T>((state) => ({
-      _form: R.prop<FormObj>(options.form, state.reduxForms),
+      _form: R.prop<FormObj>(options.form, state.reduxFormLite),
     }), {
       _addForm: duck.addForm,
       _removeForm: duck.removeForm,

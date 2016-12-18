@@ -14,14 +14,14 @@ import { form, field } from '../utils/containers';
 
 const options = {
   context: {
-    reduxForms: {
+    reduxFormLite: {
       form: 'test',
       context: '',
       flattened: false,
     },
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.object.isRequired,
   },
 };
 
@@ -33,12 +33,12 @@ const MyComp = () => (
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxForms: reducer,
+  reduxFormLite: reducer,
 }), {
-  reduxForms: { test: form },
+  reduxFormLite: { test: form },
 });
 
-const getForm = (state: any) => state.getState().reduxForms.test;
+const getForm = (state: any) => state.getState().reduxFormLite.test;
 
 
 describe('#connect(FieldArray)', () => {

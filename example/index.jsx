@@ -14,7 +14,7 @@ whyDidYouUpdate(React);
 
 const logger = createLogger({ collapsed: true });
 const store = createStore(combineReducers({
-  reduxForms: reducer,
+  reduxFormLite: reducer,
 }), {}, applyMiddleware(logger));
 
 const Root = () => (

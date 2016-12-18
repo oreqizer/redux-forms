@@ -4,19 +4,19 @@ import { Value } from "./utils/getValue";
 import { form, field, FormObj, FieldObj } from "./utils/containers";
 
 
-export const ADD_FORM = '@redux-forms/ADD_FORM';
-export const REMOVE_FORM = '@redux-forms/REMOVE_FORM';
-export const ADD_FIELD = '@redux-forms/ADD_FIELD';
-export const REMOVE_FIELD = '@redux-forms/REMOVE_FIELD';
+export const ADD_FORM = '@redux-form-lite/ADD_FORM';
+export const REMOVE_FORM = '@redux-form-lite/REMOVE_FORM';
+export const ADD_FIELD = '@redux-form-lite/ADD_FIELD';
+export const REMOVE_FIELD = '@redux-form-lite/REMOVE_FIELD';
 
-export const ADD_ARRAY = '@redux-forms/ADD_ARRAY';
-export const REMOVE_ARRAY = '@redux-forms/REMOVE_ARRAY';
-export const PUSH = '@redux-forms/PUSH';
-export const POP = '@redux-forms/POP';
+export const ADD_ARRAY = '@redux-form-lite/ADD_ARRAY';
+export const REMOVE_ARRAY = '@redux-form-lite/REMOVE_ARRAY';
+export const PUSH = '@redux-form-lite/PUSH';
+export const POP = '@redux-form-lite/POP';
 
-export const FIELD_CHANGE = '@redux-forms/FIELD_CHANGE';
-export const FIELD_FOCUS = '@redux-forms/FIELD_FOCUS';
-export const FIELD_BLUR = '@redux-forms/FIELD_BLUR';
+export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
+export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
+export const FIELD_BLUR = '@redux-form-lite/FIELD_BLUR';
 
 
 export default function formsReducer(state: State = {}, a: Action): State {
@@ -105,7 +105,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 }
 
 
-export type AddFormAction = { type: '@redux-forms/ADD_FORM', payload: {
+export type AddFormAction = { type: '@redux-form-lite/ADD_FORM', payload: {
   name: string,
 } };
 
@@ -117,7 +117,7 @@ export const addForm: AddFormCreator = (name) => ({
 });
 
 
-export type RemoveFormAction = { type: '@redux-forms/REMOVE_FORM', payload: {
+export type RemoveFormAction = { type: '@redux-form-lite/REMOVE_FORM', payload: {
   name: string,
 } };
 
@@ -129,7 +129,7 @@ export const removeForm: RemoveFormCreator = (name) => ({
 });
 
 
-export type AddFieldAction = { type: '@redux-forms/ADD_FIELD', payload: {
+export type AddFieldAction = { type: '@redux-form-lite/ADD_FIELD', payload: {
   form: string,
   id: string,
   field: FieldObj,
@@ -143,7 +143,7 @@ export const addField: AddFieldCreator = (form, id, field) => ({
 });
 
 
-export type RemoveFieldAction = { type: '@redux-forms/REMOVE_FIELD', payload: {
+export type RemoveFieldAction = { type: '@redux-form-lite/REMOVE_FIELD', payload: {
   form: string,
   id: string,
 } };
@@ -156,7 +156,7 @@ export const removeField: RemoveFieldCreator = (form, id) => ({
 });
 
 
-export type AddArrayAction = { type: '@redux-forms/ADD_ARRAY', payload: {
+export type AddArrayAction = { type: '@redux-form-lite/ADD_ARRAY', payload: {
   form: string,
   id: string,
 } };
@@ -169,7 +169,7 @@ export const addArray: AddArrayCreator = (form, id) => ({
 });
 
 
-export type RemoveArrayAction = { type: '@redux-forms/REMOVE_ARRAY', payload: {
+export type RemoveArrayAction = { type: '@redux-form-lite/REMOVE_ARRAY', payload: {
   form: string,
   id: string,
 } };
@@ -182,7 +182,7 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 });
 
 
-export type PushAction = { type: '@redux-forms/PUSH', payload: {
+export type PushAction = { type: '@redux-form-lite/PUSH', payload: {
   form: string,
   id: string,
 } };
@@ -195,7 +195,7 @@ export const push: PushCreator = (form, id) => ({
 });
 
 
-export type PopAction = { type: '@redux-forms/POP', payload: {
+export type PopAction = { type: '@redux-form-lite/POP', payload: {
   form: string,
   id: string,
 } };
@@ -208,7 +208,7 @@ export const pop: PopCreator = (form, id) => ({
 });
 
 
-export type FieldChangeAction = { type: '@redux-forms/FIELD_CHANGE', payload: {
+export type FieldChangeAction = { type: '@redux-form-lite/FIELD_CHANGE', payload: {
   form: string,
   field: string,
   value: Value,
@@ -226,7 +226,7 @@ export const fieldChange: FieldChangeCreator = (form, field, value, error, dirty
 });
 
 
-export type FieldFocusAction = { type: '@redux-forms/FIELD_FOCUS', payload: {
+export type FieldFocusAction = { type: '@redux-form-lite/FIELD_FOCUS', payload: {
   form: string,
   field: string,
 } };
@@ -239,7 +239,7 @@ export const fieldFocus: FieldFocusCreator = (form, field) => ({
 });
 
 
-export type FieldBlurAction = { type: '@redux-forms/FIELD_BLUR', payload: {
+export type FieldBlurAction = { type: '@redux-form-lite/FIELD_BLUR', payload: {
   form: string,
   field: string,
   error: string | null,
