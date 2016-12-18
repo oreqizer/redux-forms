@@ -1,5 +1,5 @@
 {
-  "name": "redux-forms",
+  "name": "redux-form-lite",
   "main": "dist/lib/index.d.ts",
-  "out": "../redux-forms.d.ts"
+  "out": "../redux-form-lite.d.ts"
 }

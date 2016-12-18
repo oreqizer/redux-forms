@@ -154,7 +154,7 @@ describe('#reduxForm', () => {
     );
 
     expect((wrapper.instance() as any).getChildContext()).toEqual({
-      reduxForms: {
+      reduxFormLite: {
         form: 'test',
         context: '',
       },

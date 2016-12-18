@@ -17,25 +17,25 @@ const Decorated: any = connectField(MyComp);
 
 const flat = {
   context: {
-    reduxForms: {
+    reduxFormLite: {
       form: 'test',
       context: '',
     },
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.object.isRequired,
   },
 };
 
 const deep = {
   context: {
-    reduxForms: {
+    reduxFormLite: {
       form: 'test',
       context: 'nested',
     },
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.object.isRequired,
   },
 };
 

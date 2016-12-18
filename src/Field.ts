@@ -198,7 +198,7 @@ const actions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxForms),
+  _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxFormLite),
 }), actions)(Field);
 
 const Contexted = connectField<IOwnProps>(Connected);

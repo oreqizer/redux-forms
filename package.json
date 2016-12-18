@@ -1,5 +1,5 @@
 {
-  "name": "redux-forms",
+  "name": "redux-form-lite",
   "version": "0.1.0",
   "description": "A simple form management for Redux & React.",
   "main": "lib/index.js",
@@ -13,8 +13,8 @@
     "tslint": "tslint src/**.{ts,tsx}",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && npm run dts",
     "build:lib": "tsc && babel lib --out-dir lib",
-    "build:umd": "webpack src/index.ts dist/redux-forms.js",
-    "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/redux-forms.min.js",
+    "build:umd": "webpack src/index.ts dist/redux-form-lite.js",
+    "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/redux-form-lite.min.js",
     "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
     "docs": "typedoc --out docs/ --mode modules src/",
     "clean": "rimraf lib dist",
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oreqizer/redux-forms.git"
+    "url": "git+https://github.com/oreqizer/redux-form-lite.git"
   },
   "keywords": [
     "form",
@@ -47,9 +47,9 @@
   "author": "oreqizer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oreqizer/redux-forms/issues"
+    "url": "https://github.com/oreqizer/redux-form-lite/issues"
   },
-  "homepage": "https://github.com/oreqizer/redux-forms#readme",
+  "homepage": "https://github.com/oreqizer/redux-form-lite#readme",
   "devDependencies": {
     "@types/enzyme": "^2.5.39",
     "@types/invariant": "^2.2.28",

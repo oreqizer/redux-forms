@@ -23,7 +23,7 @@ const config = {
     extensions: ['.js', '.ts', '.tsx'],
   },
   output: {
-    library: 'ReduxForms',
+    library: 'ReduxFormLite',
     libraryTarget: 'umd',
   },
   plugins: [
