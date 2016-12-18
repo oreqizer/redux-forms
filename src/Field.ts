@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import connectField, { ContextProps } from './utils/connectField';
-import prepareProps from './utils/prepareProps';
+import fieldProps from './utils/fieldProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
 import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
@@ -150,7 +150,7 @@ class Field extends React.PureComponent<AllProps, void> {
       return null;
     }
 
-    const { input, meta, custom } = prepareProps(R.mergeAll<IAllProps>([rest, _field, {
+    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,

@@ -11,6 +11,8 @@ const MyComp: any = () => (
   <div className="Component" />
 );
 
+MyComp.displayName = 'MyComp';
+
 const Decorated: any = connectField(MyComp);
 
 const flat = {
@@ -29,7 +31,7 @@ const deep = {
   context: {
     reduxForms: {
       form: 'test',
-      context: 'nested[0]',
+      context: 'nested',
     },
   },
   childContextTypes: {
@@ -45,6 +47,16 @@ describe('#connectField', () => {
     expect(mountFn).toThrowError(/decorated with "reduxForm"/);
   });
 
+  it('should keep the original name', () => {
+    const wrapper = mount(<Decorated name="field" />, flat);
+
+    expect(wrapper.name()).toBe('MyComp');
+  });
+
+  it('should provide a reference to the original', () => {
+    expect(Decorated.WrappedComponent).toBe(MyComp);
+  });
+
   it('should provide form name', () => {
     const wrapper = mount(<Decorated name="field" />, flat);
 
@@ -58,7 +70,7 @@ describe('#connectField', () => {
   });
 
   it('should provide a deep id', () => {
-    const wrapper = mount(<Decorated name="field" />, deep);
+    const wrapper = mount(<Decorated name="[0].field" />, deep);
 
     expect(wrapper.find(MyComp).prop('_id')).toBe('nested[0].field');
   });

@@ -35,6 +35,34 @@ describe('#formsDuck', () => {
     });
   });
 
+  it('should create an ADD_ARRAY action', () => {
+    expect(duck.addArray('form', 'field')).toEqual({
+      type: duck.ADD_ARRAY,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a REMOVE_ARRAY action', () => {
+    expect(duck.removeArray('form', 'field')).toEqual({
+      type: duck.REMOVE_ARRAY,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a PUSH action', () => {
+    expect(duck.push('form', 'field')).toEqual({
+      type: duck.PUSH,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a POP action', () => {
+    expect(duck.pop('form', 'field')).toEqual({
+      type: duck.POP,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
   it('should create a FIELD_CHANGE action', () => {
     expect(duck.fieldChange('form', 'field', 'value', 'error', true)).toEqual({
       type: duck.FIELD_CHANGE,
@@ -79,7 +107,7 @@ describe('#formsDuck', () => {
 
   it('should add a field', () => {
     const state: any = reducer({
-      form: { fields: {} },
+      form: { ...form, fields: {} },
     }, duck.addField('form', 'field', field));
 
     expect(state.form.fields.field).toEqual(field);
@@ -87,15 +115,57 @@ describe('#formsDuck', () => {
 
   it('should remove a field', () => {
     const state: any = reducer({
-      form: { fields: { field } },
+      form: { ...form, fields: { field } },
     }, duck.removeField('form', 'field'));
 
     expect(state.form.fields).toEqual({});
   });
 
+  it('should add an array', () => {
+    const state: any = reducer({
+      form,
+    }, duck.addArray('form', 'array'));
+
+    expect(state.form.arrays.array).toEqual([]);
+    expect(state.form.counters.array).toBe(0);
+  });
+
+  it('should remove an array', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        arrays: { array: [] },
+        counters: { array: 0 },
+      },
+    }, duck.removeArray('form', 'array'));
+
+    expect(state.form).toEqual(form);
+  });
+
+  it('should push to an array', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        arrays: { array: ['[0]'] },
+        counters: { array: 1 },
+      },
+    }, duck.push('form', 'array'));
+
+    expect(state.form.arrays.array).toEqual(['[0]', '[1]']);
+    expect(state.form.counters.array).toBe(2);
+  });
+
+  it('should pop from an array', () => {
+    const state: any = reducer({
+      form: { ...form, arrays: { array: ['array[0]', 'array[1]'] } },
+    }, duck.pop('form', 'array'));
+
+    expect(state.form.arrays.array).toEqual(['array[0]']);
+  });
+
   it('should change a field', () => {
     const state: any = reducer({
-      form: { fields: { field } },
+      form: { ...form, fields: { field } },
     }, duck.fieldChange('form', 'field', 'doge', 'error', true));
 
     expect(state.form.fields.field).toEqual({
@@ -117,7 +187,7 @@ describe('#formsDuck', () => {
     };
 
     const state: any = reducer({
-      form: { fields: { field: newField } },
+      form: { ...form, fields: { field: newField } },
     }, duck.fieldChange('form', 'field', 'doge', 'error', true));
 
     expect(state.form.fields.field.touched).toBe(true);
@@ -127,7 +197,7 @@ describe('#formsDuck', () => {
 
   it('should focus a field', () => {
     const state: any = reducer({
-      form: { fields: { field } },
+      form: { ...form, fields: { field } },
     }, duck.fieldFocus('form', 'field'));
 
     expect(state.form.fields.field).toEqual({
@@ -150,7 +220,7 @@ describe('#formsDuck', () => {
     };
 
     const state: any = reducer({
-      form: { fields: { field: newField } },
+      form: { ...form, fields: { field: newField } },
     }, duck.fieldFocus('form', 'field'));
 
     expect(state.form.fields.field.value).toBe('doge');
@@ -166,7 +236,7 @@ describe('#formsDuck', () => {
     };
 
     const state: any = reducer({
-      form: { fields: { field: newField } },
+      form: { ...form, fields: { field: newField } },
     }, duck.fieldBlur('form', 'field', 'error', true));
 
     expect(state.form.fields.field).toEqual({
@@ -187,7 +257,7 @@ describe('#formsDuck', () => {
     };
 
     const state: any = reducer({
-      form: { fields: { field: newField } },
+      form: { ...form, fields: { field: newField } },
     }, duck.fieldBlur('form', 'field', 'error', true));
 
     expect(state.form.fields.field.value).toBe('doge');

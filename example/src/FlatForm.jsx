@@ -1,7 +1,7 @@
 import React from 'react';
 import { reduxForm, Field } from '../../lib';
 
-const Form = props =>
+const Form = props => (
   <div>
     <h2>My form 2 (native inputs):</h2>
     input
@@ -24,7 +24,8 @@ const Form = props =>
     <button onClick={() => console.log(props.form.values)}>
       values -> console
     </button>
-  </div>;
+  </div>
+);
 
 export default reduxForm({
   form: 'second',

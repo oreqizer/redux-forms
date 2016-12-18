@@ -1,15 +1,14 @@
 import React from 'react';
-import { reduxForm, Field } from '../../lib';
+import { reduxForm, Field, FieldArray } from '../../lib';
 
 import Input from './Input';
 
 const InputArray = props => (
   <div>
-    {props.fields.map((index) =>
+    {props.fields.map((id) =>
       <Field
-        name="flatfield"
-        key={index}
-        index={index}
+        key={id}
+        name={id}
         component={Input}
       />
     )}
@@ -24,19 +23,17 @@ const InputArray = props => (
 
 const DeepArray = props => (
   <div>
-    {props.fields.map(index =>
-      <div key={index}>
+    {props.fields.map(id =>
+      <div key={id}>
         name:
         <Field
-          name="name"
-          index={index}
+          name={`${id}.name`}
           component={Input}
         />
         <br />
         surname:
         <Field
-          name="surname"
-          index={index}
+          name={`${id}.surname`}
           component={Input}
         />
       </div>
@@ -69,6 +66,15 @@ const Form = props => (
       component={Input}
     />
     <br />
+    <FieldArray
+      name="hobbies"
+      component={InputArray}
+    />
+    <br />
+    <FieldArray
+      name="profiles"
+      component={DeepArray}
+    />
     <div>---</div>
     <br />
     <button onClick={() => console.log(props.form.values)}>

@@ -5,6 +5,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 
 import reduxForm from '../reduxForm';
+import { form } from '../utils/containers';
 
 
 // NOTE:
@@ -18,8 +19,6 @@ import reduxForm from '../reduxForm';
 const MyComp = () => (
   <div className="Component" />
 );
-
-const formMock = { fields: {} };
 
 
 describe('#reduxForm', () => {
@@ -68,7 +67,7 @@ describe('#reduxForm', () => {
     const addForm = jest.fn();
     const wrapper = mount(
       <Decorated
-        _form={formMock}
+        _form={form}
         _addForm={addForm}
         _removeForm={jest.fn()}
       />,
@@ -134,7 +133,7 @@ describe('#reduxForm', () => {
 
     const wrapper = mount(
       <Decorated
-        _form={formMock}
+        _form={form}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
       />,
@@ -148,7 +147,7 @@ describe('#reduxForm', () => {
 
     const wrapper = mount(
       <Decorated
-        _form={formMock}
+        _form={form}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
       />,

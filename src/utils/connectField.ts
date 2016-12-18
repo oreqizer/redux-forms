@@ -27,7 +27,7 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
 
     return React.createElement(Wrapped, R.merge(props, {
       _form: reduxForms.form,
-      _id: reduxForms.context ? `${reduxForms.context}.${props.name}` : props.name,
+      _id: reduxForms.context + props.name,
     }));
   };
 
