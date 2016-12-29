@@ -16,12 +16,18 @@ const memUnflat = R.memoize(unflatten);
 
 export const fieldSelector = (name: string, state: IState): Object => {
   const form = state.reduxFormLite[name];
+  if (!form) {
+    return {};
+  }
 
   return memUnflat(form.fields);
 };
 
 export const mapSelector = (name: string, fn: Mapper, state: IState): Object => {
   const form = state.reduxFormLite[name];
+  if (!form) {
+    return {};
+  }
 
   // TS doesn't recognize objects as Functors
   return memUnflat(R.map(fn, <any> form.fields));
