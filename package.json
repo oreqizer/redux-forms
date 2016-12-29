@@ -95,7 +95,7 @@
   },
   "dependencies": {
     "invariant": "^2.2.2",
-    "ramda": "^0.22.1",
+    "ramda": "^0.22.1"
   },
   "files": [
     "dist",
