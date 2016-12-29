@@ -44,7 +44,7 @@ const touchstate = {
 
 describe('#selectors', () => {
   it('should throw if no form in mapper', () => {
-    expect(() => selectors.fieldSelector('nonexistent', state)).toThrow();
+    expect(() => selectors.valueSelector('nonexistent', state)).toThrow();
   });
 
   it('should throw if no form in reducer', () => {
@@ -52,22 +52,10 @@ describe('#selectors', () => {
   });
 
   it('should produce a memoized form', () => {
-    const res = selectors.fieldSelector('test', state);
-    const res2 = selectors.fieldSelector('test', state);
+    const res = selectors.valueSelector('test', state);
+    const res2 = selectors.valueSelector('test', state);
 
     expect(res).toBe(res2);
-  });
-
-  it('should produce a nested form', () => {
-    const res = selectors.fieldSelector('test', state);
-
-    expect(res).toEqual({
-      flat: field,
-      array: [field, field],
-      deep: [{
-        array: [{ name: field }, { name: field }],
-      }],
-    });
   });
 
   it('should produce nested values', () => {

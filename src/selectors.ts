@@ -13,7 +13,7 @@ export interface IState {
 export type Mapper = (field: FieldObj) => any;
 
 
-const memUnflat = R.memoize(unflatten);
+const memUnflat = R.memoize(unflatten);  // TODO memoize all separately
 
 const mapSelector = (name: string, fn: Mapper, state: IState): Object => {
   const form = state.reduxFormLite[name];
@@ -21,11 +21,6 @@ const mapSelector = (name: string, fn: Mapper, state: IState): Object => {
 
   // TS doesn't recognize objects as Functors
   return memUnflat(R.map(fn, <any> form.fields));
-};
-
-
-export const fieldSelector = (name: string, state: IState): Object => {
-  return mapSelector(name, R.identity, state);
 };
 
 export const valueSelector = (name: string, state: IState): Object => {
