@@ -1,14 +1,7 @@
 import Field from './Field';
 import FieldArray from './FieldArray';
-import reducer from './formsDuck';
+import reducer from './formsReducer';
 import reduxForm from './reduxForm';
-
-import {
-  valueSelector,
-  errorSelector,
-  isValid,
-  isTouched,
-} from './selectors';
 
 
 export {
@@ -16,11 +9,4 @@ export {
   FieldArray,
   reducer,
   reduxForm,
-
-  // selectors
-  // ---
-  valueSelector,
-  errorSelector,
-  isValid,
-  isTouched,
 };

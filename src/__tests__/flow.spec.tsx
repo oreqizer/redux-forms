@@ -3,7 +3,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
-import reducer from '../formsDuck';
+import reducer from '../formsReducer';
 import reduxForm from '../reduxForm';
 import Field from '../Field';
 import FieldArray from '../FieldArray';

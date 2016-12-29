@@ -2,7 +2,7 @@ import { unflatten } from 'flat';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { State } from "./formsDuck";
+import { State } from "./formsReducer";
 import { FormObj, FieldObj } from "./utils/containers";
 
 
@@ -10,25 +10,30 @@ export interface IState {
   reduxFormLite: State;
 }
 
-export type Mapper = (field: FieldObj) => any;
 
+const memValues = R.memoize(R.compose(
+  unflatten,
+  R.map(R.prop('value')),
+));
 
-const memUnflat = R.memoize(unflatten);  // TODO memoize all separately
-
-const mapSelector = (name: string, fn: Mapper, state: IState): Object => {
+export const valueSelector = (name: string, state: IState): Object => {
   const form = state.reduxFormLite[name];
   invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
 
-  // TS doesn't recognize objects as Functors
-  return memUnflat(R.map(fn, <any> form.fields));
+  return memValues(form.fields);
 };
 
-export const valueSelector = (name: string, state: IState): Object => {
-  return mapSelector(name, R.prop('value'), state);
-};
+
+const memErrors = R.memoize(R.compose(
+  unflatten,
+  R.map(R.prop('error')),
+));
 
 export const errorSelector = (name: string, state: IState): Object => {
-  return mapSelector(name, R.prop('error'), state);
+  const form = state.reduxFormLite[name];
+  invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
+
+  return memErrors(form.fields);
 };
 
 

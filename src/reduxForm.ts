@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import * as duck from './formsDuck';
+import * as actions from './actions';
 import { FormObj } from "./utils/containers";
 
 
@@ -31,8 +31,8 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  _addForm: duck.AddFormCreator,
-  _removeForm: duck.RemoveFormCreator,
+  _addForm: actions.AddFormCreator,
+  _removeForm: actions.RemoveFormCreator,
 };
 
 export type Props<T> = StateProps & ActionProps & T;
@@ -99,8 +99,8 @@ const reduxForm = <T>(options: Options) => {
     const Connected = connect<StateProps, ActionProps, T>((state) => ({
       _form: R.prop<FormObj>(options.form, state.reduxFormLite),
     }), {
-      _addForm: duck.addForm,
-      _removeForm: duck.removeForm,
+      _addForm: actions.addForm,
+      _removeForm: actions.removeForm,
     })(ReduxForm) as Connected<Props<T>>;  // allows for 'WrappedComponent' and 'ReduxForm'
 
     // Needed also here to overwrite connect's naming

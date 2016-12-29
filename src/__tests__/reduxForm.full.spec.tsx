@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
 import reduxForm from '../reduxForm';
-import reducer from '../formsDuck';
+import reducer from '../formsReducer';
 import { form } from '../utils/containers';
 
 

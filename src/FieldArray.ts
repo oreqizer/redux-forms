@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import { Context } from './reduxForm';
-import * as duck from './formsDuck';
+import * as actions from './actions';
 import connectFieldArray, { ContextProps } from './utils/connectFieldArray';
 import fieldArrayProps, { FunctionProps } from './utils/fieldArrayProps';
 
@@ -96,25 +96,25 @@ type StateProps = {
 };
 
 type ActionProps = {
-  _addArray: duck.AddArrayCreator,
-  _removeArray: duck.RemoveArrayCreator,
-  _push: duck.PushCreator,
-  _pop: duck.PopCreator,
+  _addArray: actions.AddArrayCreator,
+  _removeArray: actions.RemoveArrayCreator,
+  _push: actions.PushCreator,
+  _pop: actions.PopCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
 
 
-const actions = {
-  _addArray: duck.addArray,
-  _removeArray: duck.removeArray,
-  _push: duck.push,
-  _pop: duck.pop,
+const bindActions = {
+  _addArray: actions.addArray,
+  _removeArray: actions.removeArray,
+  _push: actions.push,
+  _pop: actions.pop,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
   _array: R.path<number>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
-}), actions)(FieldArray);
+}), bindActions)(FieldArray);
 
 const Contexted = connectFieldArray<IOwnProps>(Connected);
 

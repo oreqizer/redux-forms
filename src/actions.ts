@@ -1,8 +1,5 @@
-import * as R from 'ramda';
-
+import { FieldObj } from "./utils/containers";
 import { Value } from "./utils/getValue";
-import { form, field, FormObj, FieldObj } from "./utils/containers";
-import arrayShift from './utils/arrayShift';
 
 
 export const ADD_FORM = '@redux-form-lite/ADD_FORM';
@@ -21,116 +18,6 @@ export const SHIFT = '@redux-form-lite/SHIFT';
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
 export const FIELD_BLUR = '@redux-form-lite/FIELD_BLUR';
-
-
-export default function formsReducer(state: State = {}, a: Action): State {
-  switch (a.type) {
-    // Form
-    // ---
-    case ADD_FORM:
-      return R.assocPath<FormObj, State>(
-        [a.payload.name], form, state,
-      );
-
-    case REMOVE_FORM:
-      return R.dissocPath<State>(
-        [a.payload.name], state,
-      );
-
-    case ADD_FIELD:
-      return R.assocPath<FieldObj, State>(
-        [a.payload.form, 'fields', a.payload.id], a.payload.field, state,
-      );
-
-    case REMOVE_FIELD:
-      return R.dissocPath<State>(
-        [a.payload.form, 'fields', a.payload.id], state,
-      );
-
-    case TOUCH_ALL:
-      return R.over(
-        R.lensPath([a.payload.form, 'fields']),
-        R.map(R.set(R.lensProp('touched'), true)),
-        state,
-      );
-
-    // Array
-    // ---
-    case ADD_ARRAY:
-      return R.assocPath<number, State>(
-        [a.payload.form, 'arrays', a.payload.id], 0, state,
-      );
-
-    case REMOVE_ARRAY:
-      return R.dissocPath<State>(
-        [a.payload.form, 'arrays', a.payload.id], state,
-      );
-
-    case PUSH:
-      return R.over(
-        R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-        R.inc,
-        state,
-      );
-
-    case POP:
-      return R.over(
-        R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-        R.dec,
-        state,
-      );
-
-    case UNSHIFT:
-      return R.compose<State, State, State>(
-        R.over(
-          R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, 0),
-        ),
-        R.over(
-          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-          R.inc,
-        ),
-      )(state);
-
-    case SHIFT:
-      return R.compose<State, State, State>(
-        R.over(
-          R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, 0, false),
-        ),
-        R.over(
-          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-          R.dec,
-        ),
-      )(state);
-
-    // Field
-    // ---
-    case FIELD_CHANGE:
-      return R.compose<State, State, State, State>(
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
-      )(state);
-
-    case FIELD_FOCUS:
-      return R.compose<State, State, State>(
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], true),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'visited'], true),
-      )(state);
-
-    case FIELD_BLUR:
-      return R.compose<State, State, State, State, State>(
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
-          R.assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
-      )(state);
-
-    default:
-      return state;
-  }
-}
 
 
 export type AddFormAction = { type: '@redux-form-lite/ADD_FORM', payload: {
@@ -283,7 +170,7 @@ export type FieldChangeAction = { type: '@redux-form-lite/FIELD_CHANGE', payload
 } };
 
 export type FieldChangeCreator = (
-    form: string, field: string, value: Value, error: string | null, dirty: boolean,
+  form: string, field: string, value: Value, error: string | null, dirty: boolean,
 ) => FieldChangeAction;
 
 export const fieldChange: FieldChangeCreator = (form, field, value, error, dirty) => ({
@@ -313,7 +200,7 @@ export type FieldBlurAction = { type: '@redux-form-lite/FIELD_BLUR', payload: {
 } };
 
 export type FieldBlurCreator = (
-    form: string, field: string, error: string | null, dirty: boolean,
+  form: string, field: string, error: string | null, dirty: boolean,
 ) => FieldBlurAction;
 
 export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
@@ -322,12 +209,8 @@ export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
 });
 
 
-export type State = {
-  [form: string]: FormObj,
-};
-
 export type Action =
-    AddFormAction |
+  AddFormAction |
     RemoveFormAction |
     AddFieldAction |
     RemoveFieldAction |

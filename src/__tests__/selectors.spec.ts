@@ -43,17 +43,32 @@ const touchstate = {
 
 
 describe('#selectors', () => {
-  it('should throw if no form in mapper', () => {
+  it('should throw if no form in value selector', () => {
     expect(() => selectors.valueSelector('nonexistent', state)).toThrow();
   });
 
-  it('should throw if no form in reducer', () => {
+  it('should throw if no form in error selector', () => {
+    expect(() => selectors.errorSelector('nonexistent', state)).toThrow();
+  });
+
+  it('should throw if no form in valid selector', () => {
     expect(() => selectors.isValid('nonexistent', state)).toThrow();
   });
 
-  it('should produce a memoized form', () => {
+  it('should throw if no form in touched selector', () => {
+    expect(() => selectors.isTouched('nonexistent', state)).toThrow();
+  });
+
+  it('should produce a memoized value form', () => {
     const res = selectors.valueSelector('test', state);
     const res2 = selectors.valueSelector('test', state);
+
+    expect(res).toBe(res2);
+  });
+
+  it('should produce a memoized error form', () => {
+    const res = selectors.errorSelector('test', state);
+    const res2 = selectors.errorSelector('test', state);
 
     expect(res).toBe(res2);
   });

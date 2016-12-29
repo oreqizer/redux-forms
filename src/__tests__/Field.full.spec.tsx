@@ -8,7 +8,7 @@ import { shallow, mount } from 'enzyme';
 import * as R from 'ramda';
 
 import Field from '../Field';
-import reducer from '../formsDuck';
+import reducer from '../formsReducer';
 import { form, field } from '../utils/containers';
 
 
