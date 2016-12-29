@@ -77,8 +77,7 @@ describe('#flow', () => {
 
     const f = getForm(store);
     expect(f.fields).toEqual({ title: field });
-    expect(f.arrays).toEqual({ flatarray: [], deeparray: [] });
-    expect(f.counters).toEqual({ flatarray: 0, deeparray: 0 });
+    expect(f.arrays).toEqual({ flatarray: 0, deeparray: 0 });
   });
 
   it('should add a field to a flat array', () => {
@@ -93,8 +92,7 @@ describe('#flow', () => {
 
     const f = getForm(store);
     expect(f.fields).toEqual({ 'title': field, 'flatarray.0': field });
-    expect(f.arrays).toEqual({ flatarray: ['.0'], deeparray: [] });
-    expect(f.counters).toEqual({ flatarray: 1, deeparray: 0 });
+    expect(f.arrays).toEqual({ flatarray: 1, deeparray: 0 });
   });
 
   it('should add a field to a deep array', () => {
@@ -108,8 +106,7 @@ describe('#flow', () => {
     wrapper.find(DeepFields).prop('fields').push();
 
     const f = getForm(store);
-    expect(f.arrays).toEqual({ flatarray: [], deeparray: ['.0'] });
-    expect(f.counters).toEqual({ flatarray: 0, deeparray: 1 });
+    expect(f.arrays).toEqual({ flatarray: 0, deeparray: 1 });
     expect(f.fields).toEqual({
       'title': field,
       'deeparray.0.name': field,

@@ -83,8 +83,7 @@ describe('#connect(FieldArray)', () => {
       options,
     );
 
-    expect(getForm(store).arrays).toEqual({ test: [] });
-    expect(getForm(store).counters).toEqual({ test: 0 });
+    expect(getForm(store).arrays).toEqual({ test: 0 });
   });
 
   it('should remove an array', () => {
@@ -102,7 +101,6 @@ describe('#connect(FieldArray)', () => {
     wrapper.unmount();
 
     expect(getForm(store).arrays).toEqual({});
-    expect(getForm(store).counters).toEqual({});
   });
 
   it('should push a field', () => {
@@ -119,7 +117,7 @@ describe('#connect(FieldArray)', () => {
 
     wrapper.prop('fields').push();
 
-    expect(getForm(store).arrays).toEqual({ test: ['.0'] });
+    expect(getForm(store).arrays).toEqual({ test: 1 });
   });
 
   it('should pop a field', () => {
@@ -137,7 +135,7 @@ describe('#connect(FieldArray)', () => {
     wrapper.prop('fields').push();
     wrapper.prop('fields').pop();
 
-    expect(getForm(store).arrays).toEqual({ test: [] });
+    expect(getForm(store).arrays).toEqual({ test: 0 });
   });
 
   it('should map fields', () => {
@@ -155,6 +153,6 @@ describe('#connect(FieldArray)', () => {
     wrapper.prop('fields').push();
     wrapper.prop('fields').push();
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['.0', '.1']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['0', '1']);
   });
 });

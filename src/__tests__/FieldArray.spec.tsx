@@ -15,7 +15,6 @@ import ConnectedFieldArray from '../FieldArray';
 // - _arrayId: string
 // state:
 // - _array: string[]
-// - _counter: number
 // actions:
 // - _addArray: AddArrayCreator
 // - _removeArray: RemoveArrayCreator
@@ -47,7 +46,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['[0]', '[1]']}
+        _array={1}
         _addArray={addArray}
       />,
     );
@@ -93,12 +92,12 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['[0]', '[1]']}
+        _array={2}
         _addArray={jest.fn()}
       />,
     );
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['[0]', '[1]']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['0', '1']);
   });
 
   it('should handle push', () => {
@@ -109,8 +108,7 @@ describe('#FieldArray', () => {
         component={Component}
         _form="form"
         _arrayId="arrayId"
-        _array={['[0]', '[1]']}
-        _counter={0}
+        _array={1}
         _addArray={jest.fn()}
         _push={push}
       />,
@@ -129,7 +127,7 @@ describe('#FieldArray', () => {
         component={Component}
         _form="form"
         _arrayId="arrayId"
-        _array={['[0]', '[1]']}
+        _array={1}
         _addArray={jest.fn()}
         _pop={pop}
       />,
@@ -157,7 +155,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _array={['[0]', '[1]']}
+        _array={1}
         _addArray={jest.fn()}
       />,
     );
@@ -171,7 +169,7 @@ describe('#FieldArray', () => {
         name="array"
         component={Component}
         doge="wow"
-        _array={['[0]', '[1]']}
+        _array={1}
         _addArray={jest.fn()}
       />,
     );

@@ -126,16 +126,14 @@ describe('#formsDuck', () => {
       form,
     }, duck.addArray('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual([]);
-    expect(state.form.counters.array).toBe(0);
+    expect(state.form.arrays.array).toBe(0);
   });
 
   it('should remove an array', () => {
     const state: any = reducer({
       form: {
         ...form,
-        arrays: { array: [] },
-        counters: { array: 0 },
+        arrays: { array: 1 },
       },
     }, duck.removeArray('form', 'array'));
 
@@ -146,21 +144,19 @@ describe('#formsDuck', () => {
     const state: any = reducer({
       form: {
         ...form,
-        arrays: { array: ['.0'] },
-        counters: { array: 1 },
+        arrays: { array: 1 },
       },
     }, duck.push('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual(['.0', '.1']);
-    expect(state.form.counters.array).toBe(2);
+    expect(state.form.arrays.array).toBe(2);
   });
 
   it('should pop from an array', () => {
     const state: any = reducer({
-      form: { ...form, arrays: { array: ['.0', '.1'] } },
+      form: { ...form, arrays: { array: 2 } },
     }, duck.pop('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual(['.0']);
+    expect(state.form.arrays.array).toBe(1);
   });
 
   it('should change a field', () => {

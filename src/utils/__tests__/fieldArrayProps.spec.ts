@@ -15,7 +15,6 @@ const props = {
   _form: 'form',
   _arrayId: 'arrayId',
   _array: ['omfg[1]', 'omfg[2]'],
-  _counter: 0,
   _push: (id: any) => id,
   _pop: (id: any) => id,
 

@@ -56,7 +56,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   handleMap<T>(fn: (arr: string[]) => T) {
     const { _array } = this.props;
 
-    return R.map(fn, (<string[]> _array));
+    const array = Array.from(Array(_array));
+    return R.map(fn, R.addIndex(R.map)((_, i) => String(i), array));
   }
 
   handlePush() {
@@ -74,7 +75,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   render() {
     const { component, _array } = this.props;
 
-    if (!_array) {
+    if (typeof _array !== 'number') {
       return null;
     }
 
@@ -91,7 +92,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 type ConnectedProps = IOwnProps & ContextProps;
 
 type StateProps = {
-  _array?: string[],
+  _array?: number,
 };
 
 type ActionProps = {
@@ -112,7 +113,7 @@ const actions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _array: R.path<string[]>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
+  _array: R.path<number>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
 }), actions)(FieldArray);
 
 const Contexted = connectFieldArray<IOwnProps>(Connected);

@@ -46,33 +46,26 @@ export default function formsReducer(state: State = {}, a: Action): State {
     // Array
     // ---
     case ADD_ARRAY:
-      return R.compose<State, State, State>(
-        R.assocPath<string[]>([a.payload.form, 'arrays', a.payload.id], []),
-        R.assocPath<number>([a.payload.form, 'counters', a.payload.id], 0),
-      )(state);
+      return R.assocPath<number, State>(
+        [a.payload.form, 'arrays', a.payload.id], 0, state,
+      );
 
     case REMOVE_ARRAY:
-      return R.compose<State, State, State>(
-        R.dissocPath([a.payload.form, 'arrays', a.payload.id]),
-        R.dissocPath([a.payload.form, 'counters', a.payload.id]),
-      )(state);
+      return R.dissocPath<State>(
+        [a.payload.form, 'arrays', a.payload.id], state,
+      );
 
     case PUSH:
-      return R.compose<State, State, State>(
-        R.over(
-          R.lensPath([a.payload.form, 'counters', a.payload.id]),
-          R.inc,
-        ),
-        R.over(
-          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-          R.append(`.${R.path([a.payload.form, 'counters', a.payload.id], state)}`),
-        ),
-      )(state);
+      return R.over(
+        R.lensPath([a.payload.form, 'arrays', a.payload.id]),
+        R.inc,
+        state,
+      );
 
     case POP:
       return R.over(
         R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-        R.dropLast(1),
+        R.dec,
         state,
       );
 
