@@ -13,10 +13,16 @@ const InputArray = props => (
       />
     )}
     <button onClick={props.fields.push}>
-      Add field
+      Push field
     </button>
     <button onClick={props.fields.pop}>
-      Remove field
+      Pop field
+    </button>
+    <button onClick={props.fields.unshift}>
+      Unshift field
+    </button>
+    <button onClick={props.fields.shift}>
+      Shift field
     </button>
   </div>
 );
@@ -77,8 +83,8 @@ const Form = props => (
     />
     <div>---</div>
     <br />
-    <button onClick={() => console.log(props.form.values)}>
-      values -> console
+    <button onClick={props.onSubmit}>
+      Submit
     </button>
   </div>
 );

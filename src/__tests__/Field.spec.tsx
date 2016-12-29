@@ -191,7 +191,7 @@ describe('#Field', () => {
     });
   });
 
-  it('should not re-mount when ids and forms match', () => {
+  it('should re-mount when no field', () => {
     const wrapper = shallow(
       <Field
         name="test"
@@ -205,64 +205,7 @@ describe('#Field', () => {
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _id: 'test', _form: 'form' });
-
-    expect(addField).not.toBeCalled();
-  });
-
-  it('should re-mount when ids differ', () => {
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component="input"
-        _field={null}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />,
-    );
-
-    const addField = jest.fn();
-
-    wrapper.setProps({ _addField: addField, _id: 'test2' });
-
-    expect(addField).toBeCalled();
-  });
-
-  it('should re-mount when forms differ', () => {
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component="input"
-        _field={null}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />,
-    );
-
-    const addField = jest.fn();
-
-    wrapper.setProps({ _addField: addField, _form: 'form2' });
-
-    expect(addField).toBeCalled();
-  });
-
-  it('should re-mount when ids and forms differ', () => {
-    const wrapper = shallow(
-      <Field
-        name="test"
-        component="input"
-        _field={null}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />,
-    );
-
-    const addField = jest.fn();
-
-    wrapper.setProps({ _addField: addField, _id: 'form2', _form: 'form2' });
+    wrapper.setProps({ _addField: addField });
 
     expect(addField).toBeCalled();
   });

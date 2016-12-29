@@ -17,11 +17,14 @@ const store = createStore(combineReducers({
   reduxFormLite: reducer,
 }), {}, applyMiddleware(logger));
 
+
+const onSubmit = (values) => console.log(values);
+
 const Root = () => (
   <Provider store={store}>
     <div>
-      <Form />
-      <FlatForm />
+      <Form onSubmit={onSubmit} />
+      <FlatForm onSubmit={onSubmit} />
     </div>
   </Provider>
 );

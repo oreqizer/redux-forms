@@ -83,11 +83,7 @@ class Field extends React.PureComponent<AllProps, void> {
     const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
-      // if form/id changes, add a new field
-      if (_id !== next._id || _form !== next._form) {
-        this.newField(next);
-      }
-
+      this.newField(next);
       return;
     }
 
