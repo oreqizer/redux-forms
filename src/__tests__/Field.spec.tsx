@@ -3,10 +3,13 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import * as R from 'ramda';
 
 import ConnectedField from '../Field';
-import { field } from '../utils/containers';
+import reducer from '../formsReducer';
+import { form, field } from '../utils/containers';
 
 
 // NOTE:
@@ -51,6 +54,27 @@ const event = (value: string) => ({
   stopPropagation: R.identity,
   target: { value },
 });
+
+const options = {
+  context: {
+    reduxFormLite: {
+      form: 'test',
+      context: '',
+    },
+  },
+  childContextTypes: {
+    reduxFormLite: React.PropTypes.object.isRequired,
+  },
+};
+
+// Any to allow nested property dot notation
+const newStore = () => createStore(combineReducers<any>({
+  reduxFormLite: reducer,
+}), {
+  reduxFormLite: { test: form },
+});
+
+const getForm = (state: any) => state.getState().reduxFormLite.test;
 
 
 describe('#Field', () => {
@@ -675,5 +699,133 @@ describe('#Field', () => {
 
     expect(wrapper.prop('component')).toBeUndefined();
     expect(wrapper.prop('field')).toBeUndefined();
+  });
+});
+
+
+describe('#connect(Field)', () => {
+  it('should not mount without context', () => {
+    const store = newStore();
+    const wrapperFn = () => mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+    );
+
+    expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
+  });
+
+  it('should have a correct name', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    expect(wrapper.find(ConnectedField).name()).toBe('Field');
+  });
+
+  it('should add a field', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    expect(getForm(store).fields).toEqual({ test: field });
+    expect(wrapper.find('input').length).toBe(1);
+  });
+
+  it('should remove a field', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    wrapper.unmount();
+
+    expect(getForm(store).fields).toEqual({});
+  });
+
+  it('should handle a change event', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    wrapper.find('input').simulate('change', event('doge'));
+
+    expect(getForm(store).fields).toEqual({ test: {
+      ...field,
+      value: 'doge',
+      dirty: true,
+    } });
+  });
+
+  it('should handle a focus event', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    wrapper.find('input').simulate('focus');
+
+    expect(getForm(store).fields).toEqual({ test: {
+      ...field,
+      visited: true,
+      active: true,
+    } });
+  });
+
+  it('should handle a blur event', () => {
+    const store = newStore();
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedField
+          name="test"
+          component="input"
+        />
+      </Provider>,
+      options,
+    );
+
+    wrapper.find('input').simulate('blur', event('doge'));
+
+    expect(getForm(store).fields).toEqual({ test: {
+      ...field,
+      touched: true,
+      dirty: true,
+    } });
   });
 });
