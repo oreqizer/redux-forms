@@ -4,6 +4,7 @@ import { Value } from "./getValue";
 export const form = {
   fields: {},
   arrays: {},
+  submitting: false,
 };
 
 export const field = {

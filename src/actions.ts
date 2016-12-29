@@ -7,6 +7,8 @@ export const REMOVE_FORM = '@redux-form-lite/REMOVE_FORM';
 export const ADD_FIELD = '@redux-form-lite/ADD_FIELD';
 export const REMOVE_FIELD = '@redux-form-lite/REMOVE_FIELD';
 export const TOUCH_ALL = '@redux-form-lite/TOUCH_ALL';
+export const SUBMIT_START = '@redux-form-lite/SUBMIT_START';
+export const SUBMIT_STOP = '@redux-form-lite/SUBMIT_STOP';
 
 export const ADD_ARRAY = '@redux-form-lite/ADD_ARRAY';
 export const REMOVE_ARRAY = '@redux-form-lite/REMOVE_ARRAY';
@@ -79,6 +81,30 @@ export type TouchAllCreator = (form: string) => TouchAllAction;
 
 export const touchAll: TouchAllCreator = (form) => ({
   type: TOUCH_ALL,
+  payload: { form },
+});
+
+
+export type SubmitStartAction = { type: '@redux-form-lite/SUBMIT_START', payload: {
+  form: string,
+} };
+
+export type SubmitStartCreator = (form: string) => SubmitStartAction;
+
+export const submitStart: SubmitStartCreator = (form) => ({
+  type: SUBMIT_START,
+  payload: { form },
+});
+
+
+export type SubmitStopAction = { type: '@redux-form-lite/SUBMIT_STOP', payload: {
+  form: string,
+} };
+
+export type SubmitStopCreator = (form: string) => SubmitStopAction;
+
+export const submitStop: SubmitStopCreator = (form) => ({
+  type: SUBMIT_STOP,
   payload: { form },
 });
 
@@ -215,6 +241,8 @@ export type Action =
     AddFieldAction |
     RemoveFieldAction |
     TouchAllAction |
+    SubmitStartAction |
+    SubmitStopAction |
     AddArrayAction |
     RemoveArrayAction |
     PushAction |

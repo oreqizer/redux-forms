@@ -53,6 +53,20 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field2.touched).toBe(true);
   });
 
+  it('should touch start submit', () => {
+    const state: any = reducer({ form }, actions.submitStart('form'));
+
+    expect(state.form.submitting).toBe(true);
+  });
+
+  it('should touch stop submit', () => {
+    const state: any = reducer({
+      form: { ...form, submitting: true },
+    }, actions.submitStop('form'));
+
+    expect(state.form.submitting).toBe(false);
+  });
+
   it('should add an array', () => {
     const state: any = reducer({
       form,

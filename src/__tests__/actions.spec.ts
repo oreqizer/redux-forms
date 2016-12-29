@@ -32,6 +32,20 @@ describe('#actions', () => {
     });
   });
 
+  it('should create an SUBMIT_START action', () => {
+    expect(actions.submitStart('form')).toEqual({
+      type: actions.SUBMIT_START,
+      payload: { form: 'form' },
+    });
+  });
+
+  it('should create an SUBMIT_STOP action', () => {
+    expect(actions.submitStop('form')).toEqual({
+      type: actions.SUBMIT_STOP,
+      payload: { form: 'form' },
+    });
+  });
+
   it('should create a REMOVE_FIELD action', () => {
     expect(actions.removeField('form', 'field')).toEqual({
       type: actions.REMOVE_FIELD,

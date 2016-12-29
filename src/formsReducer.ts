@@ -11,6 +11,8 @@ import {
   ADD_FIELD,
   REMOVE_FIELD,
   TOUCH_ALL,
+  SUBMIT_START,
+  SUBMIT_STOP,
 
   ADD_ARRAY,
   REMOVE_ARRAY,
@@ -58,6 +60,20 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.over(
         R.lensPath([a.payload.form, 'fields']),
         R.map(R.set(R.lensProp('touched'), true)),
+        state,
+      );
+
+    case SUBMIT_START:
+      return R.set(
+        R.lensPath([a.payload.form, 'submitting']),
+        true,
+        state,
+      );
+
+    case SUBMIT_STOP:
+      return R.set(
+        R.lensPath([a.payload.form, 'submitting']),
+        false,
         state,
       );
 
