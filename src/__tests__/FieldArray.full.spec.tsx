@@ -196,6 +196,6 @@ describe('#connect(FieldArray)', () => {
     wrapper.prop('fields').push();
     wrapper.prop('fields').push();
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['0', '1']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['.0', '.1']);
   });
 });

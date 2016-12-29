@@ -15,6 +15,7 @@ export interface ISuppliedProps {
 
 export interface IOwnProps {
   name: string;
+  flat?: boolean;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
 }
 
@@ -57,7 +58,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     const { _array } = this.props;
 
     const array = Array.from(Array(_array));
-    return R.map(fn, R.addIndex(R.map)((_, i) => String(i), array));
+    return R.map(fn, R.addIndex(R.map)((_, i) => `.${i}`, array));
   }
 
   handlePush() {
@@ -67,9 +68,11 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePop() {
-    const { name, _pop, _form, _arrayId } = this.props;
+    const { name, _array, _pop, _form, _arrayId } = this.props;
 
-    _pop(_form, _arrayId);
+    if (_array > 0) {
+      _pop(_form, _arrayId);
+    }
   }
 
   handleUnshift() {
@@ -79,9 +82,11 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handleShift() {
-    const { name, _shift, _form, _arrayId } = this.props;
+    const { name, _array, _shift, _form, _arrayId } = this.props;
 
-    _shift(_form, _arrayId);
+    if (_array > 0) {
+      _shift(_form, _arrayId);
+    }
   }
 
   render() {

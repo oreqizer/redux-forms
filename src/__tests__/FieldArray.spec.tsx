@@ -99,7 +99,7 @@ describe('#FieldArray', () => {
       />
     ));
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['0', '1']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['.0', '.1']);
   });
 
   it('should handle push', () => {
@@ -119,6 +119,25 @@ describe('#FieldArray', () => {
     wrapper.prop('fields').push();
 
     expect(push).toBeCalledWith('form', 'arrayId');
+  });
+
+  it('should not handle pop', () => {
+    const pop = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _arrayId="arrayId"
+        _array={0}
+        _addArray={jest.fn()}
+        _pop={pop}
+      />
+    ));
+
+    wrapper.prop('fields').pop();
+
+    expect(pop).not.toBeCalled();
   });
 
   it('should handle pop', () => {
@@ -157,6 +176,25 @@ describe('#FieldArray', () => {
     wrapper.prop('fields').unshift();
 
     expect(unshift).toBeCalledWith('form', 'arrayId');
+  });
+
+  it('should not handle shift', () => {
+    const shift = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _arrayId="arrayId"
+        _array={0}
+        _addArray={jest.fn()}
+        _shift={shift}
+      />
+    ));
+
+    wrapper.prop('fields').shift();
+
+    expect(shift).not.toBeCalled();
   });
 
   it('should handle shift', () => {
