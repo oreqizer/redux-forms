@@ -15,7 +15,6 @@ export interface ISuppliedProps {
 
 export interface IOwnProps {
   name: string;
-  flat?: boolean;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
 }
 
@@ -23,7 +22,6 @@ export interface IOwnProps {
 class FieldArray extends React.PureComponent<AllProps, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    flat: React.PropTypes.bool,
     component: React.PropTypes.oneOfType([
       React.PropTypes.string, React.PropTypes.func,
     ]).isRequired,
@@ -37,6 +35,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     this.handleMap = this.handleMap.bind(this);
     this.handlePush = this.handlePush.bind(this);
     this.handlePop = this.handlePop.bind(this);
+    this.handleUnshift = this.handleUnshift.bind(this);
+    this.handleShift = this.handleShift.bind(this);
   }
 
   componentWillMount() {
@@ -72,6 +72,18 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     _pop(_form, _arrayId);
   }
 
+  handleUnshift() {
+    const { name, _unshift, _form, _arrayId } = this.props;
+
+    _unshift(_form, _arrayId);
+  }
+
+  handleShift() {
+    const { name, _shift, _form, _arrayId } = this.props;
+
+    _shift(_form, _arrayId);
+  }
+
   render() {
     const { component, _array } = this.props;
 
@@ -84,6 +96,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
       map: this.handleMap,
       push: this.handlePush,
       pop: this.handlePop,
+      unshift: this.handleUnshift,
+      shift: this.handleShift,
     }));
   }
 }
@@ -100,6 +114,8 @@ type ActionProps = {
   _removeArray: actions.RemoveArrayCreator,
   _push: actions.PushCreator,
   _pop: actions.PopCreator,
+  _unshift: actions.UnshiftCreator,
+  _shift: actions.ShiftCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
@@ -110,6 +126,8 @@ const bindActions = {
   _removeArray: actions.removeArray,
   _push: actions.push,
   _pop: actions.pop,
+  _unshift: actions.unshift,
+  _shift: actions.shift,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({

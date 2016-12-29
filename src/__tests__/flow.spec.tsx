@@ -69,11 +69,11 @@ const getForm = (store: any) => store.getState().reduxFormLite.test;
 describe('#flow', () => {
   it('should initialize properly', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     const f = getForm(store);
     expect(f.fields).toEqual({ title: field });
@@ -82,11 +82,11 @@ describe('#flow', () => {
 
   it('should add a field to a flat array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     wrapper.find(FlatFields).prop('fields').push();
 
@@ -97,11 +97,11 @@ describe('#flow', () => {
 
   it('should add a field to a deep array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     wrapper.find(DeepFields).prop('fields').push();
 

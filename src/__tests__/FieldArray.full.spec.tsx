@@ -44,27 +44,28 @@ const getForm = (state: any) => state.getState().reduxFormLite.test;
 describe('#connect(FieldArray)', () => {
   it('should not mount without context', () => {
     const store = newStore();
-    const wrapperFn = () => mount(
+    const wrapperFn = () => mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
   });
 
   it('should have a correct name', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
       options,
     );
 
@@ -73,13 +74,14 @@ describe('#connect(FieldArray)', () => {
 
   it('should add an array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
       options,
     );
 
@@ -88,13 +90,14 @@ describe('#connect(FieldArray)', () => {
 
   it('should remove an array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
       options,
     );
 
@@ -105,13 +108,14 @@ describe('#connect(FieldArray)', () => {
 
   it('should push a field', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
       options,
     ).find(MyComp);
 
@@ -122,13 +126,14 @@ describe('#connect(FieldArray)', () => {
 
   it('should pop a field', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
       options,
     ).find(MyComp);
 
@@ -138,15 +143,53 @@ describe('#connect(FieldArray)', () => {
     expect(getForm(store).arrays).toEqual({ test: 0 });
   });
 
-  it('should map fields', () => {
+  it('should unshift a field', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <FieldArray
           name="test"
           component={MyComp}
         />
-      </Provider>,
+      </Provider>
+    ),
+      options,
+    ).find(MyComp);
+
+    wrapper.prop('fields').unshift();
+
+    expect(getForm(store).arrays).toEqual({ test: 1 });
+  });
+
+  it('should shift a field', () => {
+    const store = newStore();
+    const wrapper = mount((
+      <Provider store={store}>
+        <FieldArray
+          name="test"
+          component={MyComp}
+        />
+      </Provider>
+    ),
+      options,
+    ).find(MyComp);
+
+    wrapper.prop('fields').unshift();
+    wrapper.prop('fields').shift();
+
+    expect(getForm(store).arrays).toEqual({ test: 0 });
+  });
+
+  it('should map fields', () => {
+    const store = newStore();
+    const wrapper = mount((
+      <Provider store={store}>
+        <FieldArray
+          name="test"
+          component={MyComp}
+        />
+      </Provider>
+    ),
       options,
     ).find(MyComp);
 

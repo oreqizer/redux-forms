@@ -56,6 +56,8 @@ export const ARRAY_IGNORE_PROPS = [
   // actions
   '_push',
   '_pop',
+  '_unshift',
+  '_shift',
   // context
   '_form',
   '_arrayId',

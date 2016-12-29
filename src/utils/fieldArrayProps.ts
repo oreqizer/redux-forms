@@ -7,6 +7,8 @@ export type FunctionProps = {
   map: (fn: (arr: string[]) => any) => any,
   push: () => void,
   pop: () => void,
+  unshift: () => void,
+  shift: () => void,
 };
 
 const separateProps = <T>(props: T, fns: FunctionProps) => R.merge(
