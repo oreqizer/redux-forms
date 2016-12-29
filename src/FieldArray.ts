@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import { Context } from './reduxForm';
-import * as duck from './formsDuck';
+import * as actions from './actions';
 import connectFieldArray, { ContextProps } from './utils/connectFieldArray';
 import fieldArrayProps, { FunctionProps } from './utils/fieldArrayProps';
 
@@ -23,7 +23,6 @@ export interface IOwnProps {
 class FieldArray extends React.PureComponent<AllProps, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    flat: React.PropTypes.bool,
     component: React.PropTypes.oneOfType([
       React.PropTypes.string, React.PropTypes.func,
     ]).isRequired,
@@ -37,6 +36,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     this.handleMap = this.handleMap.bind(this);
     this.handlePush = this.handlePush.bind(this);
     this.handlePop = this.handlePop.bind(this);
+    this.handleUnshift = this.handleUnshift.bind(this);
+    this.handleShift = this.handleShift.bind(this);
   }
 
   componentWillMount() {
@@ -56,7 +57,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   handleMap<T>(fn: (arr: string[]) => T) {
     const { _array } = this.props;
 
-    return R.map(fn, (<string[]> _array));
+    const array = Array.from(Array(_array));
+    return R.map(fn, R.addIndex(R.map)((_, i) => `.${i}`, array));
   }
 
   handlePush() {
@@ -66,15 +68,31 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePop() {
-    const { name, _pop, _form, _arrayId } = this.props;
+    const { name, _array, _pop, _form, _arrayId } = this.props;
 
-    _pop(_form, _arrayId);
+    if (_array > 0) {
+      _pop(_form, _arrayId);
+    }
+  }
+
+  handleUnshift() {
+    const { name, _unshift, _form, _arrayId } = this.props;
+
+    _unshift(_form, _arrayId);
+  }
+
+  handleShift() {
+    const { name, _array, _shift, _form, _arrayId } = this.props;
+
+    if (_array > 0) {
+      _shift(_form, _arrayId);
+    }
   }
 
   render() {
     const { component, _array } = this.props;
 
-    if (!_array) {
+    if (typeof _array !== 'number') {
       return null;
     }
 
@@ -83,6 +101,8 @@ class FieldArray extends React.PureComponent<AllProps, void> {
       map: this.handleMap,
       push: this.handlePush,
       pop: this.handlePop,
+      unshift: this.handleUnshift,
+      shift: this.handleShift,
     }));
   }
 }
@@ -91,29 +111,33 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 type ConnectedProps = IOwnProps & ContextProps;
 
 type StateProps = {
-  _array?: string[],
+  _array?: number,
 };
 
 type ActionProps = {
-  _addArray: duck.AddArrayCreator,
-  _removeArray: duck.RemoveArrayCreator,
-  _push: duck.PushCreator,
-  _pop: duck.PopCreator,
+  _addArray: actions.AddArrayCreator,
+  _removeArray: actions.RemoveArrayCreator,
+  _push: actions.PushCreator,
+  _pop: actions.PopCreator,
+  _unshift: actions.UnshiftCreator,
+  _shift: actions.ShiftCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
 
 
-const actions = {
-  _addArray: duck.addArray,
-  _removeArray: duck.removeArray,
-  _push: duck.push,
-  _pop: duck.pop,
+const bindActions = {
+  _addArray: actions.addArray,
+  _removeArray: actions.removeArray,
+  _push: actions.push,
+  _pop: actions.pop,
+  _unshift: actions.unshift,
+  _shift: actions.shift,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _array: R.path<string[]>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
-}), actions)(FieldArray);
+  _array: R.path<number>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
+}), bindActions)(FieldArray);
 
 const Contexted = connectFieldArray<IOwnProps>(Connected);
 

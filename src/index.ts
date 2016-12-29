@@ -1,7 +1,8 @@
 import Field from './Field';
 import FieldArray from './FieldArray';
-import reducer from './formsDuck';
+import reducer from './formsReducer';
 import reduxForm from './reduxForm';
+
 
 export {
   Field,

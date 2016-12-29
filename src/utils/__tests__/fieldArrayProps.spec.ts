@@ -5,6 +5,8 @@ const fns = {
   map: (id: any) => id,
   push: () => null,
   pop: () => null,
+  unshift: () => null,
+  shift: () => null,
 };
 
 const props = {
@@ -15,9 +17,10 @@ const props = {
   _form: 'form',
   _arrayId: 'arrayId',
   _array: ['omfg[1]', 'omfg[2]'],
-  _counter: 0,
   _push: (id: any) => id,
   _pop: (id: any) => id,
+  _unshift: (id: any) => id,
+  _shift: (id: any) => id,
 
   // custom
   // ---
@@ -33,6 +36,8 @@ describe('#fieldArrayProps', () => {
     expect(res.fields.map).toEqual(fns.map);
     expect(res.fields.push).toEqual(fns.push);
     expect(res.fields.pop).toEqual(fns.pop);
+    expect(res.fields.unshift).toEqual(fns.unshift);
+    expect(res.fields.shift).toEqual(fns.shift);
   });
 
   it('should filter out ignored properties', () => {

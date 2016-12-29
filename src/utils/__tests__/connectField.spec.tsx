@@ -70,8 +70,8 @@ describe('#connectField', () => {
   });
 
   it('should provide a deep id', () => {
-    const wrapper = mount(<Decorated name="[0].field" />, deep);
+    const wrapper = mount(<Decorated name=".0.field" />, deep);
 
-    expect(wrapper.find(MyComp).prop('_id')).toBe('nested[0].field');
+    expect(wrapper.find(MyComp).prop('_id')).toBe('nested.0.field');
   });
 });

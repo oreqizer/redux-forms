@@ -8,7 +8,7 @@ import fieldProps from './utils/fieldProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
 import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
-import * as duck from './formsDuck';
+import * as actions from './actions';
 import { field, FieldObj } from "./utils/containers";
 
 
@@ -83,11 +83,7 @@ class Field extends React.PureComponent<AllProps, void> {
     const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
-      // if form/id changes, add a new field
-      if (_id !== next._id || _form !== next._form) {
-        this.newField(next);
-      }
-
+      this.newField(next);
       return;
     }
 
@@ -179,27 +175,27 @@ type StateProps = {
 };
 
 type ActionProps = {
-  _addField: duck.AddFieldCreator,
-  _removeField: duck.RemoveFieldCreator,
-  _fieldChange: duck.FieldChangeCreator,
-  _fieldFocus: duck.FieldFocusCreator,
-  _fieldBlur: duck.FieldBlurCreator,
+  _addField: actions.AddFieldCreator,
+  _removeField: actions.RemoveFieldCreator,
+  _fieldChange: actions.FieldChangeCreator,
+  _fieldFocus: actions.FieldFocusCreator,
+  _fieldBlur: actions.FieldBlurCreator,
 };
 
 type AllProps = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
 
-const actions = {
-  _addField: duck.addField,
-  _removeField: duck.removeField,
-  _fieldChange: duck.fieldChange,
-  _fieldFocus: duck.fieldFocus,
-  _fieldBlur: duck.fieldBlur,
+const bindActions = {
+  _addField: actions.addField,
+  _removeField: actions.removeField,
+  _fieldChange: actions.fieldChange,
+  _fieldFocus: actions.fieldFocus,
+  _fieldBlur: actions.fieldBlur,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
   _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxFormLite),
-}), actions)(Field);
+}), bindActions)(Field);
 
 const Contexted = connectField<IOwnProps>(Connected);
 

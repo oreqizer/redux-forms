@@ -3,7 +3,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
-import reducer from '../formsDuck';
+import reducer from '../formsReducer';
 import reduxForm from '../reduxForm';
 import Field from '../Field';
 import FieldArray from '../FieldArray';
@@ -69,51 +69,48 @@ const getForm = (store: any) => store.getState().reduxFormLite.test;
 describe('#flow', () => {
   it('should initialize properly', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     const f = getForm(store);
     expect(f.fields).toEqual({ title: field });
-    expect(f.arrays).toEqual({ flatarray: [], deeparray: [] });
-    expect(f.counters).toEqual({ flatarray: 0, deeparray: 0 });
+    expect(f.arrays).toEqual({ flatarray: 0, deeparray: 0 });
   });
 
   it('should add a field to a flat array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     wrapper.find(FlatFields).prop('fields').push();
 
     const f = getForm(store);
-    expect(f.fields).toEqual({ 'title': field, 'flatarray[0]': field });
-    expect(f.arrays).toEqual({ flatarray: ['[0]'], deeparray: [] });
-    expect(f.counters).toEqual({ flatarray: 1, deeparray: 0 });
+    expect(f.fields).toEqual({ 'title': field, 'flatarray.0': field });
+    expect(f.arrays).toEqual({ flatarray: 1, deeparray: 0 });
   });
 
   it('should add a field to a deep array', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <Form />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     wrapper.find(DeepFields).prop('fields').push();
 
     const f = getForm(store);
-    expect(f.arrays).toEqual({ flatarray: [], deeparray: ['[0]'] });
-    expect(f.counters).toEqual({ flatarray: 0, deeparray: 1 });
+    expect(f.arrays).toEqual({ flatarray: 0, deeparray: 1 });
     expect(f.fields).toEqual({
       'title': field,
-      'deeparray[0].name': field,
-      'deeparray[0].surname': field,
+      'deeparray.0.name': field,
+      'deeparray.0.surname': field,
     });
   });
 });
