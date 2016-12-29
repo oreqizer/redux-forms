@@ -9,6 +9,7 @@ export const ADD_FORM = '@redux-form-lite/ADD_FORM';
 export const REMOVE_FORM = '@redux-form-lite/REMOVE_FORM';
 export const ADD_FIELD = '@redux-form-lite/ADD_FIELD';
 export const REMOVE_FIELD = '@redux-form-lite/REMOVE_FIELD';
+export const TOUCH_ALL = '@redux-form-lite/TOUCH_ALL';
 
 export const ADD_ARRAY = '@redux-form-lite/ADD_ARRAY';
 export const REMOVE_ARRAY = '@redux-form-lite/REMOVE_ARRAY';
@@ -44,6 +45,13 @@ export default function formsReducer(state: State = {}, a: Action): State {
     case REMOVE_FIELD:
       return R.dissocPath<State>(
         [a.payload.form, 'fields', a.payload.id], state,
+      );
+
+    case TOUCH_ALL:
+      return R.over(
+        R.lensPath([a.payload.form, 'fields']),
+        R.map(R.set(R.lensProp('touched'), true)),
+        state,
       );
 
     // Array
@@ -176,6 +184,18 @@ export const removeField: RemoveFieldCreator = (form, id) => ({
 });
 
 
+export type TouchAllAction = { type: '@redux-form-lite/TOUCH_ALL', payload: {
+  form: string,
+} };
+
+export type TouchAllCreator = (form: string) => TouchAllAction;
+
+export const touchAll: TouchAllCreator = (form) => ({
+  type: TOUCH_ALL,
+  payload: { form },
+});
+
+
 export type AddArrayAction = { type: '@redux-form-lite/ADD_ARRAY', payload: {
   form: string,
   id: string,
@@ -301,6 +321,7 @@ export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
   payload: { form, field, error, dirty },
 });
 
+
 export type State = {
   [form: string]: FormObj,
 };
@@ -310,6 +331,7 @@ export type Action =
     RemoveFormAction |
     AddFieldAction |
     RemoveFieldAction |
+    TouchAllAction |
     AddArrayAction |
     RemoveArrayAction |
     PushAction |

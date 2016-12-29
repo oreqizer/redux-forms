@@ -30,6 +30,13 @@ describe('#formsDuck', () => {
     });
   });
 
+  it('should create an TOUCH_ALL action', () => {
+    expect(duck.touchAll('form')).toEqual({
+      type: duck.TOUCH_ALL,
+      payload: { form: 'form' },
+    });
+  });
+
   it('should create a REMOVE_FIELD action', () => {
     expect(duck.removeField('form', 'field')).toEqual({
       type: duck.REMOVE_FIELD,
@@ -135,6 +142,18 @@ describe('#formsDuck', () => {
     }, duck.removeField('form', 'field'));
 
     expect(state.form.fields).toEqual({});
+  });
+
+  it('should touch all fields', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { field1: field, field2: field },
+      },
+    }, duck.touchAll('form'));
+
+    expect(state.form.fields.field1.touched).toBe(true);
+    expect(state.form.fields.field2.touched).toBe(true);
   });
 
   it('should add an array', () => {
