@@ -53,6 +53,8 @@ export const ARRAY_IGNORE_PROPS = [
   'component',
   // state
   '_array',
+  '_values',
+  '_valid',
   // actions
   '_push',
   '_pop',
