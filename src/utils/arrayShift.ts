@@ -21,8 +21,13 @@ export default function arrayShift(fields: Fields, path: string, start: number, 
       return R.assoc(key, R.prop(key, fields), acc);
     }
 
-    const lead = `${path}.${index + modifier}`;
-    const newkey = R.append(lead, R.tail(parts)).join('.');
+    const newindex = index + modifier;
+    if (newindex < 0) {
+      return acc;
+    }
+
+    const lead = `${path}.${newindex}`;
+    const newkey = R.prepend(lead, R.tail(parts)).join('.');
     return R.assoc(newkey, R.prop(key, fields), acc);
   }, {}, R.keys(fields));
 }
