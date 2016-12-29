@@ -43,20 +43,20 @@ const touchstate = {
 
 
 describe('#selectors', () => {
-  it('should throw if no form in value selector', () => {
-    expect(() => selectors.valueSelector('nonexistent', state)).toThrow();
+  it('should return empty if no form in value selector', () => {
+    expect(selectors.valueSelector('nonexistent', state)).toEqual({});
   });
 
-  it('should throw if no form in error selector', () => {
-    expect(() => selectors.errorSelector('nonexistent', state)).toThrow();
+  it('should return empty if no form in error selector', () => {
+    expect(selectors.errorSelector('nonexistent', state)).toEqual({});
   });
 
-  it('should throw if no form in valid selector', () => {
-    expect(() => selectors.isValid('nonexistent', state)).toThrow();
+  it('should return empty if no form in valid selector', () => {
+    expect(selectors.isValid('nonexistent', state)).toBe(false);
   });
 
-  it('should throw if no form in touched selector', () => {
-    expect(() => selectors.isTouched('nonexistent', state)).toThrow();
+  it('should return empty if no form in touched selector', () => {
+    expect(selectors.isTouched('nonexistent', state)).toBe(false);
   });
 
   it('should produce a memoized value form', () => {

@@ -18,7 +18,9 @@ const memValues = R.memoize(R.compose(
 
 export const valueSelector = (name: string, state: IState): Object => {
   const form = state.reduxFormLite[name];
-  invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
+  if (!form) {
+    return {};
+  }
 
   return memValues(form.fields);
 };
@@ -31,7 +33,9 @@ const memErrors = R.memoize(R.compose(
 
 export const errorSelector = (name: string, state: IState): Object => {
   const form = state.reduxFormLite[name];
-  invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
+  if (!form) {
+    return {};
+  }
 
   return memErrors(form.fields);
 };
@@ -45,7 +49,9 @@ const memValid = R.memoize(R.compose(
 
 export const isValid = (name: string, state: IState): boolean => {
   const form = state.reduxFormLite[name];
-  invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
+  if (!form) {
+    return false;
+  }
 
   return memValid(<any> form.fields);
 };
@@ -59,7 +65,19 @@ const memTouched = R.memoize(R.compose(
 
 export const isTouched = (name: string, state: IState): boolean => {
   const form = state.reduxFormLite[name];
-  invariant(form, '[redux-form-lite] Form not found - check supplied form name.');
+  if (!form) {
+    return false;
+  }
 
   return memTouched(<any> form.fields);
+};
+
+
+export const isSubmitting = (name: string, state: IState): boolean => {
+  const form = state.reduxFormLite[name];
+  if (!form) {
+    return false;
+  }
+
+  return form.submitting;
 };

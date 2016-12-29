@@ -31,4 +31,5 @@ export type FormObj = {
   fields: { [key: string]: FieldObj },
   // a map of array names and it's lengths
   arrays: { [key: string]: number },
+  submitting: boolean,
 };
