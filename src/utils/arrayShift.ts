@@ -6,10 +6,10 @@ import { FieldObj } from "./containers";
 export type Fields = { [key: string]: FieldObj };
 
 
-export default function arrayShift(fields: Fields, path: string, start: number, plus: boolean = true): Fields {
+export default function arrayShift(path: string, start: number, plus: boolean = true) {
   const modifier = plus ? 1 : -1;
 
-  return R.reduce((acc, key) => {
+  return (fields: Fields): Fields => R.reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
       return R.assoc(key, R.prop(key, fields), acc);
     }

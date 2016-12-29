@@ -2,6 +2,7 @@ import * as R from 'ramda';
 
 import { Value } from "./utils/getValue";
 import { form, field, FormObj, FieldObj } from "./utils/containers";
+import arrayShift from './utils/arrayShift';
 
 
 export const ADD_FORM = '@redux-form-lite/ADD_FORM';
@@ -13,6 +14,8 @@ export const ADD_ARRAY = '@redux-form-lite/ADD_ARRAY';
 export const REMOVE_ARRAY = '@redux-form-lite/REMOVE_ARRAY';
 export const PUSH = '@redux-form-lite/PUSH';
 export const POP = '@redux-form-lite/POP';
+export const UNSHIFT = '@redux-form-lite/UNSHIFT';
+export const SHIFT = '@redux-form-lite/SHIFT';
 
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
@@ -68,6 +71,30 @@ export default function formsReducer(state: State = {}, a: Action): State {
         R.dec,
         state,
       );
+
+    case UNSHIFT:
+      return R.compose<State, State, State>(
+        R.over(
+          R.lensPath([a.payload.form, 'fields']),
+          arrayShift(a.payload.id, 0),
+        ),
+        R.over(
+          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
+          R.inc,
+        ),
+      )(state);
+
+    case SHIFT:
+      return R.compose<State, State, State>(
+        R.over(
+          R.lensPath([a.payload.form, 'fields']),
+          arrayShift(a.payload.id, 0, false),
+        ),
+        R.over(
+          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
+          R.dec,
+        ),
+      )(state);
 
     // Field
     // ---
@@ -201,6 +228,32 @@ export const pop: PopCreator = (form, id) => ({
 });
 
 
+export type UnshiftAction = { type: '@redux-form-lite/UNSHIFT', payload: {
+  form: string,
+  id: string,
+} };
+
+export type UnshiftCreator = (form: string, id: string) => UnshiftAction;
+
+export const unshift: UnshiftCreator = (form, id) => ({
+  type: UNSHIFT,
+  payload: { form, id },
+});
+
+
+export type ShiftAction = { type: '@redux-form-lite/SHIFT', payload: {
+  form: string,
+  id: string,
+} };
+
+export type ShiftCreator = (form: string, id: string) => ShiftAction;
+
+export const shift: ShiftCreator = (form, id) => ({
+  type: SHIFT,
+  payload: { form, id },
+});
+
+
 export type FieldChangeAction = { type: '@redux-form-lite/FIELD_CHANGE', payload: {
   form: string,
   field: string,
@@ -261,6 +314,8 @@ export type Action =
     RemoveArrayAction |
     PushAction |
     PopAction |
+    UnshiftAction |
+    ShiftAction |
     FieldChangeAction |
     FieldFocusAction |
     FieldBlurAction;

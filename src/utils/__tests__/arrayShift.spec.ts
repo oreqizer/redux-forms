@@ -2,6 +2,7 @@ import arrayShift from '../arrayShift';
 
 import { field } from '../containers';
 
+
 const fields = {
   'flat.0': field,
   'flat.1': field,
@@ -15,9 +16,10 @@ const fields = {
   'rec.0.rec.0.rec.2': field,
 };
 
+
 describe('#arrayShift', () => {
   it('should unshift', () => {
-    const res = arrayShift(fields, 'flat', 1, false);
+    const res = arrayShift('flat', 1, false)(fields);
 
     expect(res['flat.2']).toBeUndefined();
 
@@ -26,7 +28,7 @@ describe('#arrayShift', () => {
   });
 
   it('should not unshift to negative', () => {
-    const res = arrayShift(fields, 'flat', 0, false);
+    const res = arrayShift('flat', 0, false)(fields);
 
     expect(res['flat.-1']).toBeUndefined();
 
@@ -35,7 +37,7 @@ describe('#arrayShift', () => {
   });
 
   it('should shift flat array', () => {
-    const res = arrayShift(fields, 'flat', 1);
+    const res = arrayShift('flat', 1)(fields);
 
     expect(res['flat.1']).toBeUndefined();
 
@@ -45,7 +47,7 @@ describe('#arrayShift', () => {
   });
 
   it('should unshift flat array', () => {
-    const res = arrayShift(fields, 'flat', 1);
+    const res = arrayShift('flat', 1)(fields);
 
     expect(res['flat.1']).toBeUndefined();
 
@@ -55,7 +57,7 @@ describe('#arrayShift', () => {
   });
 
   it('should shift nested array', () => {
-    const res = arrayShift(fields, 'medium.0.nest', 2);
+    const res = arrayShift('medium.0.nest', 2)(fields);
 
     expect(res['medium.0.nest.2']).toBeUndefined();
 
@@ -66,7 +68,7 @@ describe('#arrayShift', () => {
   });
 
   it('should shift recursive array - head', () => {
-    const res = arrayShift(fields, 'rec', 0);
+    const res = arrayShift('rec', 0)(fields);
 
     expect(res['rec.0.rec.0.rec.0']).toBeUndefined();
     expect(res['rec.0.rec.0.rec.1']).toBeUndefined();
@@ -78,7 +80,7 @@ describe('#arrayShift', () => {
   });
 
   it('should shift recursive array - mid', () => {
-    const res = arrayShift(fields, 'rec.0.rec', 0);
+    const res = arrayShift('rec.0.rec', 0)(fields);
 
     expect(res['rec.0.rec.0.rec.0']).toBeUndefined();
     expect(res['rec.0.rec.0.rec.1']).toBeUndefined();
@@ -90,7 +92,7 @@ describe('#arrayShift', () => {
   });
 
   it('should shift recursive array - last', () => {
-    const res = arrayShift(fields, 'rec.0.rec.0.rec', 1);
+    const res = arrayShift('rec.0.rec.0.rec', 1)(fields);
 
     expect(res['rec.0.rec.0.rec.1']).toBeUndefined();
 

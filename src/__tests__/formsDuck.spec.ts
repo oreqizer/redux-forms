@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import reducer, * as duck from '../formsDuck';
 
 import { form, field } from '../utils/containers';
@@ -59,6 +61,20 @@ describe('#formsDuck', () => {
   it('should create a POP action', () => {
     expect(duck.pop('form', 'field')).toEqual({
       type: duck.POP,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a UNSHIFT action', () => {
+    expect(duck.unshift('form', 'field')).toEqual({
+      type: duck.UNSHIFT,
+      payload: { form: 'form', id: 'field' },
+    });
+  });
+
+  it('should create a SHIFT action', () => {
+    expect(duck.shift('form', 'field')).toEqual({
+      type: duck.SHIFT,
       payload: { form: 'form', id: 'field' },
     });
   });
@@ -156,6 +172,34 @@ describe('#formsDuck', () => {
       form: { ...form, arrays: { array: 2 } },
     }, duck.pop('form', 'array'));
 
+    expect(state.form.arrays.array).toBe(1);
+  });
+
+  it('should unshift an array', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { 'array.0': field },
+        arrays: { array: 1 },
+      },
+    }, duck.unshift('form', 'array'));
+
+    expect(state.form.fields['array.0']).toBeUndefined();
+    expect(state.form.fields['array.1']).toBeDefined();
+    expect(state.form.arrays.array).toBe(2);
+  });
+
+  it('should shift an array', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { 'array.0': field, 'array.1': field },
+        arrays: { array: 2 },
+      },
+    }, duck.shift('form', 'array'));
+
+    expect(state.form.fields['array.0']).toBeDefined();
+    expect(state.form.fields['array.1']).toBeUndefined();
     expect(state.form.arrays.array).toBe(1);
   });
 
