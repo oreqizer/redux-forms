@@ -229,6 +229,7 @@ describe('#reduxForm', () => {
   it('should fire onSubmit', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
+    const touchAll = jest.fn();
     const onSubmit = jest.fn();
     const wrapper = mount((
       <Decorated
@@ -238,7 +239,7 @@ describe('#reduxForm', () => {
         _valid={true}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
-        _touchAll={jest.fn()}
+        _touchAll={touchAll}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
       />
@@ -246,6 +247,7 @@ describe('#reduxForm', () => {
 
     wrapper.find(MyComp).prop('onSubmit')();
 
+    expect(touchAll).toBeCalled();
     expect(onSubmit).toBeCalledWith({ test: 'yo' });
   });
 

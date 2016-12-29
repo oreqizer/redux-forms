@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import * as isPromise from 'is-promise';
 import * as invariant from 'invariant';
+// does not satisfy ES6 spec
+import isPromise = require('is-promise');
 
 import * as actions from './actions';
 import * as selectors from './selectors';
