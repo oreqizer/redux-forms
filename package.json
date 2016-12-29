@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --verbose --no-cache",
+    "test": "jest --no-cache",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "npm run tslint",
@@ -93,8 +93,11 @@
     "redux": "^3.6.0"
   },
   "dependencies": {
+    "@types/flat": "^0.0.28",
+    "@types/reselect": "^2.0.27",
     "invariant": "^2.2.2",
-    "ramda": "^0.22.1"
+    "ramda": "^0.22.1",
+    "reselect": "^2.5.4"
   },
   "files": [
     "dist",

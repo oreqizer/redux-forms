@@ -65,7 +65,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
-          R.append(`[${R.path([a.payload.form, 'counters', a.payload.id], state)}]`),
+          R.append(`.${R.path([a.payload.form, 'counters', a.payload.id], state)}`),
         ),
       )(state);
 

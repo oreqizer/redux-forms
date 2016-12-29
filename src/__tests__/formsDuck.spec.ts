@@ -146,21 +146,21 @@ describe('#formsDuck', () => {
     const state: any = reducer({
       form: {
         ...form,
-        arrays: { array: ['[0]'] },
+        arrays: { array: ['.0'] },
         counters: { array: 1 },
       },
     }, duck.push('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual(['[0]', '[1]']);
+    expect(state.form.arrays.array).toEqual(['.0', '.1']);
     expect(state.form.counters.array).toBe(2);
   });
 
   it('should pop from an array', () => {
     const state: any = reducer({
-      form: { ...form, arrays: { array: ['array[0]', 'array[1]'] } },
+      form: { ...form, arrays: { array: ['.0', '.1'] } },
     }, duck.pop('form', 'array'));
 
-    expect(state.form.arrays.array).toEqual(['array[0]']);
+    expect(state.form.arrays.array).toEqual(['.0']);
   });
 
   it('should change a field', () => {
