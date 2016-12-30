@@ -17,7 +17,7 @@ const memValues = R.memoize(R.compose(
 ));
 
 export const valueSelector = (name: string, state: IState): Object => {
-  const form = state.reduxFormLite[name];
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
     return {};
   }
@@ -32,7 +32,7 @@ const memErrors = R.memoize(R.compose(
 ));
 
 export const errorSelector = (name: string, state: IState): Object => {
-  const form = state.reduxFormLite[name];
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
     return {};
   }
@@ -48,7 +48,7 @@ const memValid = R.memoize(R.compose(
 ));
 
 export const isValid = (name: string, state: IState): boolean => {
-  const form = state.reduxFormLite[name];
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
     return false;
   }
@@ -64,7 +64,7 @@ const memTouched = R.memoize(R.compose(
 ));
 
 export const isTouched = (name: string, state: IState): boolean => {
-  const form = state.reduxFormLite[name];
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
     return false;
   }
@@ -74,7 +74,7 @@ export const isTouched = (name: string, state: IState): boolean => {
 
 
 export const isSubmitting = (name: string, state: IState): boolean => {
-  const form = state.reduxFormLite[name];
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
     return false;
   }

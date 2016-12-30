@@ -29,6 +29,8 @@ const touchform = {
   },
 };
 
+const emptystate: any = {};
+
 const state = {
   reduxFormLite: { test: demoform },
 };
@@ -43,6 +45,22 @@ const touchstate = {
 
 
 describe('#selectors', () => {
+  it('should return empty if no reducer', () => {
+    expect(selectors.valueSelector('nonexistent', emptystate)).toEqual({});
+  });
+
+  it('should return empty if no reducer', () => {
+    expect(selectors.errorSelector('nonexistent', emptystate)).toEqual({});
+  });
+
+  it('should return empty if no reducer', () => {
+    expect(selectors.isValid('nonexistent', emptystate)).toBe(false);
+  });
+
+  it('should return empty if no reducer', () => {
+    expect(selectors.isTouched('nonexistent', emptystate)).toBe(false);
+  });
+
   it('should return empty if no form in value selector', () => {
     expect(selectors.valueSelector('nonexistent', state)).toEqual({});
   });
