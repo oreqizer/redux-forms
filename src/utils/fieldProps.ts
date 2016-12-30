@@ -5,7 +5,7 @@ import { Value } from './getValue';
 import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props";
 
 
-export const INPUT_PROPS = [
+const INPUT_PROPS = [
   'autocomplete',
   'checked',
   'height',
@@ -26,7 +26,7 @@ export const INPUT_PROPS = [
   'onBlur',
 ];
 
-export const META_PROPS = [
+const META_PROPS = [
   'active',
   'dirty',
   'error',
@@ -34,7 +34,7 @@ export const META_PROPS = [
   'visited',
 ];
 
-export const IGNORE_PROPS = [
+const IGNORE_PROPS = [
   ...INPUT_PROPS,
   ...META_PROPS,
   'component',
