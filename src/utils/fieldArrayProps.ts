@@ -1,6 +1,22 @@
 import * as R from 'ramda';
 
-import { ARRAY_IGNORE_PROPS } from './consts';
+
+const ARRAY_IGNORE_PROPS = [
+  'flat',
+  'component',
+  // state
+  '_array',
+  '_values',
+  '_valid',
+  // actions
+  '_push',
+  '_pop',
+  '_unshift',
+  '_shift',
+  // context
+  '_form',
+  '_arrayId',
+];
 
 
 export type FunctionProps = {

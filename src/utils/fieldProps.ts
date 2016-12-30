@@ -1,9 +1,59 @@
 import * as R from 'ramda';
 
-import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
 import { Value } from './getValue';
 
 import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props";
+
+
+export const INPUT_PROPS = [
+  'autocomplete',
+  'checked',
+  'height',
+  'name',
+  'pattern',
+  'placeholder',
+  'readonly',
+  'required',
+  'size',
+  'selected',
+  'spellCheck',
+  'step',
+  'type',
+  'value',
+  'width',
+  'onChange',
+  'onFocus',
+  'onBlur',
+];
+
+export const META_PROPS = [
+  'active',
+  'dirty',
+  'error',
+  'touched',
+  'visited',
+];
+
+export const IGNORE_PROPS = [
+  ...INPUT_PROPS,
+  ...META_PROPS,
+  'component',
+  'defaultValue',
+  'index',
+  'normalize',
+  'validate',
+  // state
+  '_field',
+  // actions
+  '_addField',
+  '_removeField',
+  '_fieldChange',
+  '_fieldFocus',
+  '_fieldBlur',
+  // context
+  '_form',
+  '_id',
+];
 
 
 const maybeCheckProps = (all: IAllProps): IAllProps => {
