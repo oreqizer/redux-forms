@@ -36,7 +36,7 @@ const props2 = Object.assign({}, props, {
 describe('#fieldProps', () => {
   it('should separate input props', () => {
     const result: any = fieldProps(props);
-    expect(result.input.value).toBe(1337);
+    expect(result.input.value).toBe('1337');
     expect(result.input.required).toBe(true);
     expect(result.input.onChange).toBeDefined();
     expect(result.input.onFocus).toBeDefined();
