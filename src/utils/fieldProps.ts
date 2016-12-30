@@ -7,6 +7,7 @@ import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props
 
 const INPUT_PROPS = [
   'checked',
+  'name',
   'value',
   'onChange',
   'onFocus',

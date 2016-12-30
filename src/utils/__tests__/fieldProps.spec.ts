@@ -10,6 +10,8 @@ const props = {
   // input
   // ---
   value: '1337',
+  checked: false,
+  name: 'fieldz',
   onChange,
   onFocus,
   onBlur,
@@ -37,6 +39,8 @@ describe('#fieldProps', () => {
     const result: any = fieldProps(props);
 
     expect(result.input.value).toBe('1337');
+    expect(result.input.checked).toBe(false);
+    expect(result.input.name).toBe('fieldz');
     expect(result.input.onChange).toBeDefined();
     expect(result.input.onFocus).toBeDefined();
     expect(result.input.onBlur).toBeDefined();
