@@ -107,8 +107,10 @@ const reduxForm = <T>(options: Options) => {
         };
       }
 
-      handleSubmit() {
+      handleSubmit(ev: React.SyntheticEvent<HTMLFormElement>) {
         const { onSubmit, _valid, _values, _touchAll, _submitStart, _submitStop } = this.props;
+
+        ev.preventDefault();
 
         _touchAll(options.form);
         if (!_valid || typeof onSubmit !== 'function') {
