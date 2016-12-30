@@ -248,7 +248,7 @@ describe('#reduxForm', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
     const pd = jest.fn();
-    const onSubmit = jest.fn();
+    const onSubmit: any = jest.fn();
     const wrapper = mount((
       <Decorated
         onSubmit={onSubmit}
@@ -273,7 +273,7 @@ describe('#reduxForm', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
     const touchAll = jest.fn();
-    const onSubmit = jest.fn();
+    const onSubmit: any = jest.fn();
     const wrapper = mount((
       <Decorated
         onSubmit={onSubmit}

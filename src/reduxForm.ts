@@ -44,7 +44,11 @@ export type ActionProps = {
 };
 
 export type Props<T> = StateProps & ActionProps & T & {
-  onSubmit?: (values: Object) => Promise<any> | void;
+  onSubmit?: (values: Object) => Promise<any> | void,
+};
+
+export type SuppliedProps<T> = T & {
+  onSubmit?: React.SyntheticEvent<HTMLFormElement>,
 };
 
 
@@ -67,7 +71,7 @@ const reduxForm = <T>(options: Options) => {
       '[mobx-forms] "form" is a required string on the "reduxForm" decorator.',
   );
 
-  return (Wrapped: WrappedComponent<Props<T>>): Connected<T> => {
+  return (Wrapped: WrappedComponent<Props<T>>): Connected<SuppliedProps<T>> => {
     class ReduxForm extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
       static displayName = 'ReduxForm';
 
