@@ -9,7 +9,7 @@ const onBlur = (id: any) => id;
 const props = {
   // input
   // ---
-  value: 1337,
+  value: '1337',
   required: true,
   onChange,
   onFocus,
