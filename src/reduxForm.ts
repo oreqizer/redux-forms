@@ -48,7 +48,7 @@ export type Props<T> = StateProps & ActionProps & T & {
 };
 
 export type SuppliedProps<T> = T & {
-  onSubmit?: React.SyntheticEvent<HTMLFormElement>,
+  onSubmit?: (ev: React.SyntheticEvent<HTMLFormElement>) => void,
 };
 
 
