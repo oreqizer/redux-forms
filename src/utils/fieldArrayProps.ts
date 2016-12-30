@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 
-const ARRAY_IGNORE_PROPS = [
+const FIELD_ARRAY_PROPS = [
   'flat',
   'component',
   // state
@@ -28,7 +28,7 @@ export type FunctionProps = {
 };
 
 const separateProps = <T>(props: T, fns: FunctionProps) => R.merge(
-  R.omit(ARRAY_IGNORE_PROPS, props), { fields: fns },
+  R.omit(FIELD_ARRAY_PROPS, props), { fields: fns },
 );
 
 export default separateProps;

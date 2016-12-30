@@ -27,14 +27,6 @@ import { form, field } from '../utils/containers';
 // - _fieldBlur: FieldBlurCreator
 const Field = (ConnectedField as any).WrappedComponent.WrappedComponent;
 
-const freshMeta = {
-  active: false,
-  dirty: false,
-  error: null,
-  touched: false,
-  visited: false,
-};
-
 const Component = (props: any) => (
   <input
     type="text"
@@ -695,7 +687,13 @@ describe('#Field', () => {
     expect(wrapper.prop('input').onFocus).toBeDefined();
     expect(wrapper.prop('input').onBlur).toBeDefined();
 
-    expect(wrapper.prop('meta')).toEqual(freshMeta);
+    expect(wrapper.prop('meta')).toEqual({
+      active: false,
+      dirty: false,
+      error: null,
+      touched: false,
+      visited: false,
+    });
 
     expect(wrapper.prop('component')).toBeUndefined();
     expect(wrapper.prop('field')).toBeUndefined();

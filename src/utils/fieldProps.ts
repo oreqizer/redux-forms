@@ -6,21 +6,8 @@ import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props
 
 
 const INPUT_PROPS = [
-  'autocomplete',
   'checked',
-  'height',
-  'name',
-  'pattern',
-  'placeholder',
-  'readonly',
-  'required',
-  'size',
-  'selected',
-  'spellCheck',
-  'step',
-  'type',
   'value',
-  'width',
   'onChange',
   'onFocus',
   'onBlur',
@@ -34,9 +21,7 @@ const META_PROPS = [
   'visited',
 ];
 
-const IGNORE_PROPS = [
-  ...INPUT_PROPS,
-  ...META_PROPS,
+const FIELD_PROPS = [
   'component',
   'defaultValue',
   'index',
@@ -66,7 +51,7 @@ const maybeCheckProps = (all: IAllProps): IAllProps => {
 const separateProps = (all: IAllProps): SeparatedProps => ({
   input: R.pick<IAllProps, InputProps>(INPUT_PROPS, all),
   meta: R.pick<IAllProps, MetaProps>(META_PROPS, all),
-  custom: R.omit(IGNORE_PROPS, all),
+  custom: R.omit(R.flatten([INPUT_PROPS, META_PROPS, FIELD_PROPS]), all),
 });
 
 // Order matters!
