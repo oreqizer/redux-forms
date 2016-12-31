@@ -417,7 +417,8 @@ describe('#Field', () => {
 
     expect(fieldChange).not.toBeCalled();
 
-    (wrapper.instance() as any).handleChange(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
 
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, true);
   });
@@ -438,7 +439,8 @@ describe('#Field', () => {
 
     expect(fieldChange).not.toBeCalled();
 
-    (wrapper.instance() as any).handleChange(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
 
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, false);
   });
@@ -459,7 +461,8 @@ describe('#Field', () => {
 
     expect(fieldChange).not.toBeCalled();
 
-    (wrapper.instance() as any).handleChange(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
 
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge', 'bad format', true);
   });
@@ -480,7 +483,8 @@ describe('#Field', () => {
 
     expect(fieldChange).not.toBeCalled();
 
-    (wrapper.instance() as any).handleChange(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
 
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge km', null, true);
   });
@@ -503,7 +507,8 @@ describe('#Field', () => {
 
     expect(fieldChange).not.toBeCalled();
 
-    (wrapper.instance() as any).handleChange(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
 
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge km', 'bad format', false);
   });
@@ -523,7 +528,8 @@ describe('#Field', () => {
 
     expect(fieldFocus).not.toBeCalled();
 
-    (wrapper.instance() as any).handleFocus();
+    const instance: any = wrapper.instance();
+    instance.handleFocus();
 
     expect(fieldFocus).toBeCalledWith('form', 'test');
   });
@@ -543,7 +549,8 @@ describe('#Field', () => {
 
     expect(fieldBlur).not.toBeCalled();
 
-    (wrapper.instance() as any).handleBlur(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
   });
@@ -564,7 +571,8 @@ describe('#Field', () => {
 
     expect(fieldBlur).not.toBeCalled();
 
-    (wrapper.instance() as any).handleBlur(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', null, false);
   });
@@ -585,7 +593,8 @@ describe('#Field', () => {
 
     expect(fieldBlur).not.toBeCalled();
 
-    (wrapper.instance() as any).handleBlur(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', true);
   });
@@ -606,7 +615,8 @@ describe('#Field', () => {
 
     expect(fieldBlur).not.toBeCalled();
 
-    (wrapper.instance() as any).handleBlur(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
   });
@@ -629,7 +639,8 @@ describe('#Field', () => {
 
     expect(fieldBlur).not.toBeCalled();
 
-    (wrapper.instance() as any).handleBlur(event('doge'));
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', false);
   });
