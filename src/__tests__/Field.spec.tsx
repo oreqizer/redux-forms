@@ -72,7 +72,7 @@ const getForm = (state: any) => state.getState().reduxFormLite.test;
 describe('#Field', () => {
   it('should not add a field', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -80,15 +80,15 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).not.toBeCalled();
   });
 
   it('should add a clean field', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -96,15 +96,15 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', field);
   });
 
   it('should add a field with a default value', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -113,8 +113,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
@@ -124,7 +124,7 @@ describe('#Field', () => {
 
   it('should add a field with a validator', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -133,8 +133,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
@@ -144,7 +144,7 @@ describe('#Field', () => {
 
   it('should add a field with a normalizer', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -153,8 +153,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
@@ -164,7 +164,7 @@ describe('#Field', () => {
 
   it('should add a field with a validator and a normalizer', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -174,8 +174,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
@@ -186,7 +186,7 @@ describe('#Field', () => {
 
   it('should add a field with a default value, a validator and a normalizer', () => {
     const addField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -197,8 +197,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={addField}
-      />,
-    );
+      />
+    ));
 
     expect(addField).toBeCalledWith('form', 'test', {
       ...field,
@@ -208,7 +208,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount when no field', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -216,8 +216,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -227,7 +227,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a clean field', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -235,8 +235,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -246,7 +246,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a default value', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -254,8 +254,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -268,7 +268,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a validator', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -276,8 +276,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -290,7 +290,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a normalizer', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -298,8 +298,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -312,7 +312,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a validator and a normalizer', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -320,8 +320,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -335,7 +335,7 @@ describe('#Field', () => {
   });
 
   it('should re-mount a field with a default value, a validator and a normalizer', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -343,8 +343,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const addField = jest.fn();
 
@@ -365,7 +365,7 @@ describe('#Field', () => {
 
   it('should change a field when default value changes', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -373,8 +373,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     wrapper.setProps({ defaultValue: '250' });
 
@@ -383,7 +383,7 @@ describe('#Field', () => {
 
   it('should unmount a field', () => {
     const removeField = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -392,8 +392,8 @@ describe('#Field', () => {
         _form="form"
         _addField={jest.fn()}
         _removeField={removeField}
-      />,
-    );
+      />
+    ));
 
     expect(removeField).not.toBeCalled();
 
@@ -404,7 +404,7 @@ describe('#Field', () => {
 
   it('should fire a change action', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -412,8 +412,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     expect(fieldChange).not.toBeCalled();
 
@@ -424,7 +424,7 @@ describe('#Field', () => {
 
   it('should fire a change action with default value', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -433,8 +433,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     expect(fieldChange).not.toBeCalled();
 
@@ -445,7 +445,7 @@ describe('#Field', () => {
 
   it('should fire a validated change action', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -454,8 +454,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     expect(fieldChange).not.toBeCalled();
 
@@ -466,7 +466,7 @@ describe('#Field', () => {
 
   it('should fire a normalized change action', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -475,8 +475,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     expect(fieldChange).not.toBeCalled();
 
@@ -487,7 +487,7 @@ describe('#Field', () => {
 
   it('should fire a validated and normalized change action with default value', () => {
     const fieldChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -498,8 +498,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldChange={fieldChange}
-      />,
-    );
+      />
+    ));
 
     expect(fieldChange).not.toBeCalled();
 
@@ -510,7 +510,7 @@ describe('#Field', () => {
 
   it('should fire a focus action', () => {
     const fieldFocus = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -518,8 +518,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldFocus={fieldFocus}
-      />,
-    );
+      />
+    ));
 
     expect(fieldFocus).not.toBeCalled();
 
@@ -530,7 +530,7 @@ describe('#Field', () => {
 
   it('should fire a blur action', () => {
     const fieldBlur = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -538,8 +538,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}
-      />,
-    );
+      />
+    ));
 
     expect(fieldBlur).not.toBeCalled();
 
@@ -550,7 +550,7 @@ describe('#Field', () => {
 
   it('should fire a blur action with default value', () => {
     const fieldBlur = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -559,8 +559,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}
-      />,
-    );
+      />
+    ));
 
     expect(fieldBlur).not.toBeCalled();
 
@@ -571,7 +571,7 @@ describe('#Field', () => {
 
   it('should fire a validated blur action', () => {
     const fieldBlur = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -580,8 +580,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}
-      />,
-    );
+      />
+    ));
 
     expect(fieldBlur).not.toBeCalled();
 
@@ -592,7 +592,7 @@ describe('#Field', () => {
 
   it('should fire a normalized blur action', () => {
     const fieldBlur = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -601,8 +601,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}
-      />,
-    );
+      />
+    ));
 
     expect(fieldBlur).not.toBeCalled();
 
@@ -613,7 +613,7 @@ describe('#Field', () => {
 
   it('should fire a validated and normalized blur action with default value', () => {
     const fieldBlur = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -624,8 +624,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _fieldBlur={fieldBlur}
-      />,
-    );
+      />
+    ));
 
     expect(fieldBlur).not.toBeCalled();
 
@@ -635,7 +635,7 @@ describe('#Field', () => {
   });
 
   it('should not render without a field', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -643,14 +643,14 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   it('should pass props to a string component', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -658,8 +658,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     expect(wrapper.prop('name')).toBe('test');
     expect(wrapper.prop('value')).toBe('');
@@ -671,7 +671,7 @@ describe('#Field', () => {
   });
 
   it('should pass props to a custom component', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component={Component}
@@ -679,8 +679,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     expect(wrapper.prop('input').value).toBe('');
     expect(wrapper.prop('input').onChange).toBeDefined();
@@ -699,9 +699,26 @@ describe('#Field', () => {
     expect(wrapper.prop('field')).toBeUndefined();
   });
 
+  it('should do nothing without ref callback', () => {
+    const wrapper = shallow((
+      <Field
+        name="test"
+        component="input"
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />
+    ));
+
+    const instance: any = wrapper.instance();
+
+    expect(instance.handleRef).not.toThrow();
+  });
+
   it('should supply element to ref callback', () => {
     const withRef = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Field
         name="test"
         component="input"
@@ -710,8 +727,8 @@ describe('#Field', () => {
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
     const instance: any = wrapper.instance();
 
@@ -721,22 +738,21 @@ describe('#Field', () => {
     expect(withRef).toBeCalledWith(el);
   });
 
-  // TODO do this nicer
-  it('should not throw', () => {
-    const wrapper = shallow(
+  it('should fire ref callback on mount', () => {
+    const withRef = jest.fn();
+    const wrapper = mount((
       <Field
         name="test"
         component="input"
+        withRef={withRef}
         _field={field}
         _id="test"
         _form="form"
         _addField={jest.fn()}
-      />,
-    );
+      />
+    ));
 
-    const instance: any = wrapper.instance();
-
-    expect(instance.handleRef).not.toThrow();
+    expect(withRef).toBeCalled();
   });
 });
 
@@ -744,44 +760,42 @@ describe('#Field', () => {
 describe('#connect(Field)', () => {
   it('should not mount without context', () => {
     const store = newStore();
-    const wrapperFn = () => mount(
+    const wrapperFn = () => mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-    );
+      </Provider>
+    ));
 
     expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
   });
 
   it('should have a correct name', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     expect(wrapper.find(ConnectedField).name()).toBe('Field');
   });
 
   it('should add a field', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     expect(getForm(store).fields).toEqual({ test: field });
     expect(wrapper.find('input').length).toBe(1);
@@ -789,15 +803,14 @@ describe('#connect(Field)', () => {
 
   it('should remove a field', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     wrapper.unmount();
 
@@ -806,15 +819,14 @@ describe('#connect(Field)', () => {
 
   it('should handle a change event', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     wrapper.find('input').simulate('change', event('doge'));
 
@@ -827,15 +839,14 @@ describe('#connect(Field)', () => {
 
   it('should handle a focus event', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     wrapper.find('input').simulate('focus');
 
@@ -848,15 +859,14 @@ describe('#connect(Field)', () => {
 
   it('should handle a blur event', () => {
     const store = newStore();
-    const wrapper = mount(
+    const wrapper = mount((
       <Provider store={store}>
         <ConnectedField
           name="test"
           component="input"
         />
-      </Provider>,
-      options,
-    );
+      </Provider>
+    ), options);
 
     wrapper.find('input').simulate('blur', event('doge'));
 
@@ -866,6 +876,4 @@ describe('#connect(Field)', () => {
       dirty: true,
     } });
   });
-
-  // TODO test withRef
 });
