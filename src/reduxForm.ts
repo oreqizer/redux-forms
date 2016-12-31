@@ -45,6 +45,7 @@ export type ActionProps = {
 
 export type Props<T> = StateProps & ActionProps & T & {
   onSubmit?: (values: Object) => Promise<any> | void,
+  withRef?: (el: React.ReactElement<any>) => void,
 };
 
 export type SuppliedProps<T> = T & {
@@ -53,10 +54,10 @@ export type SuppliedProps<T> = T & {
 
 
 const PROPS_TO_OMIT = [
+  'withRef',
   '_form',
   '_valid',
   '_values',
-  '_errors',
   '_addForm',
   '_removeForm',
   '_touchAll',
@@ -85,6 +86,7 @@ const reduxForm = <T>(options: Options) => {
       constructor(props: Props<T>) {
         super(props);
 
+        this.handleRef = this.handleRef.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
 
@@ -111,6 +113,14 @@ const reduxForm = <T>(options: Options) => {
         };
       }
 
+      handleRef(el: React.ReactElement<any>) {
+        const { withRef } = this.props;
+
+        if (typeof withRef === 'function') {
+          withRef(el);
+        }
+      }
+
       handleSubmit(ev: React.SyntheticEvent<HTMLFormElement>) {
         const { onSubmit, _valid, _values, _touchAll, _submitStart, _submitStop } = this.props;
 
@@ -130,15 +140,21 @@ const reduxForm = <T>(options: Options) => {
       }
 
       render() {
+        const { withRef, _form } = this.props;
+
         // Wait until form is initialized
-        if (!this.props._form) {
+        if (!_form) {
           return null;
         }
 
-        // React.SFC vs. React.ClassComponent collision
-        return React.createElement(<any> Wrapped, R.omit(PROPS_TO_OMIT, R.merge(this.props, {
+        const maybeRef = withRef ? { ref: this.handleRef } : {};
+
+        const props = R.mergeAll([this.props, maybeRef, {
           onSubmit: this.handleSubmit,
-        })));
+        }]);
+
+        // React.SFC vs. React.ClassComponent collision
+        return React.createElement(<any> Wrapped, R.omit(PROPS_TO_OMIT, props));
       }
     }
 

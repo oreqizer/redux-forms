@@ -191,6 +191,7 @@ describe('#reduxForm', () => {
       />
     ));
 
+    expect(wrapper.find(MyComp).prop('withRef')).toBeUndefined();
     expect(wrapper.find(MyComp).prop('_form')).toBeUndefined();
     expect(wrapper.find(MyComp).prop('_values')).toBeUndefined();
     expect(wrapper.find(MyComp).prop('_valid')).toBeUndefined();
@@ -199,6 +200,30 @@ describe('#reduxForm', () => {
     expect(wrapper.find(MyComp).prop('_touchAll')).toBeUndefined();
     expect(wrapper.find(MyComp).prop('_submitStart')).toBeUndefined();
     expect(wrapper.find(MyComp).prop('_submitStop')).toBeUndefined();
+  });
+
+  it('should provide context', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const wrapper = mount((
+      <Decorated
+        _form={form}
+        _values={{}}
+        _valid={false}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+        _touchAll={jest.fn()}
+        _submitStart={jest.fn()}
+        _submitStop={jest.fn()}
+      />
+    ));
+
+    expect((wrapper.instance() as any).getChildContext()).toEqual({
+      reduxFormLite: {
+        form: 'test',
+        context: '',
+      },
+    });
   });
 
   it('should provide onSubmit', () => {
@@ -331,7 +356,7 @@ describe('#reduxForm', () => {
     expect(submitStop).toBeCalled();
   });
 
-  it('should provide context', () => {
+  it('should do nothing without ref callback', () => {
     const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
 
     const wrapper = mount((
@@ -347,12 +372,56 @@ describe('#reduxForm', () => {
       />
     ));
 
-    expect((wrapper.instance() as any).getChildContext()).toEqual({
-      reduxFormLite: {
-        form: 'test',
-        context: '',
-      },
-    });
+    const instance: any = wrapper.instance();
+
+    expect(instance.handleRef).not.toThrow();
+  });
+
+  it('should supply element to ref callback', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const withRef = jest.fn();
+    const wrapper = mount((
+      <Decorated
+        withRef={withRef}
+        _form={form}
+        _values={{}}
+        _valid={false}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+        _touchAll={jest.fn()}
+        _submitStart={jest.fn()}
+        _submitStop={jest.fn()}
+      />
+    ));
+
+    const instance: any = wrapper.instance();
+
+    const el = <input />;
+    instance.handleRef(el);
+
+    expect(withRef).toBeCalledWith(el);
+  });
+
+  it('should fire ref callback on mount', () => {
+    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
+
+    const withRef = jest.fn();
+    const wrapper = mount((
+      <Decorated
+        withRef={withRef}
+        _form={form}
+        _values={{}}
+        _valid={false}
+        _addForm={jest.fn()}
+        _removeForm={jest.fn()}
+        _touchAll={jest.fn()}
+        _submitStart={jest.fn()}
+        _submitStop={jest.fn()}
+      />
+    ));
+
+    expect(withRef).toBeCalled();
   });
 });
 
