@@ -16,6 +16,7 @@ export interface ISuppliedProps {
 export interface IOwnProps {
   name: string;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
+  withRef?: (el: React.ReactElement<any>) => void;
 }
 
 
@@ -32,6 +33,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   constructor(props: AllProps) {
     super(props);
 
+    this.handleRef = this.handleRef.bind(this);
     this.handleMap = this.handleMap.bind(this);
     this.handlePush = this.handlePush.bind(this);
     this.handlePop = this.handlePop.bind(this);
@@ -51,6 +53,14 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     const { _removeArray, _form, _arrayId } = this.props;
 
     _removeArray(_form, _arrayId);
+  }
+
+  handleRef(el: React.ReactElement<any>) {
+    const { withRef } = this.props;
+
+    if (typeof withRef === 'function') {
+      withRef(el);
+    }
   }
 
   handleMap<T>(fn: (arr: string[]) => T) {
@@ -89,14 +99,16 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   render() {
-    const { component, _array } = this.props;
+    const { component, withRef, _array, ...rest } = this.props;
 
     if (typeof _array !== 'number') {
       return null;
     }
 
+    const maybeRef = withRef ? { ref: this.handleRef } : {};
+
     // React.SFC vs. React.ClassComponent collision
-    return React.createElement(<any> component, fieldArrayProps(this.props, {
+    return React.createElement(<any> component, fieldArrayProps(R.merge(rest, maybeRef), {
       length: _array,
       map: this.handleMap,
       push: this.handlePush,

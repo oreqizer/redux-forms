@@ -303,6 +303,56 @@ describe('#FieldArray', () => {
 
     expect(wrapper.prop('doge')).toBe('wow');
   });
+
+  it('should do nothing without ref callback', () => {
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _array={1}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    const instance: any = wrapper.instance();
+
+    expect(instance.handleRef).not.toThrow();
+  });
+
+  it('should supply element to ref callback', () => {
+    const withRef = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        withRef={withRef}
+        _array={1}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    const instance: any = wrapper.instance();
+
+    const el = <input />;
+    instance.handleRef(el);
+
+    expect(withRef).toBeCalledWith(el);
+  });
+
+  it('should fire ref callback on mount', () => {
+    const withRef = jest.fn();
+    const wrapper = mount((
+      <FieldArray
+        name="array"
+        component={Component}
+        withRef={withRef}
+        _array={1}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    expect(withRef).toBeCalled();
+  });
 });
 
 

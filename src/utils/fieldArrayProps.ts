@@ -3,6 +3,7 @@ import * as R from 'ramda';
 
 const FIELD_ARRAY_PROPS = [
   'component',
+  'withRef',
   // state
   '_array',
   // actions

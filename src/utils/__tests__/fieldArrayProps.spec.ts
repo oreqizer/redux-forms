@@ -1,28 +1,31 @@
+import * as R from 'ramda';
+
 import fieldArrayProps from '../fieldArrayProps';
 
 
-const fields = {
+const fields: any = {
   length: 2,
-  map: (id: any) => id,
-  push: () => null,
-  pop: () => null,
-  unshift: () => null,
-  shift: () => null,
+  map: R.identity,
+  push: R.identity,
+  pop: R.identity,
+  unshift: R.identity,
+  shift: R.identity,
 };
 
 const props = {
   // to omit
   // ---
   component: 'input',
+  withRef: R.identity,
   _form: 'form',
   _arrayId: 'arrayId',
   _array: 1,
-  _addArray: (id: any) => id,
-  _removeArray: (id: any) => id,
-  _push: (id: any) => id,
-  _pop: (id: any) => id,
-  _unshift: (id: any) => id,
-  _shift: (id: any) => id,
+  _addArray: R.identity,
+  _removeArray: R.identity,
+  _push: R.identity,
+  _pop: R.identity,
+  _unshift: R.identity,
+  _shift: R.identity,
 
   // custom
   // ---
@@ -43,7 +46,7 @@ describe('#fieldArrayProps', () => {
     expect(res.fields.shift).toEqual(fields.shift);
   });
 
-  it('should filter out ignored properties', () => {
+  it('should omit props', () => {
     const res = fieldArrayProps(props, fields);
 
     expect(res).toEqual({
