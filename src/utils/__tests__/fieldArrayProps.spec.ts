@@ -1,7 +1,8 @@
 import fieldArrayProps from '../fieldArrayProps';
 
 
-const fns = {
+const fields = {
+  length: 2,
   map: (id: any) => id,
   push: () => null,
   pop: () => null,
@@ -32,20 +33,21 @@ const props = {
 
 describe('#fieldArrayProps', () => {
   it('should separate functions', () => {
-    const res = fieldArrayProps(props, fns);
+    const res = fieldArrayProps(props, fields);
 
-    expect(res.fields.map).toEqual(fns.map);
-    expect(res.fields.push).toEqual(fns.push);
-    expect(res.fields.pop).toEqual(fns.pop);
-    expect(res.fields.unshift).toEqual(fns.unshift);
-    expect(res.fields.shift).toEqual(fns.shift);
+    expect(res.fields.length).toBe(2);
+    expect(res.fields.map).toEqual(fields.map);
+    expect(res.fields.push).toEqual(fields.push);
+    expect(res.fields.pop).toEqual(fields.pop);
+    expect(res.fields.unshift).toEqual(fields.unshift);
+    expect(res.fields.shift).toEqual(fields.shift);
   });
 
   it('should filter out ignored properties', () => {
-    const res = fieldArrayProps(props, fns);
+    const res = fieldArrayProps(props, fields);
 
     expect(res).toEqual({
-      fields: fns,
+      fields,
       damage: 'tons of',
       wow: 'so test',
     });

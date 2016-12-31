@@ -5,12 +5,12 @@ import * as R from 'ramda';
 import { Context } from './reduxForm';
 import * as actions from './actions';
 import connectFieldArray, { ContextProps } from './utils/connectFieldArray';
-import fieldArrayProps, { FunctionProps } from './utils/fieldArrayProps';
+import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';
 
 
 export interface ISuppliedProps {
   name: string;
-  fields: FunctionProps;
+  fields: FieldProps;
 }
 
 export interface IOwnProps {
@@ -97,6 +97,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 
     // React.SFC vs. React.ClassComponent collision
     return React.createElement(<any> component, fieldArrayProps(this.props, {
+      length: _array,
       map: this.handleMap,
       push: this.handlePush,
       pop: this.handlePop,

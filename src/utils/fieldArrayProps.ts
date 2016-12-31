@@ -18,7 +18,8 @@ const FIELD_ARRAY_PROPS = [
 ];
 
 
-export type FunctionProps = {
+export type FieldProps = {
+  length: number,
   map: (fn: (arr: string[]) => any) => any,
   push: () => void,
   pop: () => void,
@@ -26,8 +27,8 @@ export type FunctionProps = {
   shift: () => void,
 };
 
-const separateProps = <T>(props: T, fns: FunctionProps) => R.merge(
-  R.omit(FIELD_ARRAY_PROPS, props), { fields: fns },
+const separateProps = <T>(props: T, fields: FieldProps) => R.merge(
+  R.omit(FIELD_ARRAY_PROPS, props), { fields },
 );
 
 export default separateProps;

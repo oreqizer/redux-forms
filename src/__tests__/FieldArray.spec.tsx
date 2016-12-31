@@ -121,6 +121,23 @@ describe('#FieldArray', () => {
     expect(removeArray).toBeCalledWith('form', 'arrayId');
   });
 
+  it('should provide array length', () => {
+    const push = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _arrayId="arrayId"
+        _array={1}
+        _addArray={jest.fn()}
+        _push={push}
+      />
+    ));
+
+    expect(wrapper.prop('fields').length).toBe(1);
+  });
+
   it('should handle map', () => {
     const wrapper = shallow((
       <FieldArray
