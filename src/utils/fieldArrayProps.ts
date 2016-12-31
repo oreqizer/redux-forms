@@ -2,13 +2,12 @@ import * as R from 'ramda';
 
 
 const FIELD_ARRAY_PROPS = [
-  'flat',
   'component',
   // state
   '_array',
-  '_values',
-  '_valid',
   // actions
+  '_addArray',
+  '_removeArray',
   '_push',
   '_pop',
   '_unshift',

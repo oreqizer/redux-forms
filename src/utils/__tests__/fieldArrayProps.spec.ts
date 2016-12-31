@@ -12,11 +12,12 @@ const fns = {
 const props = {
   // to omit
   // ---
-  flat: true,
   component: 'input',
   _form: 'form',
   _arrayId: 'arrayId',
-  _array: ['omfg[1]', 'omfg[2]'],
+  _array: 1,
+  _addArray: (id: any) => id,
+  _removeArray: (id: any) => id,
   _push: (id: any) => id,
   _pop: (id: any) => id,
   _unshift: (id: any) => id,

@@ -15,7 +15,6 @@ export interface ISuppliedProps {
 
 export interface IOwnProps {
   name: string;
-  flat?: boolean;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
 }
 
