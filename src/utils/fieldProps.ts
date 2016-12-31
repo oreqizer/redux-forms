@@ -25,9 +25,9 @@ const META_PROPS = [
 const FIELD_PROPS = [
   'component',
   'defaultValue',
-  'index',
   'normalize',
   'validate',
+  'withRef',
   // state
   '_field',
   // actions

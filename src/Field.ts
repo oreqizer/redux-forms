@@ -23,6 +23,7 @@ export interface IOwnProps {
   validate?: Validate;
   normalize?: Normalize;
   defaultValue?: string;
+  withRef?: (el: React.ReactElement<any>) => void;
 }
 
 export type Validate = (value: Value) => string | null;
@@ -33,8 +34,6 @@ export type Normalize = (value: Value) => Value;
 class Field extends React.PureComponent<AllProps, void> {
   // Must contain all props of 'AllProps'
   static defaultProps = {
-    name: '',
-    component: 'input',
     validate: () => null,
     normalize: R.identity,
     defaultValue: '',
@@ -68,6 +67,7 @@ class Field extends React.PureComponent<AllProps, void> {
   constructor(props: AllProps) {
     super(props);
 
+    this.handleRef = this.handleRef.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
@@ -112,6 +112,14 @@ class Field extends React.PureComponent<AllProps, void> {
     props._addField(props._form, props._id, newField);
   }
 
+  handleRef(el: React.ReactElement<any>) {
+    const { withRef } = this.props;
+
+    if (typeof withRef === 'function') {
+      withRef(el);
+    }
+  }
+
   handleChange(ev: SynthEvent) {
     const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
 
@@ -139,14 +147,16 @@ class Field extends React.PureComponent<AllProps, void> {
   }
 
   render() {
-    const { component, _field, ...rest } = this.props;
+    const { component, withRef, _field, ...rest } = this.props;
 
     // Wait until field is initialized
     if (!_field) {
       return null;
     }
 
-    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, _field, {
+    const maybeRef = withRef ? { ref: this.handleRef } : {};
+
+    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, maybeRef, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,

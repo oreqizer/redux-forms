@@ -698,6 +698,46 @@ describe('#Field', () => {
     expect(wrapper.prop('component')).toBeUndefined();
     expect(wrapper.prop('field')).toBeUndefined();
   });
+
+  it('should supply element to ref callback', () => {
+    const withRef = jest.fn();
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component="input"
+        withRef={withRef}
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const instance: any = wrapper.instance();
+
+    const el = <input />;
+    instance.handleRef(el);
+
+    expect(withRef).toBeCalledWith(el);
+  });
+
+  // TODO do this nicer
+  it('should not throw', () => {
+    const wrapper = shallow(
+      <Field
+        name="test"
+        component="input"
+        _field={field}
+        _id="test"
+        _form="form"
+        _addField={jest.fn()}
+      />,
+    );
+
+    const instance: any = wrapper.instance();
+
+    expect(instance.handleRef).not.toThrow();
+  });
 });
 
 
@@ -826,4 +866,6 @@ describe('#connect(Field)', () => {
       dirty: true,
     } });
   });
+
+  // TODO test withRef
 });

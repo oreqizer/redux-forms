@@ -1,10 +1,12 @@
 /// <reference types="jest" />
+import * as R from "ramda";
+
 import fieldProps from '../fieldProps';
 
 
-const onChange = (id: any) => id;
-const onFocus = (id: any) => id;
-const onBlur = (id: any) => id;
+const onChange = R.identity;
+const onFocus = R.identity;
+const onBlur = R.identity;
 
 const props = {
   // input
@@ -23,6 +25,22 @@ const props = {
   visited: false,
   touched: true,
   active: false,
+
+  // to omit
+  // ---
+  component: 'input',
+  defaultValue: 'kek',
+  normalize: R.identity,
+  validate: R.identity,
+  withRef: R.identity,
+  _field: {},
+  _addField: R.identity,
+  _removeField: R.identity,
+  _fieldChange: R.identity,
+  _fieldFocus: R.identity,
+  _fieldBlur: R.identity,
+  _form: 'form',
+  _id: 'field',
 
   // custom
   // ---
@@ -54,6 +72,24 @@ describe('#fieldProps', () => {
     expect(result.meta.visited).toBe(false);
     expect(result.meta.touched).toBe(true);
     expect(result.meta.active).toBe(false);
+  });
+
+  it('should omit props', () => {
+    const result: any = fieldProps(props);
+
+    expect(result.component).toBeUndefined();
+    expect(result.defaultValue).toBeUndefined();
+    expect(result.normalize).toBeUndefined();
+    expect(result.validate).toBeUndefined();
+    expect(result.withRef).toBeUndefined();
+    expect(result._field).toBeUndefined();
+    expect(result._addField).toBeUndefined();
+    expect(result._removeField).toBeUndefined();
+    expect(result._fieldChange).toBeUndefined();
+    expect(result._fieldFocus).toBeUndefined();
+    expect(result._fieldBlur).toBeUndefined();
+    expect(result._form).toBeUndefined();
+    expect(result._id).toBeUndefined();
   });
 
   it('should separate custom props', () => {
