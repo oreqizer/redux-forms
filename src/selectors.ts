@@ -58,7 +58,7 @@ export function isValid(name: string, state: IState): boolean {
 
 
 const memTouched = R.memoize(R.compose(
-  R.all(R.identity),
+  R.any(R.identity),
   R.values,
   R.map(R.prop('touched')),
 ));
@@ -70,6 +70,22 @@ export function isTouched(name: string, state: IState): boolean {
   }
 
   return memTouched(<any> form.fields);
+}
+
+
+const memDirty = R.memoize(R.compose(
+  R.any(R.identity),
+  R.values,
+  R.map(R.prop('dirty')),
+));
+
+export function isDirty(name: string, state: IState): boolean {
+  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  if (!form) {
+    return false;
+  }
+
+  return memDirty(<any> form.fields);
 }
 
 
