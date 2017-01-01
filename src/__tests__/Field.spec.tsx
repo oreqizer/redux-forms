@@ -15,8 +15,7 @@ import { form, field } from '../utils/containers';
 // NOTE:
 // We're unwrapping 'Field' from 'connect' and 'connectField'.
 // Props needed mocking:
-// - _form: string
-// - _id: string
+// - form: string
 // state:
 // - _field: FieldObject
 // actions:
@@ -49,13 +48,10 @@ const event = (value: string) => ({
 
 const options = {
   context: {
-    reduxFormLite: {
-      form: 'test',
-      context: '',
-    },
+    reduxFormLite: 'test',
   },
   childContextTypes: {
-    reduxFormLite: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.string.isRequired,
   },
 };
 
@@ -76,9 +72,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -92,9 +87,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -109,9 +103,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         defaultValue="doge"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -129,9 +122,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         validate={validate}
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -149,9 +141,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         normalize={normalize}
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -170,9 +161,8 @@ describe('#Field', () => {
         component="input"
         validate={validate}
         normalize={normalize}
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -193,9 +183,8 @@ describe('#Field', () => {
         defaultValue="asdf"
         validate={validate}
         normalize={normalize}
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={addField}
       />
     ));
@@ -212,9 +201,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -231,16 +219,15 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _form: "form2", _id: "test2" });
+    wrapper.setProps({ _addField: addField, form: "form2", name: "test2" });
 
     expect(addField).toBeCalledWith('form2', 'test2', field);
   });
@@ -250,16 +237,15 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _id: "test2", defaultValue: 'doge' });
+    wrapper.setProps({ _addField: addField, name: "test2", defaultValue: 'doge' });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -272,16 +258,15 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _id: "test2", validate });
+    wrapper.setProps({ _addField: addField, name: "test2", validate });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -294,16 +279,15 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _id: "test2", normalize });
+    wrapper.setProps({ _addField: addField, name: "test2", normalize });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -316,16 +300,15 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
 
     const addField = jest.fn();
 
-    wrapper.setProps({ _addField: addField, _id: "test2", validate, normalize });
+    wrapper.setProps({ _addField: addField, name: "test2", validate, normalize });
 
     expect(addField).toBeCalledWith('form', 'test2', {
       ...field,
@@ -339,9 +322,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -350,7 +332,7 @@ describe('#Field', () => {
 
     wrapper.setProps({
       _addField: addField,
-      _id: "test2",
+      name: "test2",
       validate,
       normalize,
       defaultValue: 'asdf',
@@ -369,9 +351,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -387,9 +368,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
         _removeField={removeField}
       />
@@ -408,9 +388,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -430,9 +409,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         defaultValue="doge"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -452,9 +430,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         validate={validate}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -474,9 +451,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         normalize={normalize}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -498,9 +474,8 @@ describe('#Field', () => {
         validate={validate}
         normalize={normalize}
         defaultValue="doge km"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldChange={fieldChange}
       />
     ));
@@ -519,9 +494,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldFocus={fieldFocus}
       />
     ));
@@ -540,9 +514,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldBlur={fieldBlur}
       />
     ));
@@ -562,9 +535,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         defaultValue="doge"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldBlur={fieldBlur}
       />
     ));
@@ -584,9 +556,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         validate={validate}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldBlur={fieldBlur}
       />
     ));
@@ -606,9 +577,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         normalize={normalize}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldBlur={fieldBlur}
       />
     ));
@@ -630,9 +600,8 @@ describe('#Field', () => {
         validate={validate}
         normalize={normalize}
         defaultValue="doge km"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _fieldBlur={fieldBlur}
       />
     ));
@@ -650,9 +619,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={null}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -665,9 +633,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component="input"
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -686,9 +653,8 @@ describe('#Field', () => {
       <Field
         name="test"
         component={Component}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -710,45 +676,6 @@ describe('#Field', () => {
     expect(wrapper.prop('field')).toBeUndefined();
   });
 
-  it('should do nothing without ref callback', () => {
-    const wrapper = shallow((
-      <Field
-        name="test"
-        component="input"
-        _field={field}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    expect(instance.handleRef).not.toThrow();
-  });
-
-  it('should supply element to ref callback', () => {
-    const withRef = jest.fn();
-    const wrapper = shallow((
-      <Field
-        name="test"
-        component="input"
-        withRef={withRef}
-        _field={field}
-        _id="test"
-        _form="form"
-        _addField={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    const el = <input />;
-    instance.handleRef(el);
-
-    expect(withRef).toBeCalledWith(el);
-  });
-
   it('should fire ref callback on mount', () => {
     const withRef = jest.fn();
     const wrapper = mount((
@@ -756,9 +683,8 @@ describe('#Field', () => {
         name="test"
         component="input"
         withRef={withRef}
+        form="form"
         _field={field}
-        _id="test"
-        _form="form"
         _addField={jest.fn()}
       />
     ));
@@ -780,7 +706,7 @@ describe('#connect(Field)', () => {
       </Provider>
     ));
 
-    expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
+    expect(wrapperFn).toThrowError(/"reduxForm"/);
   });
 
   it('should have a correct name', () => {

@@ -88,7 +88,7 @@ describe('#fieldProps', () => {
     expect(result._fieldChange).toBeUndefined();
     expect(result._fieldFocus).toBeUndefined();
     expect(result._fieldBlur).toBeUndefined();
-    expect(result._form).toBeUndefined();
+    expect(result.form).toBeUndefined();
     expect(result._id).toBeUndefined();
   });
 

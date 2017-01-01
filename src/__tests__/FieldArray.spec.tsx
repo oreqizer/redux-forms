@@ -15,8 +15,7 @@ import { form, field } from '../utils/containers';
 // NOTE:
 // We're unwrapping 'FieldArray' from 'connect' and 'connectFieldArray'.
 // Props needed mocking:
-// - _form: string
-// - _arrayId: string
+// - form: string
 // state:
 // - _array: string[]
 // actions:
@@ -34,14 +33,10 @@ const Component = (props: any) => (
 
 const options = {
   context: {
-    reduxFormLite: {
-      form: 'test',
-      context: '',
-      flattened: false,
-    },
+    reduxFormLite: 'test',
   },
   childContextTypes: {
-    reduxFormLite: React.PropTypes.object.isRequired,
+    reduxFormLite: React.PropTypes.string.isRequired,
   },
 };
 
@@ -94,13 +89,12 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _addArray={addArray}
       />
     ));
 
-    expect(addArray).toBeCalledWith('form', 'arrayId');
+    expect(addArray).toBeCalledWith('form', 'array');
   });
 
   it('should remove an array', () => {
@@ -109,8 +103,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _addArray={jest.fn()}
         _removeArray={removeArray}
       />
@@ -118,7 +111,7 @@ describe('#FieldArray', () => {
 
     wrapper.unmount();
 
-    expect(removeArray).toBeCalledWith('form', 'arrayId');
+    expect(removeArray).toBeCalledWith('form', 'array');
   });
 
   it('should provide array length', () => {
@@ -127,8 +120,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
@@ -148,7 +140,7 @@ describe('#FieldArray', () => {
       />
     ));
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['.0', '.1']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['array.0', 'array.1']);
   });
 
   it('should handle push', () => {
@@ -157,8 +149,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
@@ -167,7 +158,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').push();
 
-    expect(push).toBeCalledWith('form', 'arrayId');
+    expect(push).toBeCalledWith('form', 'array');
   });
 
   it('should not handle pop', () => {
@@ -176,8 +167,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={0}
         _addArray={jest.fn()}
         _arrayPop={pop}
@@ -195,8 +185,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPop={pop}
@@ -205,7 +194,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').pop();
 
-    expect(pop).toBeCalledWith('form', 'arrayId');
+    expect(pop).toBeCalledWith('form', 'array');
   });
 
   it('should handle unshift', () => {
@@ -214,8 +203,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayUnshift={unshift}
@@ -224,7 +212,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').unshift();
 
-    expect(unshift).toBeCalledWith('form', 'arrayId');
+    expect(unshift).toBeCalledWith('form', 'array');
   });
 
   it('should not handle shift', () => {
@@ -233,8 +221,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={0}
         _addArray={jest.fn()}
         _arrayShift={shift}
@@ -252,8 +239,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        _form="form"
-        _arrayId="arrayId"
+        form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayShift={shift}
@@ -262,7 +248,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').shift();
 
-    expect(shift).toBeCalledWith('form', 'arrayId');
+    expect(shift).toBeCalledWith('form', 'array');
   });
 
   it('should not render without an array', () => {
@@ -304,41 +290,6 @@ describe('#FieldArray', () => {
     expect(wrapper.prop('doge')).toBe('wow');
   });
 
-  it('should do nothing without ref callback', () => {
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        component={Component}
-        _array={1}
-        _addArray={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    expect(instance.handleRef).not.toThrow();
-  });
-
-  it('should supply element to ref callback', () => {
-    const withRef = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        component={Component}
-        withRef={withRef}
-        _array={1}
-        _addArray={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    const el = <input />;
-    instance.handleRef(el);
-
-    expect(withRef).toBeCalledWith(el);
-  });
-
   it('should fire ref callback on mount', () => {
     const withRef = jest.fn();
     const wrapper = mount((
@@ -368,7 +319,7 @@ describe('#connect(FieldArray)', () => {
       </Provider>
     ));
 
-    expect(wrapperFn).toThrowError(/decorated with "reduxForm"/);
+    expect(wrapperFn).toThrowError(/"reduxForm"/);
   });
 
   it('should have a correct name', () => {
@@ -511,6 +462,6 @@ describe('#connect(FieldArray)', () => {
     wrapper.prop('fields').push();
     wrapper.prop('fields').push();
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['.0', '.1']);
+    expect(wrapper.prop('fields').map(R.identity)).toEqual(['test.0', 'test.1']);
   });
 });

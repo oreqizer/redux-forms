@@ -2,12 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
-// does not satisfy ES6 spec
-import isPromise = require('is-promise');
 
 import * as actions from './actions';
 import * as selectors from './selectors';
 import { FormObj } from "./utils/containers";
+import { isString, isPromise } from "./utils/helpers";
 
 
 export type Options = {
@@ -16,10 +15,7 @@ export type Options = {
 };
 
 export type Context = {
-  reduxFormLite: {
-    form: string,
-    context: string,
-  };
+  reduxFormLite: string;
 };
 
 export type WrappedComponent<T> = React.ComponentClass<T> | React.SFC<T>;
@@ -68,8 +64,8 @@ const PROPS_TO_OMIT = [
 
 const reduxForm = <T>(options: Options) => {
   invariant(
-      options.form && typeof options.form === 'string',
-      '[mobx-forms] "form" is a required string on the "reduxForm" decorator.',
+      isString(options.form),
+      '[redux-form-lite] "form" is required on the "reduxForm" decorator.',
   );
 
   return (Wrapped: WrappedComponent<Props<T>>): Connected<SuppliedProps<T>> => {
@@ -77,16 +73,12 @@ const reduxForm = <T>(options: Options) => {
       static displayName = 'ReduxForm';
 
       static childContextTypes = {
-        reduxFormLite: React.PropTypes.shape({
-          form: React.PropTypes.string.isRequired,
-          context: React.PropTypes.string.isRequired,
-        }).isRequired,
+        reduxFormLite: React.PropTypes.string.isRequired,
       };
 
       constructor(props: Props<T>) {
         super(props);
 
-        this.handleRef = this.handleRef.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
 
@@ -106,19 +98,8 @@ const reduxForm = <T>(options: Options) => {
 
       getChildContext() {
         return {
-          reduxFormLite: {
-            form: options.form,
-            context: '',
-          },
+          reduxFormLite: options.form,
         };
-      }
-
-      handleRef(el: React.ReactElement<any>) {
-        const { withRef } = this.props;
-
-        if (typeof withRef === 'function') {
-          withRef(el);
-        }
       }
 
       handleSubmit(ev: React.SyntheticEvent<HTMLFormElement>) {
@@ -147,9 +128,7 @@ const reduxForm = <T>(options: Options) => {
           return null;
         }
 
-        const maybeRef = withRef ? { ref: this.handleRef } : {};
-
-        const props = R.mergeAll([this.props, maybeRef, {
+        const props = R.mergeAll([this.props, { ref: withRef }, {
           onSubmit: this.handleSubmit,
         }]);
 

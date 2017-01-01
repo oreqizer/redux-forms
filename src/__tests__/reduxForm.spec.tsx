@@ -47,13 +47,13 @@ describe('#reduxForm', () => {
   it('should require name to be passed', () => {
     const badOpts: any = {};
 
-    expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
+    expect(() => reduxForm(badOpts)).toThrowError(/"reduxForm"/);
   });
 
   it('should require form to be a string', () => {
     const badOpts: any = { form: 123 };
 
-    expect(() => reduxForm(badOpts)).toThrowError(/is a required string/);
+    expect(() => reduxForm(badOpts)).toThrowError(/"reduxForm"/);
   });
 
   it('should have a correct name', () => {
@@ -219,10 +219,7 @@ describe('#reduxForm', () => {
     ));
 
     expect((wrapper.instance() as any).getChildContext()).toEqual({
-      reduxFormLite: {
-        form: 'test',
-        context: '',
-      },
+      reduxFormLite: 'test',
     });
   });
 
@@ -354,53 +351,6 @@ describe('#reduxForm', () => {
     cb();
 
     expect(submitStop).toBeCalled();
-  });
-
-  it('should do nothing without ref callback', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    const wrapper = mount((
-      <Decorated
-        _form={form}
-        _values={{}}
-        _valid={false}
-        _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-        _touchAll={jest.fn()}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    expect(instance.handleRef).not.toThrow();
-  });
-
-  it('should supply element to ref callback', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    const withRef = jest.fn();
-    const wrapper = mount((
-      <Decorated
-        withRef={withRef}
-        _form={form}
-        _values={{}}
-        _valid={false}
-        _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-        _touchAll={jest.fn()}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
-    ));
-
-    const instance: any = wrapper.instance();
-
-    const el = <input />;
-    instance.handleRef(el);
-
-    expect(withRef).toBeCalledWith(el);
   });
 
   it('should fire ref callback on mount', () => {

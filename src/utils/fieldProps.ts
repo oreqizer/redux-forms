@@ -36,9 +36,6 @@ const FIELD_PROPS = [
   '_fieldChange',
   '_fieldFocus',
   '_fieldBlur',
-  // context
-  '_form',
-  '_id',
 ];
 
 

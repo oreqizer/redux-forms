@@ -13,9 +13,6 @@ const FIELD_ARRAY_PROPS = [
   '_arrayPop',
   '_arrayUnshift',
   '_arrayShift',
-  // context
-  '_form',
-  '_arrayId',
 ];
 
 

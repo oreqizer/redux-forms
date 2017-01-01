@@ -2,41 +2,42 @@ import * as React from 'react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { Context } from "../reduxForm";
+import { Context } from '../reduxForm';
+import { isString } from './helpers';
 
 
-export type NameProp = {
+export type FormProps = {
   name: string,
+  form?: string,
 };
 
 export type ContextProps = {
-  _form: string,
-  _id: string,
+  form: string,
 };
 
-export type WrappedField<T> = React.ComponentClass<T & NameProp & ContextProps>;
+export type WrappedField<T> = React.ComponentClass<T & FormProps & ContextProps>;
 
-export type Connected<T> = React.SFC<T & NameProp> & {
+export type Connected<T> = React.SFC<T & FormProps> & {
   WrappedComponent?: WrappedField<T>,
 };
 
 
 export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
-  const ConnectedField: Connected<T> = (props: T & NameProp, { reduxFormLite }: Context) => {
-    invariant(reduxFormLite, '[redux-form-lite] Fields must be in a component decorated with "reduxForm"');
+  const ConnectedField: Connected<T> = (props: T & FormProps, { reduxFormLite }: Context) => {
+    invariant(
+      isString(reduxFormLite) || isString(props.form),
+      `[redux-form-lite] Decorate your form with "reduxForm" or
+      supply the "form" prop to Field and FieldArray yourself.`,
+    );
 
     return React.createElement(Wrapped, R.merge(props, {
-      _form: reduxFormLite.form,
-      _id: reduxFormLite.context + props.name,
+      form: props.form || reduxFormLite,
     }));
   };
 
 
   ConnectedField.contextTypes = {
-    reduxFormLite: React.PropTypes.shape({
-      form: React.PropTypes.string.isRequired,
-      context: React.PropTypes.string.isRequired,
-    }).isRequired,
+    reduxFormLite: React.PropTypes.string.isRequired,
   };
 
   ConnectedField.displayName = Wrapped.displayName;
