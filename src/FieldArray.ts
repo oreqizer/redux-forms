@@ -71,30 +71,30 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePush() {
-    const { name, _push, _form, _arrayId } = this.props;
+    const { name, _arrayPush, _form, _arrayId } = this.props;
 
-    _push(_form, _arrayId);
+    _arrayPush(_form, _arrayId);
   }
 
   handlePop() {
-    const { name, _array, _pop, _form, _arrayId } = this.props;
+    const { name, _array, _arrayPop, _form, _arrayId } = this.props;
 
     if (_array > 0) {
-      _pop(_form, _arrayId);
+      _arrayPop(_form, _arrayId);
     }
   }
 
   handleUnshift() {
-    const { name, _unshift, _form, _arrayId } = this.props;
+    const { name, _arrayUnshift, _form, _arrayId } = this.props;
 
-    _unshift(_form, _arrayId);
+    _arrayUnshift(_form, _arrayId);
   }
 
   handleShift() {
-    const { name, _array, _shift, _form, _arrayId } = this.props;
+    const { name, _array, _arrayShift, _form, _arrayId } = this.props;
 
     if (_array > 0) {
-      _shift(_form, _arrayId);
+      _arrayShift(_form, _arrayId);
     }
   }
 
@@ -129,10 +129,10 @@ type StateProps = {
 type ActionProps = {
   _addArray: actions.AddArrayCreator,
   _removeArray: actions.RemoveArrayCreator,
-  _push: actions.PushCreator,
-  _pop: actions.PopCreator,
-  _unshift: actions.UnshiftCreator,
-  _shift: actions.ShiftCreator,
+  _arrayPush: actions.PushCreator,
+  _arrayPop: actions.PopCreator,
+  _arrayUnshift: actions.UnshiftCreator,
+  _arrayShift: actions.ShiftCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
@@ -141,10 +141,10 @@ type AllProps = StateProps & ActionProps & ConnectedProps;
 const bindActions = {
   _addArray: actions.addArray,
   _removeArray: actions.removeArray,
-  _push: actions.push,
-  _pop: actions.pop,
-  _unshift: actions.unshift,
-  _shift: actions.shift,
+  _arrayPush: actions.arrayPush,
+  _arrayPop: actions.arrayPop,
+  _arrayUnshift: actions.arrayUnshift,
+  _arrayShift: actions.arrayShift,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({

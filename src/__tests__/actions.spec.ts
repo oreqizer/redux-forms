@@ -67,30 +67,30 @@ describe('#actions', () => {
     });
   });
 
-  it('should create a PUSH action', () => {
-    expect(actions.push('form', 'field')).toEqual({
-      type: actions.PUSH,
+  it('should create a ARRAY_PUSH action', () => {
+    expect(actions.arrayPush('form', 'field')).toEqual({
+      type: actions.ARRAY_PUSH,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a POP action', () => {
-    expect(actions.pop('form', 'field')).toEqual({
-      type: actions.POP,
+  it('should create a ARRAY_POP action', () => {
+    expect(actions.arrayPop('form', 'field')).toEqual({
+      type: actions.ARRAY_POP,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a UNSHIFT action', () => {
-    expect(actions.unshift('form', 'field')).toEqual({
-      type: actions.UNSHIFT,
+  it('should create a ARRAY_UNSHIFT action', () => {
+    expect(actions.arrayUnshift('form', 'field')).toEqual({
+      type: actions.ARRAY_UNSHIFT,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a SHIFT action', () => {
-    expect(actions.shift('form', 'field')).toEqual({
-      type: actions.SHIFT,
+  it('should create a ARRAY_SHIFT action', () => {
+    expect(actions.arrayShift('form', 'field')).toEqual({
+      type: actions.ARRAY_SHIFT,
       payload: { form: 'form', id: 'field' },
     });
   });

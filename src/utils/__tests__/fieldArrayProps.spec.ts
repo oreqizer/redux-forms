@@ -22,10 +22,10 @@ const props = {
   _array: 1,
   _addArray: R.identity,
   _removeArray: R.identity,
-  _push: R.identity,
-  _pop: R.identity,
-  _unshift: R.identity,
-  _shift: R.identity,
+  _arrayPush: R.identity,
+  _arrayPop: R.identity,
+  _arrayUnshift: R.identity,
+  _arrayShift: R.identity,
 
   // custom
   // ---
@@ -46,7 +46,7 @@ describe('#fieldArrayProps', () => {
     expect(res.fields.shift).toEqual(fields.shift);
   });
 
-  it('should omit props', () => {
+  it('should o', () => {
     const res = fieldArrayProps(props, fields);
 
     expect(res).toEqual({

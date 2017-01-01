@@ -22,10 +22,10 @@ import { form, field } from '../utils/containers';
 // actions:
 // - _addArray: AddArrayCreator
 // - _removeArray: RemoveArrayCreator
-// - _push: PushCreator
-// - _pop: PopCreator
-// - _unshift: UnshiftCreator
-// - _shift: ShiftCreator
+// - _arrayPush: PushCreator
+// - _arrayPop: PopCreator
+// - _arrayUnshift: UnshiftCreator
+// - _arrayShift: ShiftCreator
 const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
 
 const Component = (props: any) => (
@@ -131,7 +131,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={1}
         _addArray={jest.fn()}
-        _push={push}
+        _arrayPush={push}
       />
     ));
 
@@ -161,7 +161,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={1}
         _addArray={jest.fn()}
-        _push={push}
+        _arrayPush={push}
       />
     ));
 
@@ -180,7 +180,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={0}
         _addArray={jest.fn()}
-        _pop={pop}
+        _arrayPop={pop}
       />
     ));
 
@@ -199,7 +199,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={1}
         _addArray={jest.fn()}
-        _pop={pop}
+        _arrayPop={pop}
       />
     ));
 
@@ -218,7 +218,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={1}
         _addArray={jest.fn()}
-        _unshift={unshift}
+        _arrayUnshift={unshift}
       />
     ));
 
@@ -237,7 +237,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={0}
         _addArray={jest.fn()}
-        _shift={shift}
+        _arrayShift={shift}
       />
     ));
 
@@ -256,7 +256,7 @@ describe('#FieldArray', () => {
         _arrayId="arrayId"
         _array={1}
         _addArray={jest.fn()}
-        _shift={shift}
+        _arrayShift={shift}
       />
     ));
 

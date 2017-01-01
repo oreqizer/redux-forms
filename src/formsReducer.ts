@@ -16,10 +16,10 @@ import {
 
   ADD_ARRAY,
   REMOVE_ARRAY,
-  PUSH,
-  POP,
-  UNSHIFT,
-  SHIFT,
+  ARRAY_PUSH,
+  ARRAY_POP,
+  ARRAY_UNSHIFT,
+  ARRAY_SHIFT,
 
   FIELD_CHANGE,
   FIELD_FOCUS,
@@ -89,21 +89,21 @@ export default function formsReducer(state: State = {}, a: Action): State {
         [a.payload.form, 'arrays', a.payload.id], state,
       );
 
-    case PUSH:
+    case ARRAY_PUSH:
       return R.over(
         R.lensPath([a.payload.form, 'arrays', a.payload.id]),
         R.inc,
         state,
       );
 
-    case POP:
+    case ARRAY_POP:
       return R.over(
         R.lensPath([a.payload.form, 'arrays', a.payload.id]),
         R.dec,
         state,
       );
 
-    case UNSHIFT:
+    case ARRAY_UNSHIFT:
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
@@ -115,7 +115,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ),
       )(state);
 
-    case SHIFT:
+    case ARRAY_SHIFT:
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),

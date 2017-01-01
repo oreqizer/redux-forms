@@ -9,10 +9,10 @@ const FIELD_ARRAY_PROPS = [
   // actions
   '_addArray',
   '_removeArray',
-  '_push',
-  '_pop',
-  '_unshift',
-  '_shift',
+  '_arrayPush',
+  '_arrayPop',
+  '_arrayUnshift',
+  '_arrayShift',
   // context
   '_form',
   '_arrayId',
