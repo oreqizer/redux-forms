@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray } from '../../lib';
+import { valueSelector } from '../../lib/selectors';
 
 import Input from './Input';
 
@@ -83,12 +85,17 @@ const Form = props => (
     />
     <div>---</div>
     <br />
+    Values:
+    <pre>{JSON.stringify(props.values, null, 2)}</pre>
+    <br />
     <button onClick={props.onSubmit}>
       Submit
     </button>
   </div>
 );
 
-export default reduxForm({
+export default connect(state => ({
+  values: valueSelector('first', state),
+}))(reduxForm({
   form: 'first',
-})(Form);
+})(Form));
