@@ -110,9 +110,9 @@ describe('#actions', () => {
   });
 
   it('should create a FIELD_BLUR action', () => {
-    expect(actions.fieldBlur('form', 'field', 'error', true)).toEqual({
+    expect(actions.fieldBlur('form', 'field', 'value', 'error', true)).toEqual({
       type: actions.FIELD_BLUR,
-      payload: { form: 'form', field: 'field', error: 'error', dirty: true },
+      payload: { form: 'form', field: 'field', value: 'value', error: 'error', dirty: true },
     });
   });
 });

@@ -143,7 +143,8 @@ export default function formsReducer(state: State = {}, a: Action): State {
       )(state);
 
     case FIELD_BLUR:
-      return R.compose<State, State, State, State, State>(
+      return R.compose<State, State, State, State, State, State>(
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),

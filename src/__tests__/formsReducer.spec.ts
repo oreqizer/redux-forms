@@ -207,10 +207,10 @@ describe('#formsReducer', () => {
 
     const state: any = reducer({
       form: { ...form, fields: { field: newField } },
-    }, actions.fieldBlur('form', 'field', 'error', true));
+    }, actions.fieldBlur('form', 'field', 'value', 'error', true));
 
     expect(state.form.fields.field).toEqual({
-      value: '',
+      value: 'value',
       error: 'error',
       dirty: true,
       touched: true,
@@ -222,15 +222,13 @@ describe('#formsReducer', () => {
   it('should not blur unwanted props', () => {
     const newField = {
       ...field,
-      value: 'doge',
       visited: true,
     };
 
     const state: any = reducer({
       form: { ...form, fields: { field: newField } },
-    }, actions.fieldBlur('form', 'field', 'error', true));
+    }, actions.fieldBlur('form', 'field', 'value', 'error', true));
 
-    expect(state.form.fields.field.value).toBe('doge');
     expect(state.form.fields.field.visited).toBe(true);
   });
 });

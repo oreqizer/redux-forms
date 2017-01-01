@@ -133,7 +133,7 @@ class Field extends React.PureComponent<AllProps, void> {
     const error = validate(value);
     const dirty = value !== defaultValue;
 
-    _fieldBlur(form, name, error, dirty);
+    _fieldBlur(form, name, value, error, dirty);
   }
 
   render() {

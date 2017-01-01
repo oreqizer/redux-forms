@@ -525,7 +525,7 @@ describe('#Field', () => {
     const instance: any = wrapper.instance();
     instance.handleBlur(event('doge'));
 
-    expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'doge', null, true);
   });
 
   it('should fire a blur action with default value', () => {
@@ -546,7 +546,7 @@ describe('#Field', () => {
     const instance: any = wrapper.instance();
     instance.handleBlur(event('doge'));
 
-    expect(fieldBlur).toBeCalledWith('form', 'test', null, false);
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'doge', null, false);
   });
 
   it('should fire a validated blur action', () => {
@@ -567,7 +567,7 @@ describe('#Field', () => {
     const instance: any = wrapper.instance();
     instance.handleBlur(event('doge'));
 
-    expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', true);
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'doge', 'bad format', true);
   });
 
   it('should fire a normalized blur action', () => {
@@ -588,7 +588,7 @@ describe('#Field', () => {
     const instance: any = wrapper.instance();
     instance.handleBlur(event('doge'));
 
-    expect(fieldBlur).toBeCalledWith('form', 'test', null, true);
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'doge km', null, true);
   });
 
   it('should fire a validated and normalized blur action with default value', () => {
@@ -611,7 +611,7 @@ describe('#Field', () => {
     const instance: any = wrapper.instance();
     instance.handleBlur(event('doge'));
 
-    expect(fieldBlur).toBeCalledWith('form', 'test', 'bad format', false);
+    expect(fieldBlur).toBeCalledWith('form', 'test', 'doge km', 'bad format', false);
   });
 
   it('should not render without a field', () => {
@@ -809,6 +809,7 @@ describe('#connect(Field)', () => {
 
     expect(getForm(store).fields).toEqual({ test: {
       ...field,
+      value: 'doge',
       touched: true,
       dirty: true,
     } });

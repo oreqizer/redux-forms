@@ -221,17 +221,18 @@ export const fieldFocus: FieldFocusCreator = (form, field) => ({
 export type FieldBlurAction = { type: '@redux-form-lite/FIELD_BLUR', payload: {
   form: string,
   field: string,
+  value: Value,
   error: string | null,
   dirty: boolean,
 } };
 
 export type FieldBlurCreator = (
-  form: string, field: string, error: string | null, dirty: boolean,
+  form: string, field: string, value: Value, error: string | null, dirty: boolean,
 ) => FieldBlurAction;
 
-export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
+export const fieldBlur: FieldBlurCreator = (form, field, value, error, dirty) => ({
   type: FIELD_BLUR,
-  payload: { form, field, error, dirty },
+  payload: { form, field, value, error, dirty },
 });
 
 
