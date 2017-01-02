@@ -1,5 +1,6 @@
 # redux-form-lite
 
+[![npm](https://img.shields.io/npm/v/redux-form-lite.svg)](https://www.npmjs.com/package/redux-form-lite)
 [![Build Status](https://travis-ci.org/oreqizer/redux-form-lite.svg?branch=master)](https://travis-ci.org/oreqizer/redux-form-lite)
 [![codecov](https://codecov.io/gh/oreqizer/redux-form-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/oreqizer/redux-form-lite)
 
