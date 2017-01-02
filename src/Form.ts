@@ -138,11 +138,11 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
 
     const props = R.omit(PROPS_TO_OMIT, this.props);
 
-    return (
-      <form onSubmit={this.handleSubmit} ref={withRef} {...props}>
-        {children}
-      </form>
-    );
+    return React.createElement('form', R.merge(props, {
+      children,
+      ref: withRef,
+      onSubmit: this.handleSubmit,
+    }));
   }
 }
 
