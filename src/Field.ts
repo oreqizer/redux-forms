@@ -4,9 +4,8 @@ import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import connectField, { ContextProps } from './utils/connectField';
-import fieldProps from './utils/fieldProps';
+import fieldProps, { InputProps, MetaProps, IAllProps } from './utils/fieldProps';
 import getValue, { Value, Target } from './utils/getValue';
-import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
 import * as actions from './actions';
 import { field, FieldObj } from "./utils/containers";
