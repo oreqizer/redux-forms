@@ -2,10 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
-import * as actions from './actions';
-import * as selectors from './selectors';
 import { FormObj } from "./utils/containers";
 import { isString, isPromise, isFunction } from "./utils/helpers";
+import formProps from './utils/formProps';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
@@ -35,24 +36,6 @@ export type Props<T> = StateProps & ActionProps & IFormProps & T;
 export type Context = {
   reduxFormLite: string;
 };
-
-
-const PROPS_TO_OMIT = [
-  'name',
-  'persistent',
-  'onSubmit',
-  'withRef',
-  'children',
-  '_form',
-  '_values',
-  '_valid',
-  '_submitting',
-  '_addForm',
-  '_removeForm',
-  '_touchAll',
-  '_submitStart',
-  '_submitStop',
-];
 
 
 class Form<T> extends React.PureComponent<Props<T>, void> implements React.ChildContextProvider<Context> {
@@ -136,13 +119,11 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
       return null;
     }
 
-    const props = R.omit(PROPS_TO_OMIT, this.props);
-
-    return React.createElement('form', R.merge(props, {
+    return React.createElement('form', formProps(R.merge(this.props, {
       children,
       ref: withRef,
       onSubmit: this.handleSubmit,
-    }));
+    })));
   }
 }
 

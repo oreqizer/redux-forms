@@ -53,6 +53,4 @@ const separateProps = (all: IAllProps): SeparatedProps => ({
   custom: R.omit(R.flatten([INPUT_PROPS, META_PROPS, FIELD_PROPS]), all),
 });
 
-// Order matters!
-// Separate always last
 export default R.compose(separateProps, maybeCheckProps);
