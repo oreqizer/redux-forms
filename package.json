@@ -102,6 +102,8 @@
   "files": [
     "dist",
     "lib",
+    "selectors.js",
+    "actions.js",
     "README.md",
     "LICENSE"
   ]
