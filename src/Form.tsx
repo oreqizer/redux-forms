@@ -37,6 +37,7 @@ export type Context = {
 
 
 const PROPS_TO_OMIT = [
+  'name',
   'persistent',
   'onSubmit',
   'withRef',

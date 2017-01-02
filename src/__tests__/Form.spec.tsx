@@ -182,6 +182,7 @@ describe('#Form', () => {
 
     expect(wrapper.find('form').prop('onSubmit')).not.toBe(onSubmit);
 
+    expect(wrapper.find('form').prop('name')).toBeUndefined();
     expect(wrapper.find('form').prop('persistent')).toBeUndefined();
     expect(wrapper.find('form').prop('withRef')).toBeUndefined();
     expect(wrapper.find('form').prop('_form')).toBeUndefined();
