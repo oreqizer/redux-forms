@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field, FieldArray } from '../../lib';
-import { valueSelector } from '../../lib/selectors';
+import { Form, Field, FieldArray } from 'redux-form-lite';
+import { valueSelector } from 'redux-form-lite/selectors';
 
 import Input from './Input';
 
