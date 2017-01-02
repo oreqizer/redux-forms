@@ -34,7 +34,6 @@ export type ActionProps = {
 
 export type Props = StateProps & ActionProps & IFormProps & {
   onSubmit?: (values: Object) => Promise<any> | void,
-  withRef?: (el: React.ReactElement<any>) => void,
 };
 
 
