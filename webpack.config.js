@@ -10,9 +10,25 @@ const reactExternal = {
   amd: 'react',
 };
 
+const reduxExternal = {
+  root: 'Redux',
+  commonjs2: 'redux',
+  commonjs: 'redux',
+  amd: 'redux'
+};
+
+const reactReduxExternal = {
+  root: 'ReactRedux',
+  commonjs2: 'react-redux',
+  commonjs: 'react-redux',
+  amd: 'react-redux'
+};
+
 const config = {
   externals: {
-    react: reactExternal,
+    'react': reactExternal,
+    'redux': reduxExternal,
+    'react-redux': reactReduxExternal,
   },
   module: {
     loaders: [
@@ -38,7 +54,9 @@ if (env === 'production') {
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        screw_ie8: true,
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
         warnings: false,
       },
     })  // eslint-disable-line comma-dangle
