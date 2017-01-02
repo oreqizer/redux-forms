@@ -29,6 +29,7 @@ const FIELD_PROPS = [
   'validate',
   'withRef',
   // state
+  '_form',
   '_field',
   // actions
   '_addField',
