@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "lib/",
-    "module": "commonjs",
+    "module": "es6",
     "target": "es6",
     "jsx": "react",
     "declaration": true,
