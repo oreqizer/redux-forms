@@ -1,4 +1,12 @@
+import * as R from 'ramda';
+
 import * as helpers from '../helpers';
+
+
+const event = {
+  preventDefault: R.identity,
+  stopPropagation: R.identity,
+};
 
 
 describe('#helpers', () => {
@@ -31,7 +39,7 @@ describe('#helpers', () => {
   });
 
   it('should recognize a function', () => {
-    expect(helpers.isFunction(helpers.isFunction)).toBe(true);
+    expect(helpers.isFunction(R.identity)).toBe(true);
     expect(helpers.isFunction(() => null)).toBe(true);
   });
 
@@ -42,5 +50,18 @@ describe('#helpers', () => {
     expect(helpers.isFunction('asdf')).toBe(false);
     expect(helpers.isFunction({})).toBe(false);
     expect(helpers.isFunction([])).toBe(false);
+  });
+
+  it('should recognize an event', () => {
+    expect(helpers.isEvent(event)).toBe(true);
+  });
+
+  it('should not recognize an event', () => {
+    expect(helpers.isEvent(undefined)).toBe(false);
+    expect(helpers.isEvent(null)).toBe(false);
+    expect(helpers.isEvent(1234)).toBe(false);
+    expect(helpers.isEvent('asdf')).toBe(false);
+    expect(helpers.isEvent({})).toBe(false);
+    expect(helpers.isEvent([])).toBe(false);
   });
 });
