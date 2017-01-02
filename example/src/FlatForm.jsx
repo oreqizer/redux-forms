@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Field } from '../../lib';
 
 const MyForm = (props) => (
-  <Form name="second">
+  <Form name="second" onSubmit={props.onSubmit}>
     <h2>My form 2 (native inputs):</h2>
     input
     <Field
@@ -21,8 +21,8 @@ const MyForm = (props) => (
       type="checkbox"
     />
     <div>---</div>
-    <button onClick={() => console.log(props.form.values)}>
-      values -> console
+    <button type="submit">
+      Submit
     </button>
   </Form>
 );

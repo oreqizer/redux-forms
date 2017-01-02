@@ -4,8 +4,10 @@ import * as R from 'ramda';
 
 import { Context } from './Form';
 import * as actions from './actions';
+import { Target } from './utils/getValue';
 import connectField, { ContextProps } from './utils/connectField';
 import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';
+import { isEvent } from "./utils/helpers";
 
 
 export interface ISuppliedProps {
@@ -59,28 +61,44 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     return R.map(fn, R.addIndex(R.map)((_, i) => `${name}.${i}`, array));
   }
 
-  handlePush() {
+  handlePush(ev?: React.SyntheticEvent<Target>) {
     const { name, _arrayPush, _form } = this.props;
+
+    if (isEvent(ev)) {
+      ev.preventDefault();
+    }
 
     _arrayPush(_form, name);
   }
 
-  handlePop() {
+  handlePop(ev?: React.SyntheticEvent<Target>) {
     const { name, _array, _arrayPop, _form } = this.props;
+
+    if (isEvent(ev)) {
+      ev.preventDefault();
+    }
 
     if (_array > 0) {
       _arrayPop(_form, name);
     }
   }
 
-  handleUnshift() {
+  handleUnshift(ev?: React.SyntheticEvent<Target>) {
     const { name, _arrayUnshift, _form } = this.props;
+
+    if (isEvent(ev)) {
+      ev.preventDefault();
+    }
 
     _arrayUnshift(_form, name);
   }
 
-  handleShift() {
+  handleShift(ev?: React.SyntheticEvent<Target>) {
     const { name, _array, _arrayShift, _form } = this.props;
+
+    if (isEvent(ev)) {
+      ev.preventDefault();
+    }
 
     if (_array > 0) {
       _arrayShift(_form, name);
