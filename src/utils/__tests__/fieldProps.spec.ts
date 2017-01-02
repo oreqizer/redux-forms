@@ -33,14 +33,13 @@ const props = {
   normalize: R.identity,
   validate: R.identity,
   withRef: R.identity,
+  _form: 'form',
   _field: {},
   _addField: R.identity,
   _removeField: R.identity,
   _fieldChange: R.identity,
   _fieldFocus: R.identity,
   _fieldBlur: R.identity,
-  _form: 'form',
-  _id: 'field',
 
   // custom
   // ---
@@ -82,14 +81,13 @@ describe('#fieldProps', () => {
     expect(result.normalize).toBeUndefined();
     expect(result.validate).toBeUndefined();
     expect(result.withRef).toBeUndefined();
+    expect(result._form).toBeUndefined();
     expect(result._field).toBeUndefined();
     expect(result._addField).toBeUndefined();
     expect(result._removeField).toBeUndefined();
     expect(result._fieldChange).toBeUndefined();
     expect(result._fieldFocus).toBeUndefined();
     expect(result._fieldBlur).toBeUndefined();
-    expect(result.form).toBeUndefined();
-    expect(result._id).toBeUndefined();
   });
 
   it('should separate custom props', () => {
