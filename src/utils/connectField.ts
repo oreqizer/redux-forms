@@ -25,7 +25,7 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
   const ConnectedField: Connected<T> = (props: T & FormProps, { reduxFormLite }: Context) => {
     invariant(
       isString(reduxFormLite),
-      `[redux-form-lite] Field and FieldArray must be a children of the Form component.`,
+      '[redux-form-lite] Field and FieldArray must be a children of the Form component.',
     );
 
     return React.createElement(Wrapped, R.merge(props, {

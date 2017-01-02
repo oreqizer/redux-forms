@@ -39,8 +39,6 @@ export type Context = {
 
 
 class Form<T> extends React.PureComponent<Props<T>, void> implements React.ChildContextProvider<Context> {
-  static displayName = 'ReduxForm';
-
   static childContextTypes = {
     reduxFormLite: React.PropTypes.string.isRequired,
   };
