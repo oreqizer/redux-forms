@@ -1,14 +1,12 @@
 import * as React from 'react';
 
-export type Target = HTMLInputElement | HTMLSelectElement;
+import { isEvent } from './helpers';
 
-export type SynthEvent = React.SyntheticEvent<Target>;
+
+export type Target = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 export type Value = string | string[] | boolean | FileList | null;
 
-
-const isEvent = (thing: any): thing is SynthEvent =>
-    Boolean(thing && thing.preventDefault && thing.stopPropagation);
 
 const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
     .filter((option) => option.selected)

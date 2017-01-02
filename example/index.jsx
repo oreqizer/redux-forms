@@ -6,7 +6,7 @@ import { reducer } from '../lib';
 import createLogger from 'redux-logger';
 import whyDidYouUpdate from 'why-did-you-update';
 
-import Form from './src/Form';
+import MyForm from './src/MyForm';
 import FlatForm from './src/FlatForm';
 
 whyDidYouUpdate(React);
@@ -23,7 +23,7 @@ const onSubmit = (values) => console.log(values);
 const Root = () => (
   <Provider store={store}>
     <div>
-      <Form onSubmit={onSubmit} />
+      <MyForm onSubmit={onSubmit} />
       <FlatForm onSubmit={onSubmit} />
     </div>
   </Provider>

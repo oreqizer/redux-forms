@@ -1,8 +1,8 @@
 import React from 'react';
-import { reduxForm, Field } from '../../lib';
+import { Form, Field } from '../../lib';
 
-const Form = props => (
-  <div>
+const MyForm = (props) => (
+  <Form name="second" onSubmit={props.onSubmit}>
     <h2>My form 2 (native inputs):</h2>
     input
     <Field
@@ -21,12 +21,10 @@ const Form = props => (
       type="checkbox"
     />
     <div>---</div>
-    <button onClick={() => console.log(props.form.values)}>
-      values -> console
+    <button type="submit">
+      Submit
     </button>
-  </div>
+  </Form>
 );
 
-export default reduxForm({
-  form: 'second',
-})(Form);
+export default MyForm;

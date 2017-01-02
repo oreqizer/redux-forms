@@ -5,6 +5,7 @@ const FIELD_ARRAY_PROPS = [
   'component',
   'withRef',
   // state
+  '_form',
   '_array',
   // actions
   '_addArray',
@@ -25,8 +26,8 @@ export type FieldProps = {
   shift: () => void,
 };
 
-const separateProps = <T>(props: T, fields: FieldProps) => R.merge(
+const fieldArrayProps = <T>(props: T, fields: FieldProps) => R.merge(
   R.omit(FIELD_ARRAY_PROPS, props), { fields },
 );
 
-export default separateProps;
+export default fieldArrayProps;

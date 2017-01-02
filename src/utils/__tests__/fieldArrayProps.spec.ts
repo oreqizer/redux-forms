@@ -17,6 +17,7 @@ const props = {
   // ---
   component: 'input',
   withRef: R.identity,
+  _form: 'form',
   _array: 1,
   _addArray: R.identity,
   _removeArray: R.identity,

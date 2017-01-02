@@ -33,14 +33,13 @@ const props = {
   normalize: R.identity,
   validate: R.identity,
   withRef: R.identity,
+  _form: 'form',
   _field: {},
   _addField: R.identity,
   _removeField: R.identity,
   _fieldChange: R.identity,
   _fieldFocus: R.identity,
   _fieldBlur: R.identity,
-  _form: 'form',
-  _id: 'field',
 
   // custom
   // ---
@@ -77,19 +76,18 @@ describe('#fieldProps', () => {
   it('should omit props', () => {
     const result: any = fieldProps(props);
 
-    expect(result.component).toBeUndefined();
-    expect(result.defaultValue).toBeUndefined();
-    expect(result.normalize).toBeUndefined();
-    expect(result.validate).toBeUndefined();
-    expect(result.withRef).toBeUndefined();
-    expect(result._field).toBeUndefined();
-    expect(result._addField).toBeUndefined();
-    expect(result._removeField).toBeUndefined();
-    expect(result._fieldChange).toBeUndefined();
-    expect(result._fieldFocus).toBeUndefined();
-    expect(result._fieldBlur).toBeUndefined();
-    expect(result.form).toBeUndefined();
-    expect(result._id).toBeUndefined();
+    expect(result.custom.component).toBeUndefined();
+    expect(result.custom.defaultValue).toBeUndefined();
+    expect(result.custom.normalize).toBeUndefined();
+    expect(result.custom.validate).toBeUndefined();
+    expect(result.custom.withRef).toBeUndefined();
+    expect(result.custom._form).toBeUndefined();
+    expect(result.custom._field).toBeUndefined();
+    expect(result.custom._addField).toBeUndefined();
+    expect(result.custom._removeField).toBeUndefined();
+    expect(result.custom._fieldChange).toBeUndefined();
+    expect(result.custom._fieldFocus).toBeUndefined();
+    expect(result.custom._fieldBlur).toBeUndefined();
   });
 
   it('should separate custom props', () => {

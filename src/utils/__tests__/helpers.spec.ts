@@ -1,4 +1,12 @@
+import * as R from 'ramda';
+
 import * as helpers from '../helpers';
+
+
+const event = {
+  preventDefault: R.identity,
+  stopPropagation: R.identity,
+};
 
 
 describe('#helpers', () => {
@@ -16,6 +24,19 @@ describe('#helpers', () => {
     expect(helpers.isString([])).toBe(false);
   });
 
+  it('should recognize a number', () => {
+    expect(helpers.isNumber(1234)).toBe(true);
+    expect(helpers.isNumber(13.37)).toBe(true);
+  });
+
+  it('should not recognize a number', () => {
+    expect(helpers.isNumber(undefined)).toBe(false);
+    expect(helpers.isNumber(null)).toBe(false);
+    expect(helpers.isNumber('1234')).toBe(false);
+    expect(helpers.isNumber({})).toBe(false);
+    expect(helpers.isNumber([])).toBe(false);
+  });
+
   it('should recognize a promise', () => {
     expect(helpers.isPromise(new Promise((resolve) => resolve()))).toBe(true);
     expect(helpers.isPromise({ then: () => null })).toBe(true);
@@ -28,5 +49,32 @@ describe('#helpers', () => {
     expect(helpers.isPromise('asdf')).toBe(false);
     expect(helpers.isPromise({})).toBe(false);
     expect(helpers.isPromise([])).toBe(false);
+  });
+
+  it('should recognize a function', () => {
+    expect(helpers.isFunction(R.identity)).toBe(true);
+    expect(helpers.isFunction(() => null)).toBe(true);
+  });
+
+  it('should not recognize a function', () => {
+    expect(helpers.isFunction(undefined)).toBe(false);
+    expect(helpers.isFunction(null)).toBe(false);
+    expect(helpers.isFunction(1234)).toBe(false);
+    expect(helpers.isFunction('asdf')).toBe(false);
+    expect(helpers.isFunction({})).toBe(false);
+    expect(helpers.isFunction([])).toBe(false);
+  });
+
+  it('should recognize an event', () => {
+    expect(helpers.isEvent(event)).toBe(true);
+  });
+
+  it('should not recognize an event', () => {
+    expect(helpers.isEvent(undefined)).toBe(false);
+    expect(helpers.isEvent(null)).toBe(false);
+    expect(helpers.isEvent(1234)).toBe(false);
+    expect(helpers.isEvent('asdf')).toBe(false);
+    expect(helpers.isEvent({})).toBe(false);
+    expect(helpers.isEvent([])).toBe(false);
   });
 });

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
 import reducer from '../formsReducer';
-import reduxForm from '../reduxForm';
+import Form from '../Form';
 import Field from '../Field';
 import FieldArray from '../FieldArray';
 import { form, field } from "../utils/containers";
@@ -39,8 +39,8 @@ const DeepFields = (props: any) => (
   </div>
 );
 
-const RawForm = () => (
-  <div className="Form">
+const MyForm = () => (
+  <Form name="test" className="Form">
     <Field
       name="title"
       component="input"
@@ -53,10 +53,8 @@ const RawForm = () => (
       name="deeparray"
       component={DeepFields}
     />
-  </div>
+  </Form>
 );
-
-const Form = reduxForm({ form: 'test' })(RawForm);
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
@@ -71,7 +69,7 @@ describe('#flow', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Form />
+        <MyForm />
       </Provider>
     ));
 
@@ -84,7 +82,7 @@ describe('#flow', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Form />
+        <MyForm />
       </Provider>
     ));
 
@@ -99,7 +97,7 @@ describe('#flow', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Form />
+        <MyForm />
       </Provider>
     ));
 

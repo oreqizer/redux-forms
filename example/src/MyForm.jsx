@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, FieldArray } from '../../lib';
+import { Form, Field, FieldArray } from '../../lib';
 import { valueSelector } from '../../lib/selectors';
 
 import Input from './Input';
@@ -57,8 +57,8 @@ const DeepArray = props => (
 
 const validate = value => value.length < 5 ? 'too short' : null;
 
-const Form = props => (
-  <div>
+const MyForm = props => (
+  <Form name="first" onSubmit={props.onSubmit}>
     <h2>My form:</h2>
     <h4>first Field</h4>
     <Field
@@ -88,14 +88,12 @@ const Form = props => (
     Values:
     <pre>{JSON.stringify(props.values, null, 2)}</pre>
     <br />
-    <button onClick={props.onSubmit}>
+    <button type="submit">
       Submit
     </button>
-  </div>
+  </Form>
 );
 
 export default connect(state => ({
   values: valueSelector('first', state),
-}))(reduxForm({
-  form: 'first',
-})(Form));
+}))(MyForm);

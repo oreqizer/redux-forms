@@ -1,8 +1,34 @@
 import * as R from 'ramda';
 
-import { Value } from './getValue';
+import { Value, Target } from "./getValue";
 
-import { InputProps, MetaProps, IAllProps, SeparatedProps } from "../types/Props";
+
+export interface IAllProps {
+  value: Value;
+  checked?: boolean;
+}
+
+export type InputProps = {
+  name: string,
+  value: Value,
+  onChange: (ev: React.SyntheticEvent<Target>) => void,
+  onFocus: (ev: React.SyntheticEvent<Target>) => void,
+  onBlur: (ev: React.SyntheticEvent<Target>) => void,
+};
+
+export type MetaProps = {
+  error: string | null,
+  dirty: boolean,
+  touched: boolean,
+  visited: boolean,
+  active: boolean,
+};
+
+export type SeparatedProps = {
+  input: InputProps;
+  meta: MetaProps;
+  custom: Object;
+};
 
 
 const INPUT_PROPS = [
@@ -29,6 +55,7 @@ const FIELD_PROPS = [
   'validate',
   'withRef',
   // state
+  '_form',
   '_field',
   // actions
   '_addField',
@@ -52,6 +79,4 @@ const separateProps = (all: IAllProps): SeparatedProps => ({
   custom: R.omit(R.flatten([INPUT_PROPS, META_PROPS, FIELD_PROPS]), all),
 });
 
-// Order matters!
-// Separate always last
 export default R.compose(separateProps, maybeCheckProps);
