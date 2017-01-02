@@ -52,7 +52,6 @@
   "homepage": "https://github.com/oreqizer/redux-form-lite#readme",
   "devDependencies": {
     "@types/enzyme": "^2.5.39",
-    "@types/flat": "^0.0.28",
     "@types/invariant": "^2.2.28",
     "@types/jest": "^16.0.2",
     "@types/ramda": "0.0.2",
