@@ -5,6 +5,4 @@
 
 A simple form manager for React and Redux. The API similarities to `redux-form` are intentional - this project is meant to take the best of `redux-form` while keeping it as lightweight and simple to use as possible.
 
-### TODO
-
-- [ ] turn `reduxForm` decorator to a `Form` component
+Docs are [here](https://oreqizer.gitbooks.io/redux-form-lite/content/).
