@@ -19,6 +19,7 @@ import { form } from '../utils/containers';
 // _form: Form
 // _values: Object
 // _valid: boolean
+// _submitting: boolean
 // actions:
 // _addForm: AddFormCreator
 // _removeForm: RemoveFormCreator
@@ -188,6 +189,7 @@ describe('#Form', () => {
     expect(wrapper.find('form').prop('_form')).toBeUndefined();
     expect(wrapper.find('form').prop('_values')).toBeUndefined();
     expect(wrapper.find('form').prop('_valid')).toBeUndefined();
+    expect(wrapper.find('form').prop('_submitting')).toBeUndefined();
     expect(wrapper.find('form').prop('_addForm')).toBeUndefined();
     expect(wrapper.find('form').prop('_removeForm')).toBeUndefined();
     expect(wrapper.find('form').prop('_touchAll')).toBeUndefined();
@@ -259,6 +261,32 @@ describe('#Form', () => {
     wrapper.find('form').simulate('submit', event(pd));
 
     expect(pd).toBeCalled();
+    expect(onSubmit).not.toBeCalled();
+  });
+
+  it('should not fire onSubmit if submitting', () => {
+    const pd = jest.fn();
+    const touchAll = jest.fn();
+    const onSubmit = jest.fn();
+    const wrapper = mount((
+      <Form
+        name="test"
+        onSubmit={onSubmit}
+        _form={form}
+        _values={{}}
+        _valid
+        _submitting
+        _addForm={jest.fn()}
+        _touchAll={touchAll}
+      >
+        <MyComp />
+      </Form>
+    ));
+
+    wrapper.find('form').simulate('submit', event(pd));
+
+    expect(pd).toBeCalled();
+    expect(touchAll).toBeCalled();
     expect(onSubmit).not.toBeCalled();
   });
 

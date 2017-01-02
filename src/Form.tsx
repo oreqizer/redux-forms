@@ -17,8 +17,9 @@ export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
 
 export type StateProps = {
   _form: FormObj | null,
-  _valid: boolean,
   _values: Object,
+  _valid: boolean,
+  _submitting: boolean,
 };
 
 export type ActionProps = {
@@ -43,8 +44,9 @@ const PROPS_TO_OMIT = [
   'withRef',
   'children',
   '_form',
-  '_valid',
   '_values',
+  '_valid',
+  '_submitting',
   '_addForm',
   '_removeForm',
   '_touchAll',
@@ -96,11 +98,24 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
   }
 
   handleSubmit(ev: React.SyntheticEvent<HTMLFormElement>) {
-    const { name, onSubmit, _valid, _values, _touchAll, _submitStart, _submitStop } = this.props;
+    const {
+      name,
+      onSubmit,
+      _valid,
+      _values,
+      _touchAll,
+      _submitting,
+      _submitStart,
+      _submitStop,
+    } = this.props;
 
     ev.preventDefault();
 
     _touchAll(name);
+    if (_submitting) {
+      return;
+    }
+
     if (!_valid || !isFunction(onSubmit)) {
       return;
     }
@@ -143,4 +158,5 @@ export default connect<StateProps, ActionProps, IFormProps>((state, props: IForm
   _form: R.prop<FormObj>(props.name, state.reduxFormLite),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
+  _submitting: selectors.isSubmitting(props.name, state),
 }), bindActions)(Form);
