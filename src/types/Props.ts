@@ -1,4 +1,4 @@
-import { Value, SynthEvent } from "../utils/getValue";
+import { Value, Target } from "../utils/getValue";
 
 
 export interface IAllProps {
@@ -7,9 +7,11 @@ export interface IAllProps {
 }
 
 export type InputProps = {
+  name: string,
   value: Value,
-  onChange: (ev: SynthEvent) => void,
-  // TODO add remaining
+  onChange: (ev: React.SyntheticEvent<Target>) => void,
+  onFocus: (ev: React.SyntheticEvent<Target>) => void,
+  onBlur: (ev: React.SyntheticEvent<Target>) => void,
 };
 
 export type MetaProps = {

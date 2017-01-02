@@ -5,7 +5,7 @@ import * as invariant from 'invariant';
 
 import connectField, { ContextProps } from './utils/connectField';
 import fieldProps from './utils/fieldProps';
-import getValue, { Value, SynthEvent } from './utils/getValue';
+import getValue, { Value, Target } from './utils/getValue';
 import { InputProps, MetaProps, IAllProps } from "./types/Props";
 
 import * as actions from './actions';
@@ -108,7 +108,7 @@ class Field extends React.PureComponent<AllProps, void> {
     props._addField(props._form, props.name, newField);
   }
 
-  handleChange(ev: SynthEvent) {
+  handleChange(ev: React.SyntheticEvent<Target>) {
     const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
@@ -124,7 +124,7 @@ class Field extends React.PureComponent<AllProps, void> {
     _fieldFocus(_form, name);
   }
 
-  handleBlur(ev: SynthEvent) {
+  handleBlur(ev: React.SyntheticEvent<Target>) {
     const { _fieldBlur, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
