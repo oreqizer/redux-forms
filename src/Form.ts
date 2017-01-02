@@ -17,7 +17,7 @@ export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
 }
 
 export type StateProps = {
-  _form: FormObj | null,
+  _form: boolean,
   _values: Object,
   _valid: boolean,
   _submitting: boolean,
@@ -134,7 +134,7 @@ const bindActions = {
 };
 
 export default connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: R.prop<FormObj>(props.name, state.reduxFormLite),
+  _form: Boolean(R.prop<FormObj>(props.name, state.reduxFormLite)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),

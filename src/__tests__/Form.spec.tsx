@@ -52,7 +52,7 @@ describe('#Form', () => {
     const wrapper = mount((
         <Form
           name="test"
-          _form={null}
+          _form={false}
           _values={{}}
           _valid={false}
           _addForm={addForm}
@@ -94,7 +94,7 @@ describe('#Form', () => {
     const wrapper = mount((
       <Form
         name="test"
-        _form={null}
+        _form={false}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
@@ -120,7 +120,7 @@ describe('#Form', () => {
       <Form
         name="test"
         persistent
-        _form={null}
+        _form={false}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
@@ -144,7 +144,7 @@ describe('#Form', () => {
     const wrapper = mount((
       <Form
         name="test"
-        _form={null}
+        _form={false}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
@@ -201,7 +201,7 @@ describe('#Form', () => {
     const wrapper = mount((
       <Form
         name="test"
-        _form={null}
+        _form={false}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
@@ -272,7 +272,7 @@ describe('#Form', () => {
       <Form
         name="test"
         onSubmit={onSubmit}
-        _form={form}
+        _form={true}
         _values={{}}
         _valid
         _submitting
