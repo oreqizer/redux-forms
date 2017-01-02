@@ -7,7 +7,7 @@ import * as actions from './actions';
 import { Target } from './utils/getValue';
 import connectField, { ContextProps } from './utils/connectField';
 import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';
-import { isEvent } from "./utils/helpers";
+import { isNumber, isEvent } from "./utils/helpers";
 
 
 export interface ISuppliedProps {
@@ -108,7 +108,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   render() {
     const { component, withRef, _array, ...rest } = this.props;
 
-    if (typeof _array !== 'number') {
+    if (!isNumber(_array)) {
       return null;
     }
 

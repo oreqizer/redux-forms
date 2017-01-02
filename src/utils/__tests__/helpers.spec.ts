@@ -24,6 +24,19 @@ describe('#helpers', () => {
     expect(helpers.isString([])).toBe(false);
   });
 
+  it('should recognize a number', () => {
+    expect(helpers.isNumber(1234)).toBe(true);
+    expect(helpers.isNumber(13.37)).toBe(true);
+  });
+
+  it('should not recognize a number', () => {
+    expect(helpers.isNumber(undefined)).toBe(false);
+    expect(helpers.isNumber(null)).toBe(false);
+    expect(helpers.isNumber('1234')).toBe(false);
+    expect(helpers.isNumber({})).toBe(false);
+    expect(helpers.isNumber([])).toBe(false);
+  });
+
   it('should recognize a promise', () => {
     expect(helpers.isPromise(new Promise((resolve) => resolve()))).toBe(true);
     expect(helpers.isPromise({ then: () => null })).toBe(true);
