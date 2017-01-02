@@ -7,13 +7,14 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import * as R from "ramda";
 
-import reduxForm from '../Form';
+import ConnectedForm from '../Form';
 import reducer from '../formsReducer';
 import { form } from '../utils/containers';
 
 
 // NOTE:
-// When un-connecting ReduxForm from the decorator, mock the necessary props.
+// We're unwrapping 'Form' from 'connect'.
+// Props needed mocking:
 // state:
 // _form: Form
 // _values: Object
@@ -24,6 +25,7 @@ import { form } from '../utils/containers';
 // _touchAll: TouchAllCreator
 // _submitStart: SubmitStartCreator
 // _submitStop: SubmitStopCreator
+const Form = (ConnectedForm as any).WrappedComponent;
 
 const MyComp = () => (
   <div className="Component" />
@@ -43,37 +45,12 @@ const event = (pd: Function) => ({
 });
 
 
-describe('#reduxForm', () => {
-  it('should require name to be passed', () => {
-    const badOpts: any = {};
-
-    expect(() => reduxForm(badOpts)).toThrowError(/"reduxForm"/);
-  });
-
-  it('should require form to be a string', () => {
-    const badOpts: any = { form: 123 };
-
-    expect(() => reduxForm(badOpts)).toThrowError(/"reduxForm"/);
-  });
-
-  it('should have a correct name', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    expect(Decorated.displayName).toBe('ReduxForm');
-  });
-
-  it('should provide original component static reference', () => {
-    const Expected = reduxForm({ form: 'test' })(MyComp).WrappedComponent;
-
-    expect(Expected).toBe(MyComp);
-  });
-
+describe('#Form', () => {
   it('should add a form', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const addForm = jest.fn();
     const wrapper = mount((
-        <Decorated
+        <Form
+          name="test"
           _form={null}
           _values={{}}
           _valid={false}
@@ -82,18 +59,19 @@ describe('#reduxForm', () => {
           _touchAll={jest.fn()}
           _submitStart={jest.fn()}
           _submitStop={jest.fn()}
-        />
+        >
+          <MyComp />
+        </Form>
       ));
 
     expect(addForm).toBeCalledWith('test');
   });
 
   it('should not add a form if already present', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const addForm = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         _form={form}
         _values={{}}
         _valid={false}
@@ -102,18 +80,19 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(addForm).not.toBeCalled();
   });
 
   it('should remove a form', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const removeForm = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         _form={null}
         _values={{}}
         _valid={false}
@@ -122,7 +101,9 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(removeForm).not.toBeCalled();
@@ -133,11 +114,11 @@ describe('#reduxForm', () => {
   });
 
   it('should not remove a form if persistent', () => {
-    const Decorated = reduxForm({ form: 'test', persistent: true })(MyComp).WrappedForm;
-
     const removeForm = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
+        persistent
         _form={null}
         _values={{}}
         _valid={false}
@@ -146,7 +127,9 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(removeForm).not.toBeCalled();
@@ -157,10 +140,9 @@ describe('#reduxForm', () => {
   });
 
   it('should not render without form', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         _form={null}
         _values={{}}
         _valid={false}
@@ -169,17 +151,22 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   it('should not pass any private props', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
+    const onSubmit = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
+        persistent
+        onSubmit={onSubmit}
+        withRef={jest.fn()}
         _form={form}
         _values={{}}
         _valid={false}
@@ -188,26 +175,30 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
-    expect(wrapper.find(MyComp).prop('withRef')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_form')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_values')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_valid')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_addForm')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_removeForm')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_touchAll')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_submitStart')).toBeUndefined();
-    expect(wrapper.find(MyComp).prop('_submitStop')).toBeUndefined();
+    expect(wrapper.find('form').prop('onSubmit')).not.toBe(onSubmit);
+
+    expect(wrapper.find('form').prop('persistent')).toBeUndefined();
+    expect(wrapper.find('form').prop('withRef')).toBeUndefined();
+    expect(wrapper.find('form').prop('_form')).toBeUndefined();
+    expect(wrapper.find('form').prop('_values')).toBeUndefined();
+    expect(wrapper.find('form').prop('_valid')).toBeUndefined();
+    expect(wrapper.find('form').prop('_addForm')).toBeUndefined();
+    expect(wrapper.find('form').prop('_removeForm')).toBeUndefined();
+    expect(wrapper.find('form').prop('_touchAll')).toBeUndefined();
+    expect(wrapper.find('form').prop('_submitStart')).toBeUndefined();
+    expect(wrapper.find('form').prop('_submitStop')).toBeUndefined();
   });
 
   it('should provide context', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const wrapper = mount((
-      <Decorated
-        _form={form}
+      <Form
+        name="test"
+        _form={null}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
@@ -215,7 +206,9 @@ describe('#reduxForm', () => {
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect((wrapper.instance() as any).getChildContext()).toEqual({
@@ -223,102 +216,75 @@ describe('#reduxForm', () => {
     });
   });
 
-  it('should provide onSubmit', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
-    const wrapper = mount((
-      <Decorated
-        _form={form}
-        _values={{}}
-        _valid={false}
-        _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-        _touchAll={jest.fn()}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
-    ));
-
-    expect(wrapper.find(MyComp).prop('onSubmit')).toBeDefined();
-  });
-
-  it('should prevent default with onSubmit', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
+  it('should prevent default and touch all with onSubmit', () => {
     const pd = jest.fn();
+    const touchAll = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         _form={form}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
-        _removeForm={jest.fn()}
-        _touchAll={jest.fn()}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
+        _touchAll={touchAll}
+      >
+        <MyComp />
+      </Form>
     ));
 
-    expect(pd).not.toBeCalled();
-
-    wrapper.find(MyComp).prop('onSubmit')(event(pd));
+    wrapper.find('form').simulate('submit', event(pd));
 
     expect(pd).toBeCalled();
+    expect(touchAll).toBeCalled();
   });
 
   it('should not fire onSubmit if invalid', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const pd = jest.fn();
     const onSubmit = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         onSubmit={onSubmit}
         _form={form}
         _values={{}}
         _valid={false}
         _addForm={jest.fn()}
-        _removeForm={jest.fn()}
         _touchAll={jest.fn()}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
-    wrapper.find(MyComp).prop('onSubmit')(event(pd));
+    wrapper.find('form').simulate('submit', event(pd));
 
     expect(pd).toBeCalled();
     expect(onSubmit).not.toBeCalled();
   });
 
   it('should fire onSubmit', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const touchAll = jest.fn();
     const onSubmit = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="testzz"
         onSubmit={onSubmit}
         _form={form}
         _values={{ test: 'yo' }}
-        _valid={true}
+        _valid
         _addForm={jest.fn()}
-        _removeForm={jest.fn()}
         _touchAll={touchAll}
-        _submitStart={jest.fn()}
-        _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
-    wrapper.find(MyComp).prop('onSubmit')(event(jest.fn()));
+    wrapper.find('form').simulate('submit', event(jest.fn()));
 
     expect(touchAll).toBeCalled();
     expect(onSubmit).toBeCalledWith({ test: 'yo' });
   });
 
   it('should fire submit start and stop', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     let cb: Function = (id: any) => id;
     const then = (fn: Function) => { cb = fn; };
 
@@ -327,22 +293,24 @@ describe('#reduxForm', () => {
     const submitStart = jest.fn();
     const submitStop = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         onSubmit={onSubmit}
         _form={form}
         _values={{}}
-        _valid={true}
+        _valid
         _addForm={jest.fn()}
-        _removeForm={jest.fn()}
         _touchAll={jest.fn()}
         _submitStart={submitStart}
         _submitStop={submitStop}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(submitStart).not.toBeCalled();
 
-    wrapper.find(MyComp).prop('onSubmit')(event(pd));
+    wrapper.find('form').simulate('submit', event(pd));
 
     expect(pd).toBeCalled();
     expect(submitStart).toBeCalled();
@@ -354,21 +322,21 @@ describe('#reduxForm', () => {
   });
 
   it('should fire ref callback on mount', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp).WrappedForm;
-
     const withRef = jest.fn();
     const wrapper = mount((
-      <Decorated
+      <Form
+        name="test"
         withRef={withRef}
         _form={form}
         _values={{}}
-        _valid={false}
         _addForm={jest.fn()}
         _removeForm={jest.fn()}
         _touchAll={jest.fn()}
         _submitStart={jest.fn()}
         _submitStop={jest.fn()}
-      />
+      >
+        <MyComp />
+      </Form>
     ));
 
     expect(withRef).toBeCalled();
@@ -376,57 +344,14 @@ describe('#reduxForm', () => {
 });
 
 
-describe('#connect(reduxForm)', () => {
-  it('should error out without opitons', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
-    const store = newStore();
-    const wrapper = mount((
-      <Provider store={store}>
-        <Decorated />
-      </Provider>
-    ));
-
-    expect(store.getState().reduxFormLite).toEqual({ test: form });
-  });
-
-  it('should mount an unnamed component', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
-    const store = newStore();
-    const wrapper = mount((
-      <Provider store={store}>
-        <Decorated />
-      </Provider>
-    ));
-
-    expect(wrapper.find(Decorated).name()).toBe('ReduxForm(Component)');
-  });
-
-  it('should name a component with a name', () => {
-    const Dummy: any = () => <MyComp />;
-
-    Dummy.displayName = 'Dummy';
-
-    const Decorated = reduxForm({ form: 'test' })(Dummy);
-
-    const store = newStore();
-    const wrapper = mount((
-      <Provider store={store}>
-        <Decorated />
-      </Provider>
-    ));
-
-    expect(wrapper.find(Decorated).name()).toBe('ReduxForm(Dummy)');
-  });
-
+describe('#connect(Form)', () => {
   it('should add a form', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Decorated />
+        <ConnectedForm name="test">
+          <MyComp />
+        </ConnectedForm>
       </Provider>
     ));
 
@@ -434,12 +359,12 @@ describe('#connect(reduxForm)', () => {
   });
 
   it('should remove a form', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Decorated />
+        <ConnectedForm name="test">
+          <MyComp />
+        </ConnectedForm>
       </Provider>
     ));
 
@@ -448,16 +373,18 @@ describe('#connect(reduxForm)', () => {
     expect(store.getState().reduxFormLite).toEqual({});
   });
 
-  it('should supply a form prop', () => {
-    const Decorated = reduxForm({ form: 'test' })(MyComp);
-
+  it('should not remove a form if persistent', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <Decorated />
+        <ConnectedForm name="test" persistent>
+          <MyComp />
+        </ConnectedForm>
       </Provider>
     ));
 
-    expect(wrapper.find(Decorated.WrappedForm).prop('_form')).toEqual(form);
+    wrapper.unmount();
+
+    expect(store.getState().reduxFormLite).toEqual({ test: form });
   });
 });

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import * as invariant from 'invariant';
 
 import * as actions from './actions';
 import * as selectors from './selectors';
@@ -9,14 +8,12 @@ import { FormObj } from "./utils/containers";
 import { isString, isPromise, isFunction } from "./utils/helpers";
 
 
-export interface IFormProps {
+export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
   name: string;
   persistent?: boolean;
+  onSubmit?: (values: Object) => Promise<any> | void;
+  withRef?: (el: HTMLFormElement) => void;
 }
-
-export type Context = {
-  reduxFormLite: string;
-};
 
 export type StateProps = {
   _form: FormObj | null,
@@ -32,15 +29,18 @@ export type ActionProps = {
   _submitStop: actions.SubmitStopCreator,
 };
 
-export type Props = StateProps & ActionProps & IFormProps & {
-  onSubmit?: (values: Object) => Promise<any> | void,
-  withRef?: (el: React.ReactElement<any>) => void,
+export type Props<T> = StateProps & ActionProps & IFormProps & T;
+
+export type Context = {
+  reduxFormLite: string;
 };
 
 
 const PROPS_TO_OMIT = [
-  'children',
+  'persistent',
+  'onSubmit',
   'withRef',
+  'children',
   '_form',
   '_valid',
   '_values',
@@ -52,14 +52,19 @@ const PROPS_TO_OMIT = [
 ];
 
 
-class Form extends React.PureComponent<Props, void> implements React.ChildContextProvider<Context> {
+class Form<T> extends React.PureComponent<Props<T>, void> implements React.ChildContextProvider<Context> {
   static displayName = 'ReduxForm';
 
   static childContextTypes = {
     reduxFormLite: React.PropTypes.string.isRequired,
   };
 
-  constructor(props: Props) {
+  static propTypes = {
+    name: React.PropTypes.string.isRequired,
+    persistent: React.PropTypes.bool,
+  };
+
+  constructor(props: Props<T>) {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -108,14 +113,14 @@ class Form extends React.PureComponent<Props, void> implements React.ChildContex
   }
 
   render() {
-    const { children, withRef, _form, ...rest } = this.props;
+    const { children, withRef, _form } = this.props;
 
     // Wait until form is initialized
     if (!_form) {
       return null;
     }
 
-    const props = R.omit(PROPS_TO_OMIT, rest);
+    const props = R.omit(PROPS_TO_OMIT, this.props);
 
     return (
       <form onSubmit={this.handleSubmit} ref={withRef} {...props}>

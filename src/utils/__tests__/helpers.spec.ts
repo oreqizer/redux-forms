@@ -29,4 +29,18 @@ describe('#helpers', () => {
     expect(helpers.isPromise({})).toBe(false);
     expect(helpers.isPromise([])).toBe(false);
   });
+
+  it('should recognize a function', () => {
+    expect(helpers.isFunction(helpers.isFunction)).toBe(true);
+    expect(helpers.isFunction(() => null)).toBe(true);
+  });
+
+  it('should not recognize a function', () => {
+    expect(helpers.isFunction(undefined)).toBe(false);
+    expect(helpers.isFunction(null)).toBe(false);
+    expect(helpers.isFunction(1234)).toBe(false);
+    expect(helpers.isFunction('asdf')).toBe(false);
+    expect(helpers.isFunction({})).toBe(false);
+    expect(helpers.isFunction([])).toBe(false);
+  });
 });

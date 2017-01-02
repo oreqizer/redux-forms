@@ -29,7 +29,7 @@ describe('#connectField', () => {
   it('should not mount', () => {
     const mountFn = () => mount(<Decorated />);
 
-    expect(mountFn).toThrowError(/"reduxForm"/);
+    expect(mountFn).toThrowError(/Form/);
   });
 
   it('should keep the original name', () => {
@@ -42,21 +42,9 @@ describe('#connectField', () => {
     expect(Decorated.WrappedComponent).toBe(MyComp);
   });
 
-  it('should provide form name from prop', () => {
-    const wrapper = mount(<Decorated name="field" form="test" />);
-
-    expect(wrapper.find(MyComp).prop('form')).toBe('test');
-  });
-
-  it('should provide form name from context', () => {
+  it('should provide form name', () => {
     const wrapper = mount(<Decorated name="field" />, context);
 
-    expect(wrapper.find(MyComp).prop('form')).toBe('test');
-  });
-
-  it('should prefer form name from prop over context', () => {
-    const wrapper = mount(<Decorated name="field" form="propz" />, context);
-
-    expect(wrapper.find(MyComp).prop('form')).toBe('propz');
+    expect(wrapper.find(MyComp).prop('_form')).toBe('test');
   });
 });

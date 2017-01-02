@@ -5,6 +5,7 @@ const FIELD_ARRAY_PROPS = [
   'component',
   'withRef',
   // state
+  '_form',
   '_array',
   // actions
   '_addArray',

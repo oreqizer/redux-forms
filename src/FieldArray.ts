@@ -39,17 +39,17 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   componentWillMount() {
-    const { _array, _addArray, form, name } = this.props;
+    const { _array, _addArray, _form, name } = this.props;
 
     if (!_array) {
-      _addArray(form, name);
+      _addArray(_form, name);
     }
   }
 
   componentWillUnmount() {
-    const { _removeArray, form, name } = this.props;
+    const { _removeArray, _form, name } = this.props;
 
-    _removeArray(form, name);
+    _removeArray(_form, name);
   }
 
   handleMap<T>(fn: (arr: string[]) => T) {
@@ -60,30 +60,30 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePush() {
-    const { name, _arrayPush, form } = this.props;
+    const { name, _arrayPush, _form } = this.props;
 
-    _arrayPush(form, name);
+    _arrayPush(_form, name);
   }
 
   handlePop() {
-    const { name, _array, _arrayPop, form } = this.props;
+    const { name, _array, _arrayPop, _form } = this.props;
 
     if (_array > 0) {
-      _arrayPop(form, name);
+      _arrayPop(_form, name);
     }
   }
 
   handleUnshift() {
-    const { name, _arrayUnshift, form } = this.props;
+    const { name, _arrayUnshift, _form } = this.props;
 
-    _arrayUnshift(form, name);
+    _arrayUnshift(_form, name);
   }
 
   handleShift() {
-    const { name, _array, _arrayShift, form } = this.props;
+    const { name, _array, _arrayShift, _form } = this.props;
 
     if (_array > 0) {
-      _arrayShift(form, name);
+      _arrayShift(_form, name);
     }
   }
 
@@ -135,7 +135,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _array: R.path<number>([props.form, 'arrays', props.name], state.reduxFormLite),
+  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxFormLite),
 }), bindActions)(FieldArray);
 
 const Contexted = connectField<IOwnProps>(Connected);

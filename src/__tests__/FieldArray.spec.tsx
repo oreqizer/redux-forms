@@ -15,7 +15,7 @@ import { form, field } from '../utils/containers';
 // NOTE:
 // We're unwrapping 'FieldArray' from 'connect' and 'connectFieldArray'.
 // Props needed mocking:
-// - form: string
+// - _form: string
 // state:
 // - _array: string[]
 // actions:
@@ -89,7 +89,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _addArray={addArray}
       />
     ));
@@ -103,7 +103,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _addArray={jest.fn()}
         _removeArray={removeArray}
       />
@@ -120,7 +120,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
@@ -149,7 +149,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
@@ -167,7 +167,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={0}
         _addArray={jest.fn()}
         _arrayPop={pop}
@@ -185,7 +185,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayPop={pop}
@@ -203,7 +203,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayUnshift={unshift}
@@ -221,7 +221,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={0}
         _addArray={jest.fn()}
         _arrayShift={shift}
@@ -239,7 +239,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         component={Component}
-        form="form"
+        _form="form"
         _array={1}
         _addArray={jest.fn()}
         _arrayShift={shift}
@@ -319,7 +319,7 @@ describe('#connect(FieldArray)', () => {
       </Provider>
     ));
 
-    expect(wrapperFn).toThrowError(/"reduxForm"/);
+    expect(wrapperFn).toThrowError(/Form/);
   });
 
   it('should have a correct name', () => {
