@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import * as invariant from 'invariant';
 
 import connectField, { ContextProps } from './utils/connectField';
 import fieldProps, { InputProps, MetaProps, IAllProps } from './utils/fieldProps';
