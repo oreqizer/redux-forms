@@ -58,7 +58,7 @@ const DeepArray = props => (
 const validate = value => value.length < 5 ? 'too short' : null;
 
 const MyForm = props => (
-  <Form name="first">
+  <Form name="first" onSubmit={props.onSubmit}>
     <h2>My form:</h2>
     <h4>first Field</h4>
     <Field
@@ -88,7 +88,7 @@ const MyForm = props => (
     Values:
     <pre>{JSON.stringify(props.values, null, 2)}</pre>
     <br />
-    <button onClick={props.onSubmit}>
+    <button type="submit">
       Submit
     </button>
   </Form>
