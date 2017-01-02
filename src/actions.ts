@@ -20,6 +20,8 @@ export const ARRAY_SHIFT = '@redux-form-lite/ARRAY_SHIFT';
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
 export const FIELD_BLUR = '@redux-form-lite/FIELD_BLUR';
+export const FIELD_VALUE = '@redux-form-lite/FIELD_VALUE';
+export const FIELD_ERROR = '@redux-form-lite/FIELD_ERROR';
 
 
 export type AddFormAction = { type: '@redux-form-lite/ADD_FORM', payload: {
@@ -236,6 +238,34 @@ export const fieldBlur: FieldBlurCreator = (form, field, value, error, dirty) =>
 });
 
 
+export type FieldValueAction = { type: '@redux-form-lite/FIELD_VALUE', payload: {
+  form: string,
+  field: string,
+  value: Value,
+} };
+
+export type FieldValueCreator = (form: string, field: string, value: Value) => FieldValueAction;
+
+export const fieldValue: FieldValueCreator = (form, field, value) => ({
+  type: FIELD_VALUE,
+  payload: { form, field, value },
+});
+
+
+export type FieldErrorAction = { type: '@redux-form-lite/FIELD_ERROR', payload: {
+  form: string,
+  field: string,
+  error: string | null,
+} };
+
+export type FieldErrorCreator = (form: string, field: string, error: string | null) => FieldErrorAction;
+
+export const fieldError: FieldErrorCreator = (form, field, error) => ({
+  type: FIELD_ERROR,
+  payload: { form, field, error },
+});
+
+
 export type Action =
   AddFormAction |
     RemoveFormAction |
@@ -252,4 +282,6 @@ export type Action =
     ShiftAction |
     FieldChangeAction |
     FieldFocusAction |
-    FieldBlurAction;
+    FieldBlurAction |
+    FieldValueAction |
+    FieldErrorAction;

@@ -231,4 +231,26 @@ describe('#formsReducer', () => {
 
     expect(state.form.fields.field.visited).toBe(true);
   });
+
+  it('should change field value', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldValue('form', 'field', 'doge'));
+
+    expect(state.form.fields.field).toEqual({
+      ...field,
+      value: 'doge',
+    });
+  });
+
+  it('should change field error', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldError('form', 'field', 'error'));
+
+    expect(state.form.fields.field).toEqual({
+      ...field,
+      error: 'error',
+    });
+  });
 });

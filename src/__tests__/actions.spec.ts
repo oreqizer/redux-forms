@@ -115,4 +115,18 @@ describe('#actions', () => {
       payload: { form: 'form', field: 'field', value: 'value', error: 'error', dirty: true },
     });
   });
+
+  it('should create a FIELD_VALUE action', () => {
+    expect(actions.fieldValue('form', 'field', 'value')).toEqual({
+      type: actions.FIELD_VALUE,
+      payload: { form: 'form', field: 'field', value: 'value' },
+    });
+  });
+
+  it('should create a FIELD_ERROR action', () => {
+    expect(actions.fieldError('form', 'field', 'error')).toEqual({
+      type: actions.FIELD_ERROR,
+      payload: { form: 'form', field: 'field', error: 'error' },
+    });
+  });
 });
