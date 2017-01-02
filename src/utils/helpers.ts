@@ -22,3 +22,33 @@ export function isEvent(cand: any): cand is React.SyntheticEvent<any> {
     isFunction(cand.stopPropagation),
   );
 }
+
+export type Flat = { [key: string]: any };
+
+// NOTE: ugly imperative code
+// A rewrite would be welcome.
+export function unflatten(obj: Flat) {
+  let result = {};
+
+  Object.keys(obj)
+    .forEach((prop) => prop.split('.')
+      .reduce((acc: any, key, index, array) => {
+        const k = Number.isNaN(Number(key)) ? key : Number(key);
+
+        if (index === array.length - 1) {
+          return acc[k] = obj[prop];
+        }
+
+        if (acc[k]) {
+          return acc[k] = acc[k];
+        }
+
+        if (!Number.isNaN(Number(array[index + 1]))) {
+          return acc[k] = [];
+        }
+
+        return acc[k] = {};
+      }, result));
+
+  return result;
+}

@@ -8,6 +8,14 @@ const event = {
   stopPropagation: R.identity,
 };
 
+const fields = {
+  'name': 'John',
+  'nicknames.0': 'johnny',
+  'nicknames.1': 'leet',
+  'pets.0.foods.0.calories': 133,
+  'pets.0.foods.1.calories': 337,
+};
+
 
 describe('#helpers', () => {
   it('should recognize a string', () => {
@@ -76,5 +84,19 @@ describe('#helpers', () => {
     expect(helpers.isEvent('asdf')).toBe(false);
     expect(helpers.isEvent({})).toBe(false);
     expect(helpers.isEvent([])).toBe(false);
+  });
+
+  it('should unflatten an object', () => {
+    expect(helpers.unflatten(fields)).toEqual({
+      name: 'John',
+      nicknames: ['johnny', 'leet'],
+      pets: [{
+        foods: [{
+          calories: 133,
+        }, {
+          calories: 337,
+        }],
+      }],
+    });
   });
 });

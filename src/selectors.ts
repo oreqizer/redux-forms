@@ -1,9 +1,9 @@
-import { unflatten } from 'flat';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { State } from "./formsReducer";
-import { FormObj, FieldObj } from "./utils/containers";
+import { State } from './formsReducer';
+import { FormObj, FieldObj } from './utils/containers';
+import { unflatten } from './utils/helpers';
 
 
 export interface IState {
