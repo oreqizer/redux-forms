@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { Context } from '../reduxForm';
+import { Context } from '../Form';
 import { isString } from './helpers';
 
 

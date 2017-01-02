@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
-import { Context } from './reduxForm';
+import { Context } from './Form';
 import * as actions from './actions';
 import connectField, { ContextProps } from './utils/connectField';
 import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';

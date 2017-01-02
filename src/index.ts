@@ -1,12 +1,12 @@
+import Form from './Form';
 import Field from './Field';
 import FieldArray from './FieldArray';
 import reducer from './formsReducer';
-import reduxForm from './reduxForm';
 
 
 export {
+  Form,
   Field,
   FieldArray,
   reducer,
-  reduxForm,
 };

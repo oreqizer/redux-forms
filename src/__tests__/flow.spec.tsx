@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
 import reducer from '../formsReducer';
-import reduxForm from '../reduxForm';
+import reduxForm from '../Form';
 import Field from '../Field';
 import FieldArray from '../FieldArray';
 import { form, field } from "../utils/containers";
