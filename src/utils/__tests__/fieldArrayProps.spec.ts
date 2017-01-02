@@ -1,26 +1,29 @@
+import * as R from 'ramda';
+
 import fieldArrayProps from '../fieldArrayProps';
 
 
-const fns = {
-  map: (id: any) => id,
-  push: () => null,
-  pop: () => null,
-  unshift: () => null,
-  shift: () => null,
+const fields: any = {
+  length: 2,
+  map: R.identity,
+  push: R.identity,
+  pop: R.identity,
+  unshift: R.identity,
+  shift: R.identity,
 };
 
 const props = {
   // to omit
   // ---
-  flat: true,
   component: 'input',
-  _form: 'form',
-  _arrayId: 'arrayId',
-  _array: ['omfg[1]', 'omfg[2]'],
-  _push: (id: any) => id,
-  _pop: (id: any) => id,
-  _unshift: (id: any) => id,
-  _shift: (id: any) => id,
+  withRef: R.identity,
+  _array: 1,
+  _addArray: R.identity,
+  _removeArray: R.identity,
+  _arrayPush: R.identity,
+  _arrayPop: R.identity,
+  _arrayUnshift: R.identity,
+  _arrayShift: R.identity,
 
   // custom
   // ---
@@ -31,20 +34,21 @@ const props = {
 
 describe('#fieldArrayProps', () => {
   it('should separate functions', () => {
-    const res = fieldArrayProps(props, fns);
+    const res = fieldArrayProps(props, fields);
 
-    expect(res.fields.map).toEqual(fns.map);
-    expect(res.fields.push).toEqual(fns.push);
-    expect(res.fields.pop).toEqual(fns.pop);
-    expect(res.fields.unshift).toEqual(fns.unshift);
-    expect(res.fields.shift).toEqual(fns.shift);
+    expect(res.fields.length).toBe(2);
+    expect(res.fields.map).toEqual(fields.map);
+    expect(res.fields.push).toEqual(fields.push);
+    expect(res.fields.pop).toEqual(fields.pop);
+    expect(res.fields.unshift).toEqual(fields.unshift);
+    expect(res.fields.shift).toEqual(fields.shift);
   });
 
-  it('should filter out ignored properties', () => {
-    const res = fieldArrayProps(props, fns);
+  it('should o', () => {
+    const res = fieldArrayProps(props, fields);
 
     expect(res).toEqual({
-      fields: fns,
+      fields,
       damage: 'tons of',
       wow: 'so test',
     });

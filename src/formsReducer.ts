@@ -16,14 +16,16 @@ import {
 
   ADD_ARRAY,
   REMOVE_ARRAY,
-  PUSH,
-  POP,
-  UNSHIFT,
-  SHIFT,
+  ARRAY_PUSH,
+  ARRAY_POP,
+  ARRAY_UNSHIFT,
+  ARRAY_SHIFT,
 
   FIELD_CHANGE,
   FIELD_FOCUS,
   FIELD_BLUR,
+  FIELD_VALUE,
+  FIELD_ERROR,
 } from './actions';
 
 
@@ -89,21 +91,21 @@ export default function formsReducer(state: State = {}, a: Action): State {
         [a.payload.form, 'arrays', a.payload.id], state,
       );
 
-    case PUSH:
+    case ARRAY_PUSH:
       return R.over(
         R.lensPath([a.payload.form, 'arrays', a.payload.id]),
         R.inc,
         state,
       );
 
-    case POP:
+    case ARRAY_POP:
       return R.over(
         R.lensPath([a.payload.form, 'arrays', a.payload.id]),
         R.dec,
         state,
       );
 
-    case UNSHIFT:
+    case ARRAY_UNSHIFT:
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
@@ -115,7 +117,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ),
       )(state);
 
-    case SHIFT:
+    case ARRAY_SHIFT:
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
@@ -143,12 +145,23 @@ export default function formsReducer(state: State = {}, a: Action): State {
       )(state);
 
     case FIELD_BLUR:
-      return R.compose<State, State, State, State, State>(
+      return R.compose<State, State, State, State, State, State>(
+          R.assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
       )(state);
+
+    case FIELD_VALUE:
+      return R.assocPath(
+        [a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value, state,
+      );
+
+    case FIELD_ERROR:
+      return R.assocPath(
+        [a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error, state,
+      );
 
     default:
       return state;

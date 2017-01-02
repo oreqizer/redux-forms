@@ -12,14 +12,16 @@ export const SUBMIT_STOP = '@redux-form-lite/SUBMIT_STOP';
 
 export const ADD_ARRAY = '@redux-form-lite/ADD_ARRAY';
 export const REMOVE_ARRAY = '@redux-form-lite/REMOVE_ARRAY';
-export const PUSH = '@redux-form-lite/PUSH';
-export const POP = '@redux-form-lite/POP';
-export const UNSHIFT = '@redux-form-lite/UNSHIFT';
-export const SHIFT = '@redux-form-lite/SHIFT';
+export const ARRAY_PUSH = '@redux-form-lite/ARRAY_PUSH';
+export const ARRAY_POP = '@redux-form-lite/ARRAY_POP';
+export const ARRAY_UNSHIFT = '@redux-form-lite/ARRAY_UNSHIFT';
+export const ARRAY_SHIFT = '@redux-form-lite/ARRAY_SHIFT';
 
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
 export const FIELD_BLUR = '@redux-form-lite/FIELD_BLUR';
+export const FIELD_VALUE = '@redux-form-lite/FIELD_VALUE';
+export const FIELD_ERROR = '@redux-form-lite/FIELD_ERROR';
 
 
 export type AddFormAction = { type: '@redux-form-lite/ADD_FORM', payload: {
@@ -135,54 +137,54 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 });
 
 
-export type PushAction = { type: '@redux-form-lite/PUSH', payload: {
+export type PushAction = { type: '@redux-form-lite/ARRAY_PUSH', payload: {
   form: string,
   id: string,
 } };
 
 export type PushCreator = (form: string, id: string) => PushAction;
 
-export const push: PushCreator = (form, id) => ({
-  type: PUSH,
+export const arrayPush: PushCreator = (form, id) => ({
+  type: ARRAY_PUSH,
   payload: { form, id },
 });
 
 
-export type PopAction = { type: '@redux-form-lite/POP', payload: {
+export type PopAction = { type: '@redux-form-lite/ARRAY_POP', payload: {
   form: string,
   id: string,
 } };
 
 export type PopCreator = (form: string, id: string) => PopAction;
 
-export const pop: PopCreator = (form, id) => ({
-  type: POP,
+export const arrayPop: PopCreator = (form, id) => ({
+  type: ARRAY_POP,
   payload: { form, id },
 });
 
 
-export type UnshiftAction = { type: '@redux-form-lite/UNSHIFT', payload: {
+export type UnshiftAction = { type: '@redux-form-lite/ARRAY_UNSHIFT', payload: {
   form: string,
   id: string,
 } };
 
 export type UnshiftCreator = (form: string, id: string) => UnshiftAction;
 
-export const unshift: UnshiftCreator = (form, id) => ({
-  type: UNSHIFT,
+export const arrayUnshift: UnshiftCreator = (form, id) => ({
+  type: ARRAY_UNSHIFT,
   payload: { form, id },
 });
 
 
-export type ShiftAction = { type: '@redux-form-lite/SHIFT', payload: {
+export type ShiftAction = { type: '@redux-form-lite/ARRAY_SHIFT', payload: {
   form: string,
   id: string,
 } };
 
 export type ShiftCreator = (form: string, id: string) => ShiftAction;
 
-export const shift: ShiftCreator = (form, id) => ({
-  type: SHIFT,
+export const arrayShift: ShiftCreator = (form, id) => ({
+  type: ARRAY_SHIFT,
   payload: { form, id },
 });
 
@@ -221,17 +223,46 @@ export const fieldFocus: FieldFocusCreator = (form, field) => ({
 export type FieldBlurAction = { type: '@redux-form-lite/FIELD_BLUR', payload: {
   form: string,
   field: string,
+  value: Value,
   error: string | null,
   dirty: boolean,
 } };
 
 export type FieldBlurCreator = (
-  form: string, field: string, error: string | null, dirty: boolean,
+  form: string, field: string, value: Value, error: string | null, dirty: boolean,
 ) => FieldBlurAction;
 
-export const fieldBlur: FieldBlurCreator = (form, field, error, dirty) => ({
+export const fieldBlur: FieldBlurCreator = (form, field, value, error, dirty) => ({
   type: FIELD_BLUR,
-  payload: { form, field, error, dirty },
+  payload: { form, field, value, error, dirty },
+});
+
+
+export type FieldValueAction = { type: '@redux-form-lite/FIELD_VALUE', payload: {
+  form: string,
+  field: string,
+  value: Value,
+} };
+
+export type FieldValueCreator = (form: string, field: string, value: Value) => FieldValueAction;
+
+export const fieldValue: FieldValueCreator = (form, field, value) => ({
+  type: FIELD_VALUE,
+  payload: { form, field, value },
+});
+
+
+export type FieldErrorAction = { type: '@redux-form-lite/FIELD_ERROR', payload: {
+  form: string,
+  field: string,
+  error: string | null,
+} };
+
+export type FieldErrorCreator = (form: string, field: string, error: string | null) => FieldErrorAction;
+
+export const fieldError: FieldErrorCreator = (form, field, error) => ({
+  type: FIELD_ERROR,
+  payload: { form, field, error },
 });
 
 
@@ -251,4 +282,6 @@ export type Action =
     ShiftAction |
     FieldChangeAction |
     FieldFocusAction |
-    FieldBlurAction;
+    FieldBlurAction |
+    FieldValueAction |
+    FieldErrorAction;

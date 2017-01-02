@@ -4,28 +4,26 @@ import * as R from 'ramda';
 
 import { Context } from './reduxForm';
 import * as actions from './actions';
-import connectFieldArray, { ContextProps } from './utils/connectFieldArray';
-import fieldArrayProps, { FunctionProps } from './utils/fieldArrayProps';
+import connectField, { ContextProps } from './utils/connectField';
+import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';
 
 
 export interface ISuppliedProps {
   name: string;
-  fields: FunctionProps;
+  fields: FieldProps;
 }
 
 export interface IOwnProps {
   name: string;
-  flat?: boolean;
   component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
+  withRef?: (el: React.ReactElement<any>) => void;
 }
 
 
 class FieldArray extends React.PureComponent<AllProps, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    component: React.PropTypes.oneOfType([
-      React.PropTypes.string, React.PropTypes.func,
-    ]).isRequired,
+    component: React.PropTypes.func.isRequired,
   };
 
   static displayName = 'FieldArray';
@@ -41,63 +39,64 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   componentWillMount() {
-    const { _array, _addArray, _form, _arrayId } = this.props;
+    const { _array, _addArray, form, name } = this.props;
 
     if (!_array) {
-      _addArray(_form, _arrayId);
+      _addArray(form, name);
     }
   }
 
   componentWillUnmount() {
-    const { _removeArray, _form, _arrayId } = this.props;
+    const { _removeArray, form, name } = this.props;
 
-    _removeArray(_form, _arrayId);
+    _removeArray(form, name);
   }
 
   handleMap<T>(fn: (arr: string[]) => T) {
-    const { _array } = this.props;
+    const { name, _array } = this.props;
 
     const array = Array.from(Array(_array));
-    return R.map(fn, R.addIndex(R.map)((_, i) => `.${i}`, array));
+    return R.map(fn, R.addIndex(R.map)((_, i) => `${name}.${i}`, array));
   }
 
   handlePush() {
-    const { name, _push, _form, _arrayId } = this.props;
+    const { name, _arrayPush, form } = this.props;
 
-    _push(_form, _arrayId);
+    _arrayPush(form, name);
   }
 
   handlePop() {
-    const { name, _array, _pop, _form, _arrayId } = this.props;
+    const { name, _array, _arrayPop, form } = this.props;
 
     if (_array > 0) {
-      _pop(_form, _arrayId);
+      _arrayPop(form, name);
     }
   }
 
   handleUnshift() {
-    const { name, _unshift, _form, _arrayId } = this.props;
+    const { name, _arrayUnshift, form } = this.props;
 
-    _unshift(_form, _arrayId);
+    _arrayUnshift(form, name);
   }
 
   handleShift() {
-    const { name, _array, _shift, _form, _arrayId } = this.props;
+    const { name, _array, _arrayShift, form } = this.props;
 
     if (_array > 0) {
-      _shift(_form, _arrayId);
+      _arrayShift(form, name);
     }
   }
 
   render() {
-    const { component, _array } = this.props;
+    const { component, withRef, _array, ...rest } = this.props;
 
     if (typeof _array !== 'number') {
       return null;
     }
 
     // React.SFC vs. React.ClassComponent collision
-    return React.createElement(<any> component, fieldArrayProps(this.props, {
+    return React.createElement(<any> component, fieldArrayProps(R.merge(rest, { ref: withRef }), {
+      length: _array,
       map: this.handleMap,
       push: this.handlePush,
       pop: this.handlePop,
@@ -117,10 +116,10 @@ type StateProps = {
 type ActionProps = {
   _addArray: actions.AddArrayCreator,
   _removeArray: actions.RemoveArrayCreator,
-  _push: actions.PushCreator,
-  _pop: actions.PopCreator,
-  _unshift: actions.UnshiftCreator,
-  _shift: actions.ShiftCreator,
+  _arrayPush: actions.PushCreator,
+  _arrayPop: actions.PopCreator,
+  _arrayUnshift: actions.UnshiftCreator,
+  _arrayShift: actions.ShiftCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
@@ -129,17 +128,17 @@ type AllProps = StateProps & ActionProps & ConnectedProps;
 const bindActions = {
   _addArray: actions.addArray,
   _removeArray: actions.removeArray,
-  _push: actions.push,
-  _pop: actions.pop,
-  _unshift: actions.unshift,
-  _shift: actions.shift,
+  _arrayPush: actions.arrayPush,
+  _arrayPop: actions.arrayPop,
+  _arrayUnshift: actions.arrayUnshift,
+  _arrayShift: actions.arrayShift,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _array: R.path<number>([props._form, 'arrays', props._arrayId], state.reduxFormLite),
+  _array: R.path<number>([props.form, 'arrays', props.name], state.reduxFormLite),
 }), bindActions)(FieldArray);
 
-const Contexted = connectFieldArray<IOwnProps>(Connected);
+const Contexted = connectField<IOwnProps>(Connected);
 
 Contexted.displayName = FieldArray.displayName;
 

@@ -92,7 +92,7 @@ describe('#formsReducer', () => {
         ...form,
         arrays: { array: 1 },
       },
-    }, actions.push('form', 'array'));
+    }, actions.arrayPush('form', 'array'));
 
     expect(state.form.arrays.array).toBe(2);
   });
@@ -100,7 +100,7 @@ describe('#formsReducer', () => {
   it('should pop from an array', () => {
     const state: any = reducer({
       form: { ...form, arrays: { array: 2 } },
-    }, actions.pop('form', 'array'));
+    }, actions.arrayPop('form', 'array'));
 
     expect(state.form.arrays.array).toBe(1);
   });
@@ -112,7 +112,7 @@ describe('#formsReducer', () => {
         fields: { 'array.0': field },
         arrays: { array: 1 },
       },
-    }, actions.unshift('form', 'array'));
+    }, actions.arrayUnshift('form', 'array'));
 
     expect(state.form.fields['array.0']).toBeUndefined();
     expect(state.form.fields['array.1']).toBeDefined();
@@ -126,7 +126,7 @@ describe('#formsReducer', () => {
         fields: { 'array.0': field, 'array.1': field },
         arrays: { array: 2 },
       },
-    }, actions.shift('form', 'array'));
+    }, actions.arrayShift('form', 'array'));
 
     expect(state.form.fields['array.0']).toBeDefined();
     expect(state.form.fields['array.1']).toBeUndefined();
@@ -207,10 +207,10 @@ describe('#formsReducer', () => {
 
     const state: any = reducer({
       form: { ...form, fields: { field: newField } },
-    }, actions.fieldBlur('form', 'field', 'error', true));
+    }, actions.fieldBlur('form', 'field', 'value', 'error', true));
 
     expect(state.form.fields.field).toEqual({
-      value: '',
+      value: 'value',
       error: 'error',
       dirty: true,
       touched: true,
@@ -222,15 +222,35 @@ describe('#formsReducer', () => {
   it('should not blur unwanted props', () => {
     const newField = {
       ...field,
-      value: 'doge',
       visited: true,
     };
 
     const state: any = reducer({
       form: { ...form, fields: { field: newField } },
-    }, actions.fieldBlur('form', 'field', 'error', true));
+    }, actions.fieldBlur('form', 'field', 'value', 'error', true));
 
-    expect(state.form.fields.field.value).toBe('doge');
     expect(state.form.fields.field.visited).toBe(true);
+  });
+
+  it('should change field value', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldValue('form', 'field', 'doge'));
+
+    expect(state.form.fields.field).toEqual({
+      ...field,
+      value: 'doge',
+    });
+  });
+
+  it('should change field error', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldError('form', 'field', 'error'));
+
+    expect(state.form.fields.field).toEqual({
+      ...field,
+      error: 'error',
+    });
   });
 });

@@ -23,6 +23,7 @@ export interface IOwnProps {
   validate?: Validate;
   normalize?: Normalize;
   defaultValue?: string;
+  withRef?: (el: React.ReactElement<any>) => void;
 }
 
 export type Validate = (value: Value) => string | null;
@@ -33,14 +34,11 @@ export type Normalize = (value: Value) => Value;
 class Field extends React.PureComponent<AllProps, void> {
   // Must contain all props of 'AllProps'
   static defaultProps = {
-    name: '',
-    component: 'input',
     validate: () => null,
     normalize: R.identity,
     defaultValue: '',
     // context
     _form: '',
-    _id: '',
     // state
     _field: null,
     // actions
@@ -80,7 +78,7 @@ class Field extends React.PureComponent<AllProps, void> {
   }
 
   componentWillReceiveProps(next: AllProps) {
-    const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
+    const { _fieldChange, form, name, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
       this.newField(next);
@@ -92,14 +90,14 @@ class Field extends React.PureComponent<AllProps, void> {
       const error = next.validate(value);
       const dirty = next.defaultValue !== value;
 
-      _fieldChange(_form, _id, value, error, dirty);
+      _fieldChange(form, name, value, error, dirty);
     }
   }
 
   componentWillUnmount() {
-    const { _removeField, _form, _id } = this.props;
+    const { _removeField, form, name } = this.props;
 
-    _removeField(_form, _id);
+    _removeField(form, name);
   }
 
   newField(props: AllProps) {
@@ -109,44 +107,44 @@ class Field extends React.PureComponent<AllProps, void> {
       R.set(R.lensProp('error'), props.validate(value)),
     )(field);
 
-    props._addField(props._form, props._id, newField);
+    props._addField(props.form, props.name, newField);
   }
 
   handleChange(ev: SynthEvent) {
-    const { _fieldChange, _form, _id, normalize, validate, defaultValue } = this.props;
+    const { _fieldChange, form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
     const error = validate(value);
     const dirty = value !== defaultValue;
 
-    _fieldChange(_form, _id, value, error, dirty);
+    _fieldChange(form, name, value, error, dirty);
   }
 
   handleFocus() {
-    const { _fieldFocus, _form, _id } = this.props;
+    const { _fieldFocus, form, name } = this.props;
 
-    _fieldFocus(_form, _id);
+    _fieldFocus(form, name);
   }
 
   handleBlur(ev: SynthEvent) {
-    const { _fieldBlur, _form, _id, normalize, validate, defaultValue } = this.props;
+    const { _fieldBlur, form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
     const error = validate(value);
     const dirty = value !== defaultValue;
 
-    _fieldBlur(_form, _id, error, dirty);
+    _fieldBlur(form, name, value, error, dirty);
   }
 
   render() {
-    const { component, _field, ...rest } = this.props;
+    const { component, withRef, _field, ...rest } = this.props;
 
     // Wait until field is initialized
     if (!_field) {
       return null;
     }
 
-    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, _field, {
+    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, { ref: withRef }, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -194,7 +192,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _field: R.path<FieldObj>([props._form, 'fields', props._id], state.reduxFormLite),
+  _field: R.path<FieldObj>([props.form, 'fields', props.name], state.reduxFormLite),
 }), bindActions)(Field);
 
 const Contexted = connectField<IOwnProps>(Connected);

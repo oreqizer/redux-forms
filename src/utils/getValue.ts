@@ -4,7 +4,7 @@ export type Target = HTMLInputElement | HTMLSelectElement;
 
 export type SynthEvent = React.SyntheticEvent<Target>;
 
-export type Value = string | string[] | number | boolean | FileList | null;
+export type Value = string | string[] | boolean | FileList | null;
 
 
 const isEvent = (thing: any): thing is SynthEvent =>
@@ -28,9 +28,6 @@ const getValue = (ev: any): Value => {
       return (target as HTMLInputElement).files;
     case 'select-multiple':
       return getSelectedValues((target as HTMLSelectElement).options);
-    case 'range':
-    case 'number':
-      return Number(target.value);
     default:
       return target.value;
   }

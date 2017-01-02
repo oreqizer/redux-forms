@@ -40,24 +40,6 @@ const evSelect = (options: Object[]) => ({
   },
 });
 
-const evNumber = (value: number) => ({
-  preventDefault,
-  stopPropagation,
-  target: {
-    type: 'number',
-    value,
-  },
-});
-
-const evRange = (value: number) => ({
-  preventDefault,
-  stopPropagation,
-  target: {
-    type: 'range',
-    value,
-  },
-});
-
 describe('#getValue', () => {
   it('should return value for non-event values', () => {
     expect(getValue(undefined)).toBeUndefined();
@@ -92,10 +74,5 @@ describe('#getValue', () => {
     ];
     expect(getValue(evSelect(options))).toEqual(['kek']);
     expect(getValue(evSelect([]))).toEqual([]);
-  });
-
-  it('should return numbers for number or range', () => {
-    expect(getValue(evNumber(13.37))).toBe(13.37);
-    expect(getValue(evRange(13.37))).toBe(13.37);
   });
 });
