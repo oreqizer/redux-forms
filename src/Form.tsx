@@ -10,7 +10,7 @@ import { isString, isPromise, isFunction } from "./utils/helpers";
 
 
 export interface IFormProps {
-  form: string;
+  name: string;
   persistent?: boolean;
 }
 
@@ -34,6 +34,7 @@ export type ActionProps = {
 
 export type Props = StateProps & ActionProps & IFormProps & {
   onSubmit?: (values: Object) => Promise<any> | void,
+  withRef?: (el: React.ReactElement<any>) => void,
 };
 
 
@@ -65,49 +66,49 @@ class Form extends React.PureComponent<Props, void> implements React.ChildContex
   }
 
   componentWillMount() {
-    const { form, _form, _addForm } = this.props;
+    const { name, _form, _addForm } = this.props;
 
     if (!_form) {
-      _addForm(form);
+      _addForm(name);
     }
   }
 
   componentWillUnmount() {
-    const { form, persistent } = this.props;
+    const { name, persistent } = this.props;
 
     if (!persistent) {
-      this.props._removeForm(form);
+      this.props._removeForm(name);
     }
   }
 
   getChildContext() {
-    const { form } = this.props;
+    const { name } = this.props;
 
     return {
-      reduxFormLite: form,
+      reduxFormLite: name,
     };
   }
 
   handleSubmit(ev: React.SyntheticEvent<HTMLFormElement>) {
-    const { form, onSubmit, _valid, _values, _touchAll, _submitStart, _submitStop } = this.props;
+    const { name, onSubmit, _valid, _values, _touchAll, _submitStart, _submitStop } = this.props;
 
     ev.preventDefault();
 
-    _touchAll(form);
+    _touchAll(name);
     if (!_valid || !isFunction(onSubmit)) {
       return;
     }
 
     const maybePromise = onSubmit(_values);
     if (isPromise(maybePromise)) {
-      _submitStart(form);
+      _submitStart(name);
 
-      maybePromise.then(() => _submitStop(form));
+      maybePromise.then(() => _submitStop(name));
     }
   }
 
   render() {
-    const { children, _form, ...rest } = this.props;
+    const { children, withRef, _form, ...rest } = this.props;
 
     // Wait until form is initialized
     if (!_form) {
@@ -117,7 +118,7 @@ class Form extends React.PureComponent<Props, void> implements React.ChildContex
     const props = R.omit(PROPS_TO_OMIT, rest);
 
     return (
-      <form onSubmit={this.handleSubmit} {...props}>
+      <form onSubmit={this.handleSubmit} ref={withRef} {...props}>
         {children}
       </form>
     );
@@ -133,7 +134,7 @@ const bindActions = {
 };
 
 export default connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: R.prop<FormObj>(props.form, state.reduxFormLite),
-  _values: selectors.valueSelector(props.form, state),
-  _valid: selectors.isValid(props.form, state),
+  _form: R.prop<FormObj>(props.name, state.reduxFormLite),
+  _values: selectors.valueSelector(props.name, state),
+  _valid: selectors.isValid(props.name, state),
 }), bindActions)(Form);
