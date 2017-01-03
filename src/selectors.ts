@@ -9,9 +9,13 @@ export interface IState {
   reduxFormLite: State;
 }
 
+type Memoize<T> = (x: T[]) => T;
 
-const memValues = R.memoize(R.compose(
-  unflatten,
+
+const memUnflatten = <Memoize<{}>> R.memoize(unflatten);
+
+const memValue = R.memoize(R.compose(
+  memUnflatten,
   R.map(R.prop('value')),
 ));
 
@@ -21,12 +25,12 @@ export function valueSelector(name: string, state: IState): Object {
     return {};
   }
 
-  return memValues(form.fields);
+  return memValue(form.fields);
 }
 
 
-const memErrors = R.memoize(R.compose(
-  unflatten,
+const memError = R.memoize(R.compose(
+  memUnflatten,
   R.map(R.prop('error')),
 ));
 
@@ -36,13 +40,15 @@ export function errorSelector(name: string, state: IState): Object {
     return {};
   }
 
-  return memErrors(form.fields);
+  return memError(form.fields);
 }
 
 
+const memValues = <Memoize<{}>> R.memoize(R.values);
+
 const memValid = R.memoize(R.compose(
   R.none(Boolean),
-  R.values,
+  memValues,
   R.map(R.prop('error')),
 ));
 
@@ -59,7 +65,7 @@ export function isValid(name: string, state: IState): boolean {
 
 const memTouched = R.memoize(R.compose(
   R.any(R.identity),
-  R.values,
+  memValues,
   R.map(R.prop('touched')),
 ));
 
@@ -76,7 +82,7 @@ export function isTouched(name: string, state: IState): boolean {
 
 const memDirty = R.memoize(R.compose(
   R.any(R.identity),
-  R.values,
+  memValues,
   R.map(R.prop('dirty')),
 ));
 
