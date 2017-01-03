@@ -52,3 +52,15 @@ export function unflatten(obj: Flat) {
 
   return result;
 }
+
+export function invariant(cond: boolean, msg: string) {
+  if (cond) {
+    return;
+  }
+
+  const error = new Error(msg);
+
+  error.name = 'Invariant violation';
+
+  throw error;
+}

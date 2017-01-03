@@ -99,4 +99,12 @@ describe('#helpers', () => {
       }],
     });
   });
+
+  it('should not throw if ok', () => {
+    expect(() => helpers.invariant(true, 'asdf')).not.toThrow();
+  });
+
+  it('should throw if not ok', () => {
+    expect(() => helpers.invariant(false, 'asdf')).toThrowError(/asdf/);
+  });
 });
