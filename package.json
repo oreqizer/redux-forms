@@ -99,7 +99,9 @@
     "dist",
     "lib",
     "selectors.js",
+    "selectors.d.ts",
     "actions.js",
+    "actions.d.ts",
     "README.md",
     "LICENSE"
   ]
