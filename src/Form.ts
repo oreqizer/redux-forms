@@ -63,10 +63,10 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
   }
 
   componentWillUnmount() {
-    const { name, persistent } = this.props;
+    const { name, persistent, _removeForm } = this.props;
 
     if (!persistent) {
-      this.props._removeForm(name);
+      _removeForm(name);
     }
   }
 
