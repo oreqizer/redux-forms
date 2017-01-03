@@ -1,6 +1,6 @@
 {
   "name": "redux-form-lite",
-  "version": "0.5.2",
+  "version": "0.5.5",
   "description": "A simple form management for Redux & React.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -100,6 +100,8 @@
   "files": [
     "dist",
     "lib",
+    "selectors.js",
+    "actions.js",
     "README.md",
     "LICENSE"
   ]
