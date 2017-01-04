@@ -57,7 +57,6 @@ const FIELD_PROPS = [
   // state
   '_form',
   '_field',
-  '_fieldMounted',
   // actions
   '_addField',
   '_removeField',
