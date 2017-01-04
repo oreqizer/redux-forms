@@ -14,6 +14,17 @@ const demoform = {
   },
 };
 
+const demoform2 = {
+  ...form,
+  fields: {
+    'flat': field,
+    'array.0': field,
+    'array.1': field,
+    'deep.0.array.0.name': field,
+    'deep.0.array.1.name': field,
+  },
+};
+
 const errform = {
   ...form,
   fields: {
@@ -49,6 +60,10 @@ const state = {
   reduxFormLite: { test: demoform },
 };
 
+const state2 = {
+  reduxFormLite: { test: demoform2 },
+};
+
 const errstate = {
   reduxFormLite: { test: errform },
 };
@@ -73,6 +88,20 @@ describe('#selectors', () => {
 
   it('should return empty if no reducer - error', () => {
     expect(selectors.errorSelector('nonexistent', emptystate)).toEqual({});
+  });
+
+  it('should return the same empty - value', () => {
+    const res1 = selectors.valueSelector('nonexistent', emptystate);
+    const res2 = selectors.valueSelector('nonexistent', emptystate);
+
+    expect(res1).toBe(res2);
+  });
+
+  it('should return the same empty - error', () => {
+    const res1 = selectors.errorSelector('nonexistent', emptystate);
+    const res2 = selectors.errorSelector('nonexistent', emptystate);
+
+    expect(res1).toBe(res2);
   });
 
   it('should return empty if no reducer - valid', () => {
@@ -115,16 +144,30 @@ describe('#selectors', () => {
     expect(selectors.isSubmitting('nonexistent', state)).toBe(false);
   });
 
-  it('should produce a memoized value form', () => {
+  it('should produce an id memoized value form', () => {
     const res = selectors.valueSelector('test', state);
     const res2 = selectors.valueSelector('test', state);
 
     expect(res).toBe(res2);
   });
 
-  it('should produce a memoized error form', () => {
+  it('should produce a value memoized form', () => {
+    const res = selectors.valueSelector('test', state);
+    const res2 = selectors.valueSelector('test', state2);
+
+    expect(res).toBe(res2);
+  });
+
+  it('should produce an id memoized error form', () => {
     const res = selectors.errorSelector('test', state);
     const res2 = selectors.errorSelector('test', state);
+
+    expect(res).toBe(res2);
+  });
+
+  it('should produce an error memoized form', () => {
+    const res = selectors.errorSelector('test', state);
+    const res2 = selectors.errorSelector('test', state2);
 
     expect(res).toBe(res2);
   });
