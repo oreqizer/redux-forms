@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import connectField, { ContextProps } from './utils/connectField';
-import fieldProps, { toUpdate, InputProps, MetaProps, IAllProps } from './utils/fieldProps';
+import fieldProps, { InputProps, MetaProps, IAllProps } from './utils/fieldProps';
 import getValue, { Value, Target } from './utils/getValue';
 import { shallowCompare } from './utils/helpers';
 
@@ -30,15 +30,14 @@ export type Validate = (value: Value) => string | null;
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.Component<AllProps, void> {
-  // Must contain all props of 'AllProps'
+class Field extends React.PureComponent<AllProps, void> {
+  // Must contain all props of 'StateProps & ActionProps'
   static defaultProps = {
     validate: () => null,
     normalize: R.identity,
     defaultValue: '',
     // state
     _field: null,
-    _fieldMounted: false,
     // actions
     _addField: R.identity,
     _removeField: R.identity,
@@ -67,10 +66,6 @@ class Field extends React.Component<AllProps, void> {
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps: AllProps) {
-    return !shallowCompare(toUpdate(this.props), toUpdate(nextProps));
   }
 
   componentWillMount() {
@@ -172,7 +167,6 @@ type DefaultProps = {
 
 type StateProps = {
   _field: FieldObj | null,
-  _fieldMounted: boolean,
 };
 
 type ActionProps = {
@@ -196,7 +190,6 @@ const bindActions = {
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
   _field: R.path<FieldObj>([props._form, 'fields', props.name], state.reduxFormLite),
-  _fieldMounted: Boolean(R.path<FieldObj>([props._form, 'fields', props.name], state.reduxFormLite)),
 }), bindActions)(Field);
 
 const Contexted = connectField<IOwnProps>(Connected);

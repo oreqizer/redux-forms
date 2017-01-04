@@ -81,14 +81,3 @@ const separateProps = (all: IAllProps): SeparatedProps => ({
 });
 
 export default R.compose(separateProps, maybeCheckProps);
-
-
-export type NotUpdated = {
-  _field?: any,
-};
-
-const NOT_TO_UPDATE = [
-  '_field',
-];
-
-export const toUpdate = <T>(all: T & NotUpdated): T => R.omit(NOT_TO_UPDATE, all);
