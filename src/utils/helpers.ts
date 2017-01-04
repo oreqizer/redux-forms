@@ -28,10 +28,21 @@ export function isEvent(cand: any): cand is React.SyntheticEvent<any> {
 
 export type Props = { [key: string]: any };
 
+const keyCount = R.compose(R.length, R.keys);
+
 export function shallowCompare(props1: Props, props2: Props): boolean {
+  if (props1 === props2) {
+    return true;
+  }
+
+  if (keyCount(props1) !== keyCount(props2)) {
+    return false;
+  }
+
   return R.reduce((acc, key) =>
     acc && R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
 }
+
 
 export type Flat = { [key: string]: any };
 
