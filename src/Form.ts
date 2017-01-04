@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import { FormObj } from "./utils/containers";
-import { isString, isPromise, isFunction } from "./utils/helpers";
-import formProps from './utils/formProps';
+import { isString, isPromise, isFunction, shallowCompare } from "./utils/helpers";
+import formProps, { toUpdate } from './utils/formProps';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
@@ -38,7 +38,7 @@ export type Context = {
 };
 
 
-class Form<T> extends React.PureComponent<Props<T>, void> implements React.ChildContextProvider<Context> {
+class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
   static childContextTypes = {
     reduxFormLite: React.PropTypes.string.isRequired,
   };
@@ -52,6 +52,10 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps: Props<T>) {
+    return !shallowCompare(toUpdate(this.props), toUpdate(nextProps));
   }
 
   componentWillMount() {
@@ -118,10 +122,9 @@ class Form<T> extends React.PureComponent<Props<T>, void> implements React.Child
     }
 
     return React.createElement('form', formProps(R.merge(this.props, {
-      children,
       ref: withRef,
       onSubmit: this.handleSubmit,
-    })));
+    })), children);
   }
 }
 

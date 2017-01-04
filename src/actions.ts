@@ -267,7 +267,7 @@ export const fieldError: FieldErrorCreator = (form, field, error) => ({
 
 
 export type Action =
-  AddFormAction |
+    AddFormAction |
     RemoveFormAction |
     AddFieldAction |
     RemoveFieldAction |

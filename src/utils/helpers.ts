@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 export function isString(cand: any): cand is string {
   return typeof cand === 'string';
 }
@@ -22,6 +24,25 @@ export function isEvent(cand: any): cand is React.SyntheticEvent<any> {
     isFunction(cand.stopPropagation),
   );
 }
+
+
+export type Props = { [key: string]: any };
+
+const keyCount = R.compose(R.length, R.keys);
+
+export function shallowCompare(props1: Props, props2: Props): boolean {
+  if (props1 === props2) {
+    return true;
+  }
+
+  if (keyCount(props1) !== keyCount(props2)) {
+    return false;
+  }
+
+  return R.reduce((acc, key) =>
+    acc && R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
+}
+
 
 export type Flat = { [key: string]: any };
 

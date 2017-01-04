@@ -86,6 +86,29 @@ describe('#helpers', () => {
     expect(helpers.isEvent([])).toBe(false);
   });
 
+  it('should compare objects', () => {
+    const props1 = { lol: 'rofl', kek: 1337 };
+    const props2 = { lol: 'rofl', kek: 1337 };
+
+    expect(helpers.shallowCompare(props1, props1)).toBe(true);
+    expect(helpers.shallowCompare(props1, props2)).toBe(true);
+  });
+
+  it('should not compare objects', () => {
+    const propsKeys1 = { lol: 'rofl', kek: 1337 };
+    const propsKeys2 = { lol: 'rofl' };
+
+    const propsValues1 = { kek: 1337, lol: 'rofl' };
+    const propsValues2 = { kek: 1336, lol: 'rofl' };
+
+    const propsId1 = { lol: 'rofl', kek: [] };
+    const propsId2 = { lol: 'rofl', kek: [] };
+
+    expect(helpers.shallowCompare(propsKeys1, propsKeys2)).toBe(false);
+    expect(helpers.shallowCompare(propsValues1, propsValues2)).toBe(false);
+    expect(helpers.shallowCompare(propsId1, propsId2)).toBe(false);
+  });
+
   it('should unflatten an object', () => {
     expect(helpers.unflatten(fields)).toEqual({
       name: 'John',

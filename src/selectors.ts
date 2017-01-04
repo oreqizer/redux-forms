@@ -12,6 +12,8 @@ export interface IState {
 type Memoize<T> = (x: T[]) => T;
 
 
+const EMPTY = {};
+
 const memUnflatten = <Memoize<{}>> R.memoize(unflatten);
 
 const memValue = R.memoize(R.compose(
@@ -22,7 +24,7 @@ const memValue = R.memoize(R.compose(
 export function valueSelector(name: string, state: IState): Object {
   const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
-    return {};
+    return EMPTY;
   }
 
   return memValue(form.fields);
@@ -37,7 +39,7 @@ const memError = R.memoize(R.compose(
 export function errorSelector(name: string, state: IState): Object {
   const form = R.path<FormObj>(['reduxFormLite', name], state);
   if (!form) {
-    return {};
+    return EMPTY;
   }
 
   return memError(form.fields);

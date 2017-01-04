@@ -80,3 +80,6 @@ const separateProps = (all: IAllProps): SeparatedProps => ({
 });
 
 export default R.compose(separateProps, maybeCheckProps);
+
+
+export const boolField = R.over(R.lensProp('_field'), Boolean);

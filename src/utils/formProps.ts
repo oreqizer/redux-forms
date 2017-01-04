@@ -18,7 +18,6 @@ export type Omitted = {
   _submitStop?: any,
 };
 
-
 const FORM_PROPS = [
   'name',
   'persistent',
@@ -36,7 +35,21 @@ const FORM_PROPS = [
   '_submitStop',
 ];
 
-
 const formProps = <T>(props: Omitted & T): T => R.omit(FORM_PROPS, props);
 
 export default formProps;
+
+
+export type NotUpdated = {
+  _values?: any,
+  _valid?: any,
+  _submitting?: any,
+};
+
+const NOT_TO_UPDATE = [
+  '_values',
+  '_valid',
+  '_submitting',
+];
+
+export const toUpdate = <T>(all: T & NotUpdated): T => R.omit(NOT_TO_UPDATE, all);

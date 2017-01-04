@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import * as R from "ramda";
 
-import formProps from '../formProps';
+import formProps, { toUpdate } from '../formProps';
 
 
 const props = {
@@ -51,9 +51,27 @@ describe('#fieldProps', () => {
   });
 
   it('should keep custom props', () => {
-    const result: any = formProps(props);
+    const result = formProps(props);
 
     expect(result.damage).toBe('tons of');
     expect(result.wow).toBe('so test');
+  });
+
+  it('should omit props not to update for', () => {
+    const result = toUpdate(props);
+
+    expect(result._values).toBeUndefined();
+    expect(result._valid).toBeUndefined();
+    expect(result._submitting).toBeUndefined();
+
+    expect(result.name).toBeDefined();
+    expect(result.persistent).toBeDefined();
+    expect(result.withRef).toBeDefined();
+    expect(result._form).toBeDefined();
+    expect(result._addForm).toBeDefined();
+    expect(result._removeForm).toBeDefined();
+    expect(result._touchAll).toBeDefined();
+    expect(result._submitStart).toBeDefined();
+    expect(result._submitStop).toBeDefined();
   });
 });
