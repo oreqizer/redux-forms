@@ -122,10 +122,9 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
     }
 
     return React.createElement('form', formProps(R.merge(this.props, {
-      children,
       ref: withRef,
       onSubmit: this.handleSubmit,
-    })));
+    })), children);
   }
 }
 
