@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import connectField, { ContextProps } from './utils/connectField';
-import fieldProps, { InputProps, MetaProps, IAllProps } from './utils/fieldProps';
+import fieldProps, { boolField, InputProps, MetaProps, IAllProps } from './utils/fieldProps';
 import getValue, { Value, Target } from './utils/getValue';
 import { shallowCompare } from './utils/helpers';
 
@@ -30,7 +30,7 @@ export type Validate = (value: Value) => string | null;
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.PureComponent<AllProps, void> {
+class Field extends React.Component<AllProps, void> {
   // Must contain all props of 'StateProps & ActionProps'
   static defaultProps = {
     validate: () => null,
@@ -66,6 +66,16 @@ class Field extends React.PureComponent<AllProps, void> {
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps: AllProps) {
+    const { _field } = this.props;
+
+    if (!shallowCompare(boolField(this.props), boolField(nextProps))) {
+      return true;
+    }
+
+    return R.not(_field && nextProps._field && shallowCompare(_field, nextProps._field));
   }
 
   componentWillMount() {

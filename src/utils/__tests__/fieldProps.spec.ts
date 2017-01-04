@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import * as R from "ramda";
 
-import fieldProps from '../fieldProps';
+import fieldProps, { boolField } from '../fieldProps';
 
 
 const onChange = R.identity;
@@ -101,5 +101,12 @@ describe('#fieldProps', () => {
     const result: any = fieldProps(props2);
 
     expect(result.input.checked).toBe(true);
+  });
+
+  it('should turn "_field" prop to a boolean', () => {
+    expect(boolField(props)).toEqual({
+      ...props,
+      _field: true,
+    });
   });
 });
