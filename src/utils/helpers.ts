@@ -30,7 +30,7 @@ export type Props = { [key: string]: any };
 
 export function shallowCompare(props1: Props, props2: Props): boolean {
   return R.reduce((acc, key) =>
-    R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
+    acc && R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
 }
 
 export type Flat = { [key: string]: any };

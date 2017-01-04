@@ -96,10 +96,15 @@ describe('#helpers', () => {
   it('should not compare objects', () => {
     const props1 = { lol: 'rofl', kek: 1337 };
     const props2 = { lol: 'rofl' };
+
+    const propss1 = { kek: 1337, lol: 'rofl' };
+    const propss2 = { kek: 1336, lol: 'rofl' };
+
     const propsId1 = { lol: 'rofl', kek: [] };
     const propsId2 = { lol: 'rofl', kek: [] };
 
     expect(helpers.shallowCompare(props1, props2)).toBe(false);
+    expect(helpers.shallowCompare(propss1, propss2)).toBe(false);
     expect(helpers.shallowCompare(propsId1, propsId2)).toBe(false);
   });
 
