@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 export function isString(cand: any): cand is string {
   return typeof cand === 'string';
 }
@@ -21,6 +23,14 @@ export function isEvent(cand: any): cand is React.SyntheticEvent<any> {
     isFunction(cand.preventDefault) &&
     isFunction(cand.stopPropagation),
   );
+}
+
+
+export type Props = { [key: string]: any };
+
+export function shallowCompare(props1: Props, props2: Props): boolean {
+  return R.reduce((acc, key) =>
+    R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
 }
 
 export type Flat = { [key: string]: any };
