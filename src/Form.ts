@@ -4,7 +4,7 @@ import * as R from 'ramda';
 
 import { FormObj } from "./utils/containers";
 import { isString, isPromise, isFunction, shallowCompare } from "./utils/helpers";
-import formProps from './utils/formProps';
+import formProps, { toUpdate } from './utils/formProps';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
@@ -36,14 +36,6 @@ export type Props<T> = StateProps & ActionProps & IFormProps & T;
 export type Context = {
   reduxFormLite: string;
 };
-
-const NOT_TO_UPDATE = [
-  '_values',
-  '_valid',
-  '_submitting',
-];
-
-const toUpdate = R.omit(NOT_TO_UPDATE);  // TODO move elsewhere and test
 
 
 class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
