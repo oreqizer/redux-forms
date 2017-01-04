@@ -41,14 +41,12 @@ export default formProps;
 
 
 export type NotUpdated = {
-  children?: any,
   _values?: any,
   _valid?: any,
   _submitting?: any,
 };
 
 const NOT_TO_UPDATE = [
-  'children',
   '_values',
   '_valid',
   '_submitting',
