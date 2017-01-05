@@ -2,7 +2,7 @@ import * as R from 'ramda';
 
 import { Value } from './utils/getValue';
 import { form, field, FormObj, FieldObj } from './utils/containers';
-import { arrayShift, arraySwap } from './utils/arrays';
+import { arrayUnshift, arrayShift, arraySwap } from './utils/arrays';
 
 import {
   Action,
@@ -104,7 +104,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, 0),
+          arrayUnshift(a.payload.id, 0),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
@@ -116,7 +116,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, 0, false),
+          arrayShift(a.payload.id, 0),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
@@ -128,7 +128,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, a.payload.index + 1),
+          arrayUnshift(a.payload.id, a.payload.index + 1),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
@@ -140,7 +140,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, a.payload.index, false),
+          arrayShift(a.payload.id, a.payload.index),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),
@@ -151,7 +151,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
     case ARRAY_SWAP:
       return R.over(
         R.lensPath([a.payload.form, 'fields']),
-        arraySwap(a.payload.pos1, a.payload.pos2),
+        arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
         state,
       );
 

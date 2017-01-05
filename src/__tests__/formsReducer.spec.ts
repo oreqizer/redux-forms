@@ -176,7 +176,7 @@ describe('#formsReducer', () => {
         fields: { 'array.0': field0, 'array.1': field1 },
         arrays: { array: 2 },
       },
-    }, actions.arraySwap('form', 'array.0', 'array.1'));
+    }, actions.arraySwap('form', 'array', 0, 1));
 
     expect(state.form.fields['array.0']).toBe(field1);
     expect(state.form.fields['array.1']).toBe(field0);

@@ -222,15 +222,16 @@ export const arrayRemove: ArrayRemoveCreator = (form, id, index) => ({
 
 export type ArraySwapAction = { type: '@redux-form-lite/ARRAY_SWAP', payload: {
   form: string,
-  pos1: string,
-  pos2: string,
+  id: string,
+  index1: number,
+  index2: number,
 } };
 
-export type ArraySwapCreator = (form: string, pos1: string, pos2: string) => ArraySwapAction;
+export type ArraySwapCreator = (form: string, id: string, index1: number, index2: number) => ArraySwapAction;
 
-export const arraySwap: ArraySwapCreator = (form, pos1, pos2) => ({
+export const arraySwap: ArraySwapCreator = (form, id, index1, index2) => ({
   type: ARRAY_SWAP,
-  payload: { form, pos1, pos2 },
+  payload: { form, id, index1, index2 },
 });
 
 

@@ -125,7 +125,7 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
   handleSwap(index1: number, index2: number) {
     const { _form, name, _arraySwap } = this.props;
 
-    _arraySwap(_form, `${name}.${index1}`, `${name}.${index2}`);
+    _arraySwap(_form, name, index1, index2);
   }
 
   render() {

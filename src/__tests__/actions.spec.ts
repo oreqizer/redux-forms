@@ -110,9 +110,9 @@ describe('#actions', () => {
   });
 
   it('should create a ARRAY_SWAP action', () => {
-    expect(actions.arraySwap('form', 'arr.1', 'arr.2')).toEqual({
+    expect(actions.arraySwap('form', 'arr', 1, 2)).toEqual({
       type: actions.ARRAY_SWAP,
-      payload: { form: 'form', pos1: 'arr.1', pos2: 'arr.2' },
+      payload: { form: 'form', id: 'arr', index1: 1, index2: 2 },
     });
   });
 

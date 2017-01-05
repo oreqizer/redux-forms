@@ -394,7 +394,7 @@ describe('#FieldArray', () => {
 
     wrapper.prop('fields').swap(0, 1);
 
-    expect(swap).toBeCalledWith('form', 'array.0', 'array.1');
+    expect(swap).toBeCalledWith('form', 'array', 0, 1);
   });
 
   it('should not render without an array', () => {
