@@ -19,7 +19,7 @@ const InputArray = props => (
     <button onClick={props.fields.shift}>
       Shift field
     </button>
-    <button onClick={(ev) => { ev.preventDefault(); props.fields.swap('hobbies.0', 'hobbies.2') }}>
+    <button onClick={(ev) => { ev.preventDefault(); props.fields.swap(0, 2) }}>
       Swap 1st and 3rd
     </button>
     {props.fields.map((id, index) =>
