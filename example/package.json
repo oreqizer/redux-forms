@@ -21,6 +21,5 @@
     "redux": "^3.6.0",
     "redux-form-lite": "^0.6.0",
     "redux-logger": "^2.7.4",
-    "why-did-you-update": "^0.0.8"
   }
 }

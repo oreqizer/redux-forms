@@ -4,12 +4,9 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer } from '../lib';
 import createLogger from 'redux-logger';
-import whyDidYouUpdate from 'why-did-you-update';
 
 import MyForm from './src/MyForm';
 import FlatForm from './src/FlatForm';
-
-whyDidYouUpdate(React);
 
 
 const logger = createLogger({ collapsed: true });
