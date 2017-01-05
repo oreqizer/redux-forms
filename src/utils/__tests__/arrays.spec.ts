@@ -1,4 +1,4 @@
-import arrayShift from '../arrayShift';
+import { arrayShift, arraySwap } from '../arrays';
 
 import { field } from '../containers';
 
@@ -16,13 +16,17 @@ const fields = {
   'medium.0.nest.1': field1,
   'medium.0.nest.2': field2,
   'medium.0.nest.3': field3,
+  'medium.1.nest.0': field3,
+  'medium.1.nest.1': field2,
+  'medium.1.nest.2': field1,
+  'medium.1.nest.3': field0,
   'rec.0.rec.0.rec.0': field0,
   'rec.0.rec.0.rec.1': field1,
   'rec.0.rec.0.rec.2': field2,
 };
 
 
-describe('#arrayShift', () => {
+describe('#arrays', () => {
   it('should not shift to negative index', () => {
     const res = arrayShift('flat', 0, false)(fields);
 
@@ -104,5 +108,29 @@ describe('#arrayShift', () => {
     expect(res['rec.0.rec.0.rec.0']).toBe(field0);
     expect(res['rec.0.rec.0.rec.2']).toBe(field1);
     expect(res['rec.0.rec.0.rec.3']).toBe(field2);
+  });
+
+  it('should swap two fields', () => {
+    const res = arraySwap('medium.0.nest.1', 'medium.0.nest.3')(fields);
+
+    expect(res).toEqual({
+      ...fields,
+      'medium.0.nest.1': field3,
+      'medium.0.nest.3': field1,
+    });
+  });
+
+  it('should swap nested fields', () => {
+    const res = arraySwap('medium.0', 'medium.1')(fields);
+
+    expect(res['medium.0.nest.0']).toBe(fields['medium.1.nest.0']);
+    expect(res['medium.0.nest.1']).toBe(fields['medium.1.nest.1']);
+    expect(res['medium.0.nest.2']).toBe(fields['medium.1.nest.2']);
+    expect(res['medium.0.nest.3']).toBe(fields['medium.1.nest.3']);
+
+    expect(res['medium.1.nest.0']).toBe(fields['medium.0.nest.0']);
+    expect(res['medium.1.nest.1']).toBe(fields['medium.0.nest.1']);
+    expect(res['medium.1.nest.2']).toBe(fields['medium.0.nest.2']);
+    expect(res['medium.1.nest.3']).toBe(fields['medium.0.nest.3']);
   });
 });

@@ -6,7 +6,7 @@ import { FieldObj } from "./containers";
 export type Fields = { [key: string]: FieldObj };
 
 
-export default function arrayShift(path: string, start: number, plus: boolean = true) {
+export function arrayShift(path: string, start: number, plus: boolean = true) {
   const modifier = plus ? 1 : -1;
 
   return (fields: Fields): Fields => R.reduce((acc, key) => {
@@ -14,7 +14,7 @@ export default function arrayShift(path: string, start: number, plus: boolean = 
       return R.assoc(key, R.prop(key, fields), acc);
     }
 
-    const parts = R.compose(R.tail, R.split('.'))(key.replace(path, ''));
+    const parts = R.compose(R.tail, R.split('.'), R.replace(path, ''))(key);
     const index = Number(R.head(parts));
 
     if (Number.isNaN(index) || index < start) {
@@ -29,5 +29,19 @@ export default function arrayShift(path: string, start: number, plus: boolean = 
     const lead = `${path}.${newindex}`;
     const newkey = R.prepend(lead, R.tail(parts)).join('.');
     return R.assoc(newkey, R.prop(key, fields), acc);
+  }, {}, R.keys(fields));
+}
+
+export function arraySwap(pos1: string, pos2: string) {
+  return (fields: Fields): Fields => R.reduce((acc, key) => {
+    if (key.indexOf(pos1) === 0) {
+      return R.assoc(R.replace(pos1, pos2, key), R.prop(key, fields), acc);
+    }
+
+    if (key.indexOf(pos2) === 0) {
+      return R.assoc(R.replace(pos2, pos1, key), R.prop(key, fields), acc);
+    }
+
+    return R.assoc(key, R.prop(key, fields), acc);
   }, {}, R.keys(fields));
 }

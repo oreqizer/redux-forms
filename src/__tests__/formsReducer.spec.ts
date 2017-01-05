@@ -166,6 +166,22 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
+  it('should swap fields in an array', () => {
+    const field0 = { ...field, value: '0' };
+    const field1 = { ...field, value: '2' };
+
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { 'array.0': field0, 'array.1': field1 },
+        arrays: { array: 2 },
+      },
+    }, actions.arraySwap('form', 'array.0', 'array.1'));
+
+    expect(state.form.fields['array.0']).toBe(field1);
+    expect(state.form.fields['array.1']).toBe(field0);
+  });
+
   it('should change a field', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
