@@ -20,6 +20,8 @@ import {
   ARRAY_POP,
   ARRAY_UNSHIFT,
   ARRAY_SHIFT,
+  ARRAY_INSERT,
+  ARRAY_REMOVE,
 
   FIELD_CHANGE,
   FIELD_FOCUS,
@@ -66,18 +68,10 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case SUBMIT_START:
-      return R.set(
-        R.lensPath([a.payload.form, 'submitting']),
-        true,
-        state,
-      );
+      return R.set(R.lensPath([a.payload.form, 'submitting']), true, state);
 
     case SUBMIT_STOP:
-      return R.set(
-        R.lensPath([a.payload.form, 'submitting']),
-        false,
-        state,
-      );
+      return R.set(R.lensPath([a.payload.form, 'submitting']), false, state);
 
     // Array
     // ---
@@ -122,6 +116,30 @@ export default function formsReducer(state: State = {}, a: Action): State {
         R.over(
           R.lensPath([a.payload.form, 'fields']),
           arrayShift(a.payload.id, 0, false),
+        ),
+        R.over(
+          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
+          R.dec,
+        ),
+      )(state);
+
+    case ARRAY_INSERT:
+      return R.compose<State, State, State>(
+        R.over(
+          R.lensPath([a.payload.form, 'fields']),
+          arrayShift(a.payload.id, a.payload.index),
+        ),
+        R.over(
+          R.lensPath([a.payload.form, 'arrays', a.payload.id]),
+          R.inc,
+        ),
+      )(state);
+
+    case ARRAY_REMOVE:
+      return R.compose<State, State, State>(
+        R.over(
+          R.lensPath([a.payload.form, 'fields']),
+          arrayShift(a.payload.id, a.payload.index, false),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),

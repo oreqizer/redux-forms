@@ -133,6 +133,39 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(1);
   });
 
+  it('should insert to an array', () => {
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { 'array.0': field, 'array.1': field },
+        arrays: { array: 2 },
+      },
+    }, actions.arrayInsert('form', 'array', 1));
+
+    expect(state.form.fields['array.0']).toBeDefined();
+    expect(state.form.fields['array.1']).toBeUndefined();
+    expect(state.form.fields['array.2']).toBeDefined();
+    expect(state.form.arrays.array).toBe(3);
+  });
+
+  it('should remove from an array', () => {
+    const field1 = { ...field, value: '1' };
+    const field2 = { ...field, value: '2' };
+
+    const state: any = reducer({
+      form: {
+        ...form,
+        fields: { 'array.0': field1, 'array.1': field, 'array.2': field2 },
+        arrays: { array: 3 },
+      },
+    }, actions.arrayRemove('form', 'array', 1));
+
+    expect(state.form.fields['array.0']).toBe(field1);
+    expect(state.form.fields['array.1']).toBe(field2);
+    expect(state.form.fields['array.2']).toBeUndefined();
+    expect(state.form.arrays.array).toBe(2);
+  });
+
   it('should change a field', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
