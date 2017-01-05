@@ -7,13 +7,6 @@ import Input from './Input';
 
 const InputArray = props => (
   <div>
-    {props.fields.map((id) =>
-      <Field
-        key={id}
-        name={id}
-        component={Input}
-      />
-    )}
     <button onClick={props.fields.push}>
       Push field
     </button>
@@ -26,11 +19,34 @@ const InputArray = props => (
     <button onClick={props.fields.shift}>
       Shift field
     </button>
+    <button onClick={(ev) => { ev.preventDefault(); props.fields.swap('hobbies.0', 'hobbies.2') }}>
+      Swap 1st and 3rd
+    </button>
+    {props.fields.map((id, index) =>
+      <div key={id}>
+        <Field
+          name={id}
+          component={Input}
+        />
+        <button onClick={(ev) => { ev.preventDefault(); props.fields.insert(index) }}>
+          Insert field
+        </button>
+        <button onClick={(ev) => { ev.preventDefault(); props.fields.remove(index) }}>
+          Remove field
+        </button>
+      </div>
+    )}
   </div>
 );
 
 const DeepArray = props => (
   <div>
+    <button onClick={props.fields.push}>
+      Add fields
+    </button>
+    <button onClick={props.fields.pop}>
+      Remove fields
+    </button>
     {props.fields.map(id =>
       <div key={id}>
         name:
@@ -46,12 +62,6 @@ const DeepArray = props => (
         />
       </div>
     )}
-    <button onClick={props.fields.push}>
-      Add fields
-    </button>
-    <button onClick={props.fields.pop}>
-      Remove fields
-    </button>
   </div>
 );
 
