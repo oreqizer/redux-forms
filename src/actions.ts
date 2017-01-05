@@ -16,6 +16,9 @@ export const ARRAY_PUSH = '@redux-form-lite/ARRAY_PUSH';
 export const ARRAY_POP = '@redux-form-lite/ARRAY_POP';
 export const ARRAY_UNSHIFT = '@redux-form-lite/ARRAY_UNSHIFT';
 export const ARRAY_SHIFT = '@redux-form-lite/ARRAY_SHIFT';
+export const ARRAY_INSERT = '@redux-form-lite/ARRAY_INSERT';
+export const ARRAY_REMOVE = '@redux-form-lite/ARRAY_REMOVE';
+export const ARRAY_SWAP = '@redux-form-lite/ARRAY_SWAP';
 
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
@@ -137,55 +140,98 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 });
 
 
-export type PushAction = { type: '@redux-form-lite/ARRAY_PUSH', payload: {
+export type ArrayPushAction = { type: '@redux-form-lite/ARRAY_PUSH', payload: {
   form: string,
   id: string,
 } };
 
-export type PushCreator = (form: string, id: string) => PushAction;
+export type ArrayPushCreator = (form: string, id: string) => ArrayPushAction;
 
-export const arrayPush: PushCreator = (form, id) => ({
+export const arrayPush: ArrayPushCreator = (form, id) => ({
   type: ARRAY_PUSH,
   payload: { form, id },
 });
 
 
-export type PopAction = { type: '@redux-form-lite/ARRAY_POP', payload: {
+export type ArrayPopAction = { type: '@redux-form-lite/ARRAY_POP', payload: {
   form: string,
   id: string,
 } };
 
-export type PopCreator = (form: string, id: string) => PopAction;
+export type ArrayPopCreator = (form: string, id: string) => ArrayPopAction;
 
-export const arrayPop: PopCreator = (form, id) => ({
+export const arrayPop: ArrayPopCreator = (form, id) => ({
   type: ARRAY_POP,
   payload: { form, id },
 });
 
 
-export type UnshiftAction = { type: '@redux-form-lite/ARRAY_UNSHIFT', payload: {
+export type ArrayUnshiftAction = { type: '@redux-form-lite/ARRAY_UNSHIFT', payload: {
   form: string,
   id: string,
 } };
 
-export type UnshiftCreator = (form: string, id: string) => UnshiftAction;
+export type ArrayUnshiftCreator = (form: string, id: string) => ArrayUnshiftAction;
 
-export const arrayUnshift: UnshiftCreator = (form, id) => ({
+export const arrayUnshift: ArrayUnshiftCreator = (form, id) => ({
   type: ARRAY_UNSHIFT,
   payload: { form, id },
 });
 
 
-export type ShiftAction = { type: '@redux-form-lite/ARRAY_SHIFT', payload: {
+export type ArrayShiftAction = { type: '@redux-form-lite/ARRAY_SHIFT', payload: {
   form: string,
   id: string,
 } };
 
-export type ShiftCreator = (form: string, id: string) => ShiftAction;
+export type ArrayShiftCreator = (form: string, id: string) => ArrayShiftAction;
 
-export const arrayShift: ShiftCreator = (form, id) => ({
+export const arrayShift: ArrayShiftCreator = (form, id) => ({
   type: ARRAY_SHIFT,
   payload: { form, id },
+});
+
+
+export type ArrayInsertAction = { type: '@redux-form-lite/ARRAY_INSERT', payload: {
+  form: string,
+  id: string,
+  index: number,
+} };
+
+export type ArrayInsertCreator = (form: string, id: string, index: number) => ArrayInsertAction;
+
+export const arrayInsert: ArrayInsertCreator = (form, id, index) => ({
+  type: ARRAY_INSERT,
+  payload: { form, id, index },
+});
+
+
+export type ArrayRemoveAction = { type: '@redux-form-lite/ARRAY_REMOVE', payload: {
+  form: string,
+  id: string,
+  index: number,
+} };
+
+export type ArrayRemoveCreator = (form: string, id: string, index: number) => ArrayRemoveAction;
+
+export const arrayRemove: ArrayRemoveCreator = (form, id, index) => ({
+  type: ARRAY_REMOVE,
+  payload: { form, id, index },
+});
+
+
+export type ArraySwapAction = { type: '@redux-form-lite/ARRAY_SWAP', payload: {
+  form: string,
+  id: string,
+  pos1: string,
+  pos2: string,
+} };
+
+export type ArraySwapCreator = (form: string, id: string, pos1: string, pos2: string) => ArraySwapAction;
+
+export const arraySwap: ArraySwapCreator = (form, id, pos1, pos2) => ({
+  type: ARRAY_SWAP,
+  payload: { form, id, pos1, pos2 },
 });
 
 
@@ -276,10 +322,13 @@ export type Action =
     SubmitStopAction |
     AddArrayAction |
     RemoveArrayAction |
-    PushAction |
-    PopAction |
-    UnshiftAction |
-    ShiftAction |
+    ArrayPushAction |
+    ArrayPopAction |
+    ArrayUnshiftAction |
+    ArrayShiftAction |
+    ArrayInsertAction |
+    ArrayRemoveAction |
+    ArraySwapAction |
     FieldChangeAction |
     FieldFocusAction |
     FieldBlurAction |

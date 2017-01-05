@@ -134,10 +134,10 @@ type StateProps = {
 type ActionProps = {
   _addArray: actions.AddArrayCreator,
   _removeArray: actions.RemoveArrayCreator,
-  _arrayPush: actions.PushCreator,
-  _arrayPop: actions.PopCreator,
-  _arrayUnshift: actions.UnshiftCreator,
-  _arrayShift: actions.ShiftCreator,
+  _arrayPush: actions.ArrayPushCreator,
+  _arrayPop: actions.ArrayPopCreator,
+  _arrayUnshift: actions.ArrayUnshiftCreator,
+  _arrayShift: actions.ArrayShiftCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;

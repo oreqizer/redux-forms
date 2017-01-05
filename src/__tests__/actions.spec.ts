@@ -95,6 +95,27 @@ describe('#actions', () => {
     });
   });
 
+  it('should create a ARRAY_INSERT action', () => {
+    expect(actions.arrayInsert('form', 'field', 1)).toEqual({
+      type: actions.ARRAY_INSERT,
+      payload: { form: 'form', id: 'field', index: 1 },
+    });
+  });
+
+  it('should create a ARRAY_REMOVE action', () => {
+    expect(actions.arrayRemove('form', 'field', 1)).toEqual({
+      type: actions.ARRAY_REMOVE,
+      payload: { form: 'form', id: 'field', index: 1 },
+    });
+  });
+
+  it('should create a ARRAY_SWAP action', () => {
+    expect(actions.arraySwap('form', 'field', 'arr.1', 'arr.2')).toEqual({
+      type: actions.ARRAY_SWAP,
+      payload: { form: 'form', id: 'field', pos1: 'arr.1', pos2: 'arr.2' },
+    });
+  });
+
   it('should create a FIELD_CHANGE action', () => {
     expect(actions.fieldChange('form', 'field', 'value', 'error', true)).toEqual({
       type: actions.FIELD_CHANGE,
