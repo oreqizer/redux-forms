@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 
+
 export function isString(cand: any): cand is string {
   return typeof cand === 'string';
 }

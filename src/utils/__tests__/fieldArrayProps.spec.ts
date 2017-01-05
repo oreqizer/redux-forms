@@ -10,6 +10,10 @@ const fields: any = {
   pop: R.identity,
   unshift: R.identity,
   shift: R.identity,
+  insert: R.identity,
+  remove: R.identity,
+  swap: R.identity,
+  move: R.identity,
 };
 
 const props = {
@@ -25,6 +29,10 @@ const props = {
   _arrayPop: R.identity,
   _arrayUnshift: R.identity,
   _arrayShift: R.identity,
+  _arrayInsert: R.identity,
+  _arrayRemove: R.identity,
+  _arraySwap: R.identity,
+  _arrayMove: R.identity,
 
   // custom
   // ---
