@@ -47,7 +47,7 @@ describe('#arrays', () => {
   });
 
   it('should shift flat array - negative', () => {
-    const res = arrayShift('flat', 2, false)(fields);
+    const res = arrayShift('flat', 1, false)(fields);
 
     expect(res['flat.2']).toBeUndefined();
 
@@ -67,7 +67,7 @@ describe('#arrays', () => {
   });
 
   it('should shift nested array - negative', () => {
-    const res = arrayShift('medium.0.nest', 3, false)(fields);
+    const res = arrayShift('medium.0.nest', 2, false)(fields);
 
     expect(res['medium.0.nest.3']).toBeUndefined();
 

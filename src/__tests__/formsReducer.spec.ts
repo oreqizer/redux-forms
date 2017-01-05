@@ -140,7 +140,7 @@ describe('#formsReducer', () => {
         fields: { 'array.0': field, 'array.1': field },
         arrays: { array: 2 },
       },
-    }, actions.arrayInsert('form', 'array', 1));
+    }, actions.arrayInsert('form', 'array', 0));
 
     expect(state.form.fields['array.0']).toBeDefined();
     expect(state.form.fields['array.1']).toBeUndefined();

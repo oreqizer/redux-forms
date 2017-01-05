@@ -22,7 +22,7 @@ export function arrayShift(path: string, start: number, plus: boolean = true) {
     }
 
     const newindex = index + modifier;
-    if (newindex < 0) {
+    if (newindex < 0 || (!plus && index === start)) {
       return acc;
     }
 
