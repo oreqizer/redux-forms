@@ -2,7 +2,7 @@ import * as R from 'ramda';
 
 import { Value } from './utils/getValue';
 import { form, field, FormObj, FieldObj } from './utils/containers';
-import { arrayUnshift, arrayShift, arraySwap } from './utils/arrays';
+import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './utils/arrays';
 
 import {
   Action,
@@ -23,6 +23,7 @@ import {
   ARRAY_INSERT,
   ARRAY_REMOVE,
   ARRAY_SWAP,
+  ARRAY_MOVE,
 
   FIELD_CHANGE,
   FIELD_FOCUS,
@@ -152,6 +153,13 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.over(
         R.lensPath([a.payload.form, 'fields']),
         arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
+        state,
+      );
+
+    case ARRAY_MOVE:
+      return R.over(
+        R.lensPath([a.payload.form, 'fields']),
+        arrayMove(a.payload.id, a.payload.from, a.payload.to),
         state,
       );
 

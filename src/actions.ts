@@ -19,6 +19,7 @@ export const ARRAY_SHIFT = '@redux-form-lite/ARRAY_SHIFT';
 export const ARRAY_INSERT = '@redux-form-lite/ARRAY_INSERT';
 export const ARRAY_REMOVE = '@redux-form-lite/ARRAY_REMOVE';
 export const ARRAY_SWAP = '@redux-form-lite/ARRAY_SWAP';
+export const ARRAY_MOVE = '@redux-form-lite/ARRAY_MOVE';
 
 export const FIELD_CHANGE = '@redux-form-lite/FIELD_CHANGE';
 export const FIELD_FOCUS = '@redux-form-lite/FIELD_FOCUS';
@@ -235,6 +236,21 @@ export const arraySwap: ArraySwapCreator = (form, id, index1, index2) => ({
 });
 
 
+export type ArrayMoveAction = { type: '@redux-form-lite/ARRAY_MOVE', payload: {
+  form: string,
+  id: string,
+  from: number,
+  to: number,
+} };
+
+export type ArrayMoveCreator = (form: string, id: string, from: number, to: number) => ArrayMoveAction;
+
+export const arrayMove: ArrayMoveCreator = (form, id, from, to) => ({
+  type: ARRAY_MOVE,
+  payload: { form, id, from, to },
+});
+
+
 export type FieldChangeAction = { type: '@redux-form-lite/FIELD_CHANGE', payload: {
   form: string,
   field: string,
@@ -329,6 +345,7 @@ export type Action =
     ArrayInsertAction |
     ArrayRemoveAction |
     ArraySwapAction |
+    ArrayMoveAction |
     FieldChangeAction |
     FieldFocusAction |
     FieldBlurAction |

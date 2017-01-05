@@ -67,52 +67,59 @@ describe('#actions', () => {
     });
   });
 
-  it('should create a ARRAY_PUSH action', () => {
+  it('should create an ARRAY_PUSH action', () => {
     expect(actions.arrayPush('form', 'field')).toEqual({
       type: actions.ARRAY_PUSH,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a ARRAY_POP action', () => {
+  it('should create an ARRAY_POP action', () => {
     expect(actions.arrayPop('form', 'field')).toEqual({
       type: actions.ARRAY_POP,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a ARRAY_UNSHIFT action', () => {
+  it('should create an ARRAY_UNSHIFT action', () => {
     expect(actions.arrayUnshift('form', 'field')).toEqual({
       type: actions.ARRAY_UNSHIFT,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a ARRAY_SHIFT action', () => {
+  it('should create an ARRAY_SHIFT action', () => {
     expect(actions.arrayShift('form', 'field')).toEqual({
       type: actions.ARRAY_SHIFT,
       payload: { form: 'form', id: 'field' },
     });
   });
 
-  it('should create a ARRAY_INSERT action', () => {
+  it('should create an ARRAY_INSERT action', () => {
     expect(actions.arrayInsert('form', 'field', 1)).toEqual({
       type: actions.ARRAY_INSERT,
       payload: { form: 'form', id: 'field', index: 1 },
     });
   });
 
-  it('should create a ARRAY_REMOVE action', () => {
+  it('should create an ARRAY_REMOVE action', () => {
     expect(actions.arrayRemove('form', 'field', 1)).toEqual({
       type: actions.ARRAY_REMOVE,
       payload: { form: 'form', id: 'field', index: 1 },
     });
   });
 
-  it('should create a ARRAY_SWAP action', () => {
+  it('should create an ARRAY_SWAP action', () => {
     expect(actions.arraySwap('form', 'arr', 1, 2)).toEqual({
       type: actions.ARRAY_SWAP,
       payload: { form: 'form', id: 'arr', index1: 1, index2: 2 },
+    });
+  });
+
+  it('should create an ARRAY_MOVE action', () => {
+    expect(actions.arrayMove('form', 'arr', 1, 2)).toEqual({
+      type: actions.ARRAY_MOVE,
+      payload: { form: 'form', id: 'arr', from: 1, to: 2 },
     });
   });
 

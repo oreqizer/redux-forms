@@ -119,6 +119,12 @@ describe('#arrays', () => {
     expect(res['rec.0.rec.0.rec.3']).toBe(field2);
   });
 
+  it('should not swap nonexistent fields', () => {
+    const res = arraySwap('medium.0.nest', 1, 8)(fields);
+
+    expect(res).toBe(fields);
+  });
+
   it('should swap two fields', () => {
     const res = arraySwap('medium.0.nest', 1, 3)(fields);
 
@@ -127,12 +133,6 @@ describe('#arrays', () => {
       'medium.0.nest.1': field3,
       'medium.0.nest.3': field1,
     });
-  });
-
-  it('should swap not swap nonexistent fields', () => {
-    const res = arraySwap('medium.0.nest', 1, 8)(fields);
-
-    expect(res).toBe(fields);
   });
 
   it('should swap nested fields', () => {
@@ -147,6 +147,12 @@ describe('#arrays', () => {
     expect(res['medium.1.nest.1']).toBe(fields['medium.0.nest.1']);
     expect(res['medium.1.nest.2']).toBe(fields['medium.0.nest.2']);
     expect(res['medium.1.nest.3']).toBe(fields['medium.0.nest.3']);
+  });
+
+  it('should not move nonexistent fields', () => {
+    const res = arrayMove('medium.0.nest', 1, 8)(fields);
+
+    expect(res).toBe(fields);
   });
 
   it('should move a field - start', () => {
