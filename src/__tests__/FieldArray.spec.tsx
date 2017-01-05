@@ -397,6 +397,24 @@ describe('#FieldArray', () => {
     expect(swap).toBeCalledWith('form', 'array', 0, 1);
   });
 
+  it('should handle move', () => {
+    const move = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _array={1}
+        _addArray={jest.fn()}
+        _arrayMove={move}
+      />
+    ));
+
+    wrapper.prop('fields').move(0, 1);
+
+    expect(move).toBeCalledWith('form', 'array', 0, 1);
+  });
+
   it('should not render without an array', () => {
     const wrapper = mount((
       <FieldArray

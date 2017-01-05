@@ -43,6 +43,7 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
     this.handleInsert = this.handleInsert.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleSwap = this.handleSwap.bind(this);
+    this.handleMove = this.handleMove.bind(this);
   }
 
   componentWillMount() {
@@ -128,6 +129,12 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
     _arraySwap(_form, name, index1, index2);
   }
 
+  handleMove(from: number, to: number) {
+    const { _form, name, _arrayMove } = this.props;
+
+    _arrayMove(_form, name, from, to);
+  }
+
   render() {
     const { component, withRef, _array } = this.props;
 
@@ -146,6 +153,7 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
       insert: this.handleInsert,
       remove: this.handleRemove,
       swap: this.handleSwap,
+      move: this.handleMove,
     }));
   }
 }
@@ -167,6 +175,7 @@ type ActionProps = {
   _arrayInsert: actions.ArrayInsertCreator,
   _arrayRemove: actions.ArrayRemoveCreator,
   _arraySwap: actions.ArraySwapCreator,
+  _arrayMove: actions.ArrayMoveCreator,
 };
 
 type AllProps<T> = StateProps & ActionProps & ConnectedProps<T>;
@@ -182,6 +191,7 @@ const bindActions = {
   _arrayInsert: actions.arrayInsert,
   _arrayRemove: actions.arrayRemove,
   _arraySwap: actions.arraySwap,
+  _arrayMove: actions.arrayMove,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({

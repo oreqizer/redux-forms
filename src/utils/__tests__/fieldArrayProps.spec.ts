@@ -13,6 +13,7 @@ const fields: any = {
   insert: R.identity,
   remove: R.identity,
   swap: R.identity,
+  move: R.identity,
 };
 
 const props = {
@@ -31,6 +32,7 @@ const props = {
   _arrayInsert: R.identity,
   _arrayRemove: R.identity,
   _arraySwap: R.identity,
+  _arrayMove: R.identity,
 
   // custom
   // ---

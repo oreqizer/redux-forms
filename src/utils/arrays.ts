@@ -7,36 +7,35 @@ export type Fields = { [key: string]: FieldObj };
 
 
 export function arrayUnshift(path: string, start: number) {
+  const toParts = R.compose(R.tail, R.split('.'), R.replace(path, ''));
+
   return (fields: Fields): Fields => R.reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
       return R.assoc(key, R.prop(key, fields), acc);
     }
 
-    const parts = R.compose(R.tail, R.split('.'), R.replace(path, ''))(key);
+    const parts = toParts(key);
     const index = Number(R.head(parts));
 
     if (Number.isNaN(index) || index < start) {
       return R.assoc(key, R.prop(key, fields), acc);
     }
 
-    const newindex = index + 1;
-    if (newindex < 0) {
-      return acc;
-    }
-
-    const lead = `${path}.${newindex}`;
+    const lead = `${path}.${index + 1}`;
     const newkey = R.prepend(lead, R.tail(parts)).join('.');
     return R.assoc(newkey, R.prop(key, fields), acc);
   }, {}, R.keys(fields));
 }
 
 export function arrayShift(path: string, start: number) {
+  const toParts = R.compose(R.tail, R.split('.'), R.replace(path, ''));
+
   return (fields: Fields): Fields => R.reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
       return R.assoc(key, R.prop(key, fields), acc);
     }
 
-    const parts = R.compose(R.tail, R.split('.'), R.replace(path, ''))(key);
+    const parts = toParts(key);
     const index = Number(R.head(parts));
 
     if (Number.isNaN(index) || index < start) {

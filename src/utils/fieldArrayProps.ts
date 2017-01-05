@@ -17,6 +17,7 @@ export type Omitted = {
   _arrayInsert?: any,
   _arrayRemove?: any,
   _arraySwap?: any,
+  _arrayMove?: any,
 };
 
 const FIELD_ARRAY_PROPS = [
@@ -35,6 +36,7 @@ const FIELD_ARRAY_PROPS = [
   '_arrayInsert',
   '_arrayRemove',
   '_arraySwap',
+  '_arrayMove',
 ];
 
 
@@ -47,7 +49,8 @@ export type FieldsProp = {
   shift: () => void,
   insert: (index: number) => void,
   remove: (index: number) => void,
-  swap: (pos1: number, pos2: number) => void,
+  swap: (index1: number, index2: number) => void,
+  move: (from: number, to: number) => void,
 };
 
 export type FieldProp = { fields: FieldsProp };
