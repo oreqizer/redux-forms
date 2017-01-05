@@ -6,23 +6,23 @@ import { Context } from './Form';
 import * as actions from './actions';
 import { Target } from './utils/getValue';
 import connectField, { ContextProps } from './utils/connectField';
-import fieldArrayProps, { FieldProps } from './utils/fieldArrayProps';
+import fieldArrayProps, { FieldsProp } from './utils/fieldArrayProps';
 import { isNumber, isEvent } from "./utils/helpers";
 
 
-export interface ISuppliedProps {
-  name: string;
-  fields: FieldProps;
-}
+export type SuppliedProps = {
+  name?: string,
+  fields: FieldsProp,
+};
 
-export interface IOwnProps {
-  name: string;
-  component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps>;
-  withRef?: (el: React.ReactElement<any>) => void;
-}
+export type FieldArrayProps<T> = T & {
+  name: string,
+  component: React.ComponentClass<T & SuppliedProps> | React.SFC<T & SuppliedProps>,
+  withRef?: (el: React.ReactElement<any>) => void,
+};
 
 
-class FieldArray extends React.PureComponent<AllProps, void> {
+class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
     component: React.PropTypes.func.isRequired,
@@ -30,7 +30,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 
   static displayName = 'FieldArray';
 
-  constructor(props: AllProps) {
+  constructor(props: AllProps<T>) {
     super(props);
 
     this.handleMap = this.handleMap.bind(this);
@@ -38,6 +38,9 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     this.handlePop = this.handlePop.bind(this);
     this.handleUnshift = this.handleUnshift.bind(this);
     this.handleShift = this.handleShift.bind(this);
+    this.handleInsert = this.handleInsert.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.handleSwap = this.handleSwap.bind(this);
   }
 
   componentWillMount() {
@@ -124,14 +127,14 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   render() {
-    const { component, withRef, _array, ...rest } = this.props;
+    const { component, withRef, _array } = this.props;
 
     if (!isNumber(_array)) {
       return null;
     }
 
     // React.SFC vs. React.ClassComponent collision
-    return React.createElement(<any> component, fieldArrayProps(R.merge(rest, { ref: withRef }), {
+    return React.createElement(<any> component, fieldArrayProps(R.merge(this.props, { ref: withRef }), {
       length: _array,
       map: this.handleMap,
       push: this.handlePush,
@@ -146,7 +149,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
 }
 
 
-type ConnectedProps = IOwnProps & ContextProps;
+type ConnectedProps<T> = FieldArrayProps<T> & ContextProps;
 
 type StateProps = {
   _array?: number,
@@ -164,7 +167,7 @@ type ActionProps = {
   _arraySwap: actions.ArraySwapCreator,
 };
 
-type AllProps = StateProps & ActionProps & ConnectedProps;
+type AllProps<T> = StateProps & ActionProps & ConnectedProps<T>;
 
 
 const bindActions = {
@@ -179,11 +182,11 @@ const bindActions = {
   _arraySwap: actions.arraySwap,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
+const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
   _array: R.path<number>([props._form, 'arrays', props.name], state.reduxFormLite),
 }), bindActions)(FieldArray);
 
-const Contexted = connectField<IOwnProps>(Connected);
+const Contexted = connectField(Connected);
 
 Contexted.displayName = FieldArray.displayName;
 

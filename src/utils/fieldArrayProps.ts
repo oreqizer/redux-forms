@@ -38,7 +38,7 @@ const FIELD_ARRAY_PROPS = [
 ];
 
 
-export type FieldProps = {
+export type FieldsProp = {
   length: number,
   map: (fn: (arr: string[]) => any) => any,
   push: () => void,
@@ -50,10 +50,10 @@ export type FieldProps = {
   swap: (pos1: string, pos2: string) => void,
 };
 
-export type FieldProp = { fields: FieldProps };
+export type FieldProp = { fields: FieldsProp };
 
 
-const fieldArrayProps = <T>(props: T & Omitted, fields: FieldProps): T & FieldProp => R.merge(
+const fieldArrayProps = <T>(props: T & Omitted, fields: FieldsProp): T & FieldProp => R.merge(
   R.omit(FIELD_ARRAY_PROPS, props), { fields },
 );
 

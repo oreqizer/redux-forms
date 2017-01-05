@@ -21,10 +21,13 @@ import { form, field } from '../utils/containers';
 // actions:
 // - _addArray: AddArrayCreator
 // - _removeArray: RemoveArrayCreator
-// - _arrayPush: PushCreator
-// - _arrayPop: PopCreator
-// - _arrayUnshift: UnshiftCreator
-// - _arrayShift: ShiftCreator
+// - _arrayPush: ArrayPushCreator
+// - _arrayPop: ArrayPopCreator
+// - _arrayUnshift: ArrayUnshiftCreator
+// - _arrayShift: ArrayShiftCreator
+// - _arrayInsert: ArrayInsertCreator
+// - _arrayRemove: ArrayRemoveCreator
+// - _arraySwap: ArraySwapCreator
 const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
 
 const Component = (props: any) => (
@@ -327,6 +330,60 @@ describe('#FieldArray', () => {
     expect(pd).toBeCalled();
   });
 
+  it('should handle insert', () => {
+    const insert = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _array={1}
+        _addArray={jest.fn()}
+        _arrayInsert={insert}
+      />
+    ));
+
+    wrapper.prop('fields').insert(1);
+
+    expect(insert).toBeCalledWith('form', 'array', 1);
+  });
+
+  it('should handle remove', () => {
+    const remove = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _array={1}
+        _addArray={jest.fn()}
+        _arrayRemove={remove}
+      />
+    ));
+
+    wrapper.prop('fields').remove(1);
+
+    expect(remove).toBeCalledWith('form', 'array', 1);
+  });
+
+  it('should handle swap', () => {
+    const swap = jest.fn();
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _form="form"
+        _array={1}
+        _addArray={jest.fn()}
+        _arraySwap={swap}
+      />
+    ));
+
+    wrapper.prop('fields').swap('array.0', 'array.1');
+
+    expect(swap).toBeCalledWith('form', 'array.0', 'array.1');
+  });
+
   it('should not render without an array', () => {
     const wrapper = mount((
       <FieldArray
@@ -518,6 +575,43 @@ describe('#connect(FieldArray)', () => {
 
     wrapper.prop('fields').unshift();
     wrapper.prop('fields').shift();
+
+    expect(getForm(store).arrays).toEqual({ test: 0 });
+  });
+
+  it('should insert a field', () => {
+    const store = newStore();
+    const wrapper = mount((
+        <Provider store={store}>
+          <ConnectedFieldArray
+            name="test"
+            component={MyComp}
+          />
+        </Provider>
+      ),
+      options,
+    ).find(MyComp);
+
+    wrapper.prop('fields').insert(0);
+
+    expect(getForm(store).arrays).toEqual({ test: 1 });
+  });
+
+  it('should remove a field', () => {
+    const store = newStore();
+    const wrapper = mount((
+        <Provider store={store}>
+          <ConnectedFieldArray
+            name="test"
+            component={MyComp}
+          />
+        </Provider>
+      ),
+      options,
+    ).find(MyComp);
+
+    wrapper.prop('fields').insert(0);
+    wrapper.prop('fields').remove(0);
 
     expect(getForm(store).arrays).toEqual({ test: 0 });
   });
