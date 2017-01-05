@@ -144,14 +144,14 @@ class Field extends React.Component<AllProps, void> {
   }
 
   render() {
-    const { component, withRef, _field, ...rest } = this.props;
+    const { component, withRef, _field } = this.props;
 
     // Wait until field is initialized
     if (!_field) {
       return null;
     }
 
-    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([rest, { ref: withRef }, _field, {
+    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([this.props, { ref: withRef }, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,

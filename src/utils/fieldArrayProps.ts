@@ -40,7 +40,7 @@ const FIELD_ARRAY_PROPS = [
 
 export type FieldsProp = {
   length: number,
-  map: (fn: (arr: string[]) => any) => any,
+  map: (fn: (el: string, index: number) => any) => any[],
   push: () => void,
   pop: () => void,
   unshift: () => void,

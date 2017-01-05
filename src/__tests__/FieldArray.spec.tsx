@@ -150,6 +150,19 @@ describe('#FieldArray', () => {
     expect(wrapper.prop('fields').map(R.identity)).toEqual(['array.0', 'array.1']);
   });
 
+  it('should handle map of indexes', () => {
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        component={Component}
+        _array={2}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    expect(wrapper.prop('fields').map((_: any, i: number) => i)).toEqual([0, 1]);
+  });
+
   it('should handle push', () => {
     const push = jest.fn();
     const wrapper = shallow((

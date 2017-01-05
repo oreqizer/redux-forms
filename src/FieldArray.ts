@@ -22,6 +22,8 @@ export type FieldArrayProps<T> = T & {
 };
 
 
+const RindexMap = R.addIndex(R.map);
+
 class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
@@ -57,11 +59,11 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
     _removeArray(_form, name);
   }
 
-  handleMap<T>(fn: (arr: string[]) => T) {
+  handleMap<T>(fn: (el: string, index: number) => T): T[] {
     const { name, _array } = this.props;
 
     const array = Array.from(Array(_array));
-    return R.map(fn, R.addIndex(R.map)((_, i) => `${name}.${i}`, array));
+    return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
   }
 
   handlePush(ev?: React.SyntheticEvent<Target>) {
