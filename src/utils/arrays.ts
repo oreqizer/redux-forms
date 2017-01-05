@@ -34,17 +34,16 @@ export function arrayShift(path: string, start: number, plus: boolean = true) {
 
 export function arraySwap(pos1: string, pos2: string) {
   return (fields: Fields): Fields => {
+    const keys = R.keys(fields);
     const ok1 = R.compose(
       R.any(R.identity),
       R.map<string, boolean>((key) => key.indexOf(pos1) === 0),
-      R.keys,
-    )(fields);
+    )(keys);
 
     const ok2 = R.compose(
       R.any(R.identity),
       R.map<string, boolean>((key) => key.indexOf(pos2) === 0),
-      R.keys,
-    )(fields);
+    )(keys);
 
     if (!ok1 || !ok2) {
       return fields;
