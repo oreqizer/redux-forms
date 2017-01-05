@@ -392,7 +392,7 @@ describe('#FieldArray', () => {
       />
     ));
 
-    wrapper.prop('fields').swap('array.0', 'array.1');
+    wrapper.prop('fields').swap(0, 1);
 
     expect(swap).toBeCalledWith('form', 'array.0', 'array.1');
   });

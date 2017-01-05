@@ -122,10 +122,10 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
     _arrayRemove(_form, name, index);
   }
 
-  handleSwap(pos1: string, pos2: string) {
-    const { _form, _arraySwap } = this.props;
+  handleSwap(index1: number, index2: number) {
+    const { _form, name, _arraySwap } = this.props;
 
-    _arraySwap(_form, pos1, pos2);
+    _arraySwap(_form, `${name}.${index1}`, `${name}.${index2}`);
   }
 
   render() {

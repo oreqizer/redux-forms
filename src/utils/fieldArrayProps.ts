@@ -47,7 +47,7 @@ export type FieldsProp = {
   shift: () => void,
   insert: (index: number) => void,
   remove: (index: number) => void,
-  swap: (pos1: string, pos2: string) => void,
+  swap: (pos1: number, pos2: number) => void,
 };
 
 export type FieldProp = { fields: FieldsProp };
