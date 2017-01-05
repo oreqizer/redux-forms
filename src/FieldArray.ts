@@ -41,7 +41,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   componentWillMount() {
-    const { _array, _addArray, _form, name } = this.props;
+    const { _form, name, _array, _addArray } = this.props;
 
     if (!_array) {
       _addArray(_form, name);
@@ -49,7 +49,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   componentWillUnmount() {
-    const { _removeArray, _form, name } = this.props;
+    const { _form, name, _removeArray } = this.props;
 
     _removeArray(_form, name);
   }
@@ -62,7 +62,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePush(ev?: React.SyntheticEvent<Target>) {
-    const { name, _arrayPush, _form } = this.props;
+    const { _form, name, _arrayPush } = this.props;
 
     if (isEvent(ev)) {
       ev.preventDefault();
@@ -72,7 +72,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handlePop(ev?: React.SyntheticEvent<Target>) {
-    const { name, _array, _arrayPop, _form } = this.props;
+    const { _form, name, _array, _arrayPop } = this.props;
 
     if (isEvent(ev)) {
       ev.preventDefault();
@@ -84,7 +84,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handleUnshift(ev?: React.SyntheticEvent<Target>) {
-    const { name, _arrayUnshift, _form } = this.props;
+    const { _form, name, _arrayUnshift } = this.props;
 
     if (isEvent(ev)) {
       ev.preventDefault();
@@ -94,7 +94,7 @@ class FieldArray extends React.PureComponent<AllProps, void> {
   }
 
   handleShift(ev?: React.SyntheticEvent<Target>) {
-    const { name, _array, _arrayShift, _form } = this.props;
+    const { _form, name, _array, _arrayShift } = this.props;
 
     if (isEvent(ev)) {
       ev.preventDefault();
@@ -103,6 +103,24 @@ class FieldArray extends React.PureComponent<AllProps, void> {
     if (_array > 0) {
       _arrayShift(_form, name);
     }
+  }
+
+  handleInsert(index: number) {
+    const { _form, name, _arrayInsert } = this.props;
+
+    _arrayInsert(_form, name, index);
+  }
+
+  handleRemove(index: number) {
+    const { _form, name, _arrayRemove } = this.props;
+
+    _arrayRemove(_form, name, index);
+  }
+
+  handleSwap(pos1: string, pos2: string) {
+    const { _form, _arraySwap } = this.props;
+
+    _arraySwap(_form, pos1, pos2);
   }
 
   render() {
@@ -120,6 +138,9 @@ class FieldArray extends React.PureComponent<AllProps, void> {
       pop: this.handlePop,
       unshift: this.handleUnshift,
       shift: this.handleShift,
+      insert: this.handleInsert,
+      remove: this.handleRemove,
+      swap: this.handleSwap,
     }));
   }
 }
@@ -138,6 +159,9 @@ type ActionProps = {
   _arrayPop: actions.ArrayPopCreator,
   _arrayUnshift: actions.ArrayUnshiftCreator,
   _arrayShift: actions.ArrayShiftCreator,
+  _arrayInsert: actions.ArrayInsertCreator,
+  _arrayRemove: actions.ArrayRemoveCreator,
+  _arraySwap: actions.ArraySwapCreator,
 };
 
 type AllProps = StateProps & ActionProps & ConnectedProps;
@@ -150,6 +174,9 @@ const bindActions = {
   _arrayPop: actions.arrayPop,
   _arrayUnshift: actions.arrayUnshift,
   _arrayShift: actions.arrayShift,
+  _arrayInsert: actions.arrayInsert,
+  _arrayRemove: actions.arrayRemove,
+  _arraySwap: actions.arraySwap,
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({

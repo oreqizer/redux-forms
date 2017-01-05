@@ -2,21 +2,21 @@ import * as R from 'ramda';
 
 
 export type Omitted = {
-  component: any,
-  withRef: any,
+  component?: any,
+  withRef?: any,
   // state
-  _form: any,
-  _array: any,
+  _form?: any,
+  _array?: any,
   // actions
-  _addArray: any,
-  _removeArray: any,
-  _arrayPush: any,
-  _arrayPop: any,
-  _arrayUnshift: any,
-  _arrayShift: any,
-  _arrayInsert: any,
-  _arrayRemove: any,
-  _arraySwap: any,
+  _addArray?: any,
+  _removeArray?: any,
+  _arrayPush?: any,
+  _arrayPop?: any,
+  _arrayUnshift?: any,
+  _arrayShift?: any,
+  _arrayInsert?: any,
+  _arrayRemove?: any,
+  _arraySwap?: any,
 };
 
 const FIELD_ARRAY_PROPS = [
