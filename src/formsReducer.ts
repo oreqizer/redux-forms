@@ -139,7 +139,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       return R.compose<State, State, State>(
         R.over(
           R.lensPath([a.payload.form, 'fields']),
-          arrayShift(a.payload.id, a.payload.index, false),
+          arrayShift(a.payload.id, a.payload.index + 1, false),
         ),
         R.over(
           R.lensPath([a.payload.form, 'arrays', a.payload.id]),

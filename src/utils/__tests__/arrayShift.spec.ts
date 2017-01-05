@@ -43,12 +43,12 @@ describe('#arrayShift', () => {
   });
 
   it('should shift flat array - negative', () => {
-    const res = arrayShift('flat', 1, false)(fields);
+    const res = arrayShift('flat', 2, false)(fields);
 
     expect(res['flat.2']).toBeUndefined();
 
     expect(res['flat.0']).toBe(field0);
-    expect(res['flat.1']).toBe(field1);
+    expect(res['flat.1']).toBe(field2);
   });
 
   it('should shift nested array', () => {
@@ -63,12 +63,12 @@ describe('#arrayShift', () => {
   });
 
   it('should shift nested array - negative', () => {
-    const res = arrayShift('medium.0.nest', 2, false)(fields);
+    const res = arrayShift('medium.0.nest', 3, false)(fields);
 
     expect(res['medium.0.nest.3']).toBeUndefined();
 
     expect(res['medium.0.nest.0']).toBe(field0);
-    expect(res['medium.0.nest.1']).toBe(field2);
+    expect(res['medium.0.nest.1']).toBe(field1);
     expect(res['medium.0.nest.2']).toBe(field3);
   });
 
