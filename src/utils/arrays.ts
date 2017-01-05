@@ -33,15 +33,33 @@ export function arrayShift(path: string, start: number, plus: boolean = true) {
 }
 
 export function arraySwap(pos1: string, pos2: string) {
-  return (fields: Fields): Fields => R.reduce((acc, key) => {
-    if (key.indexOf(pos1) === 0) {
-      return R.assoc(R.replace(pos1, pos2, key), R.prop(key, fields), acc);
+  return (fields: Fields): Fields => {
+    const ok1 = R.compose(
+      R.any(R.identity),
+      R.map<string, boolean>((key) => key.indexOf(pos1) === 0),
+      R.keys,
+    )(fields);
+
+    const ok2 = R.compose(
+      R.any(R.identity),
+      R.map<string, boolean>((key) => key.indexOf(pos2) === 0),
+      R.keys,
+    )(fields);
+
+    if (!ok1 || !ok2) {
+      return fields;
     }
 
-    if (key.indexOf(pos2) === 0) {
-      return R.assoc(R.replace(pos2, pos1, key), R.prop(key, fields), acc);
-    }
+    return R.reduce((acc, key) => {
+      if (key.indexOf(pos1) === 0) {
+        return R.assoc(R.replace(pos1, pos2, key), R.prop(key, fields), acc);
+      }
 
-    return R.assoc(key, R.prop(key, fields), acc);
-  }, {}, R.keys(fields));
+      if (key.indexOf(pos2) === 0) {
+        return R.assoc(R.replace(pos2, pos1, key), R.prop(key, fields), acc);
+      }
+
+      return R.assoc(key, R.prop(key, fields), acc);
+    }, {}, R.keys(fields));
+  };
 }

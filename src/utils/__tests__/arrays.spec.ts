@@ -120,6 +120,12 @@ describe('#arrays', () => {
     });
   });
 
+  it('should swap not swap nonexistent fields', () => {
+    const res = arraySwap('medium.0.nest.1', 'medium.0.nest.8')(fields);
+
+    expect(res).toBe(fields);
+  });
+
   it('should swap nested fields', () => {
     const res = arraySwap('medium.0', 'medium.1')(fields);
 
