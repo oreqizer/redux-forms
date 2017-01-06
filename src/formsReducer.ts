@@ -28,8 +28,6 @@ import {
   FIELD_CHANGE,
   FIELD_FOCUS,
   FIELD_BLUR,
-  FIELD_VALUE,
-  FIELD_ERROR,
 } from './actions';
 
 
@@ -186,16 +184,6 @@ export default function formsReducer(state: State = {}, a: Action): State {
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
           R.assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
       )(state);
-
-    case FIELD_VALUE:
-      return R.assocPath(
-        [a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value, state,
-      );
-
-    case FIELD_ERROR:
-      return R.assocPath(
-        [a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error, state,
-      );
 
     default:
       return state;

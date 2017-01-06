@@ -300,34 +300,6 @@ export const fieldBlur: FieldBlurCreator = (form, field, value, error, dirty) =>
 });
 
 
-export type FieldValueAction = { type: '@redux-form-lite/FIELD_VALUE', payload: {
-  form: string,
-  field: string,
-  value: Value,
-} };
-
-export type FieldValueCreator = (form: string, field: string, value: Value) => FieldValueAction;
-
-export const fieldValue: FieldValueCreator = (form, field, value) => ({
-  type: FIELD_VALUE,
-  payload: { form, field, value },
-});
-
-
-export type FieldErrorAction = { type: '@redux-form-lite/FIELD_ERROR', payload: {
-  form: string,
-  field: string,
-  error: string | null,
-} };
-
-export type FieldErrorCreator = (form: string, field: string, error: string | null) => FieldErrorAction;
-
-export const fieldError: FieldErrorCreator = (form, field, error) => ({
-  type: FIELD_ERROR,
-  payload: { form, field, error },
-});
-
-
 export type Action =
     AddFormAction |
     RemoveFormAction |
@@ -348,6 +320,4 @@ export type Action =
     ArrayMoveAction |
     FieldChangeAction |
     FieldFocusAction |
-    FieldBlurAction |
-    FieldValueAction |
-    FieldErrorAction;
+    FieldBlurAction ;
