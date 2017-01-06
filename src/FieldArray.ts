@@ -143,7 +143,7 @@ class FieldArray<T> extends React.PureComponent<Props<T>, void> {
     }
 
     // React.SFC vs. React.ClassComponent collision
-    return React.createElement(<any> component, fieldArrayProps(R.merge(this.props, { ref: withRef }), {
+    return React.createElement(component as any, fieldArrayProps(R.merge(this.props, { ref: withRef }), {
       length: _array,
       map: this.handleMap,
       push: this.handlePush,

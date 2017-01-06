@@ -162,7 +162,7 @@ class Field<T> extends React.Component<Props<T>, void> {
     }
 
     // React.SFC vs. React.ClassComponent collision
-    return React.createElement(<any> component, R.merge(custom, { input, meta }));
+    return React.createElement(component as any, R.merge(custom, { input, meta }));
   }
 }
 

@@ -14,7 +14,7 @@ type Memoize<T> = (x: T[]) => T;
 
 const EMPTY = {};
 
-const memUnflatten = <Memoize<{}>> R.memoize(unflatten);
+const memUnflatten = R.memoize(unflatten) as Memoize<{}>;
 
 const memValue = R.memoize(R.compose(
   memUnflatten,
@@ -46,7 +46,7 @@ export function errorSelector(name: string, state: IState): Object {
 }
 
 
-const memValues = <Memoize<{}>> R.memoize(R.values);
+const memValues = R.memoize(R.values) as Memoize<{}>;
 
 const memValid = R.memoize(R.compose(
   R.none(Boolean),

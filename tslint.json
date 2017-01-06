@@ -1,11 +1,12 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
+    "interface-over-type-literal": false,
+    "jsx-no-multiline-js": false,
     "member-access": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "quotemark": [true, "jsx-double"],
-    "jsx-no-multiline-js": false
+    "quotemark": [true, "jsx-double"]
   }
 }
