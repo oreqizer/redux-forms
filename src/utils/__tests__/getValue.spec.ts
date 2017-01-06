@@ -4,7 +4,7 @@ import getValue from '../getValue';
 const preventDefault = (id: any) => id;
 const stopPropagation = (id: any) => id;
 
-const evValue = (value: any) => ({
+const evValue: any = (value: any) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -13,7 +13,7 @@ const evValue = (value: any) => ({
   },
 });
 
-const evChecked = (checked: boolean) => ({
+const evChecked: any = (checked: boolean) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -22,7 +22,7 @@ const evChecked = (checked: boolean) => ({
   },
 });
 
-const evFiles = (files: string[]) => ({
+const evFiles: any = (files: string[]) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -31,7 +31,7 @@ const evFiles = (files: string[]) => ({
   },
 });
 
-const evSelect = (options: Object[]) => ({
+const evSelect: any = (options: Object[]) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -42,9 +42,8 @@ const evSelect = (options: Object[]) => ({
 
 describe('#getValue', () => {
   it('should return value for non-event values', () => {
-    expect(getValue(undefined)).toBeUndefined();
     expect(getValue(null)).toBeNull();
-    expect(getValue(1337)).toBe(1337);
+    expect(getValue('kek')).toBe('kek');
     expect(getValue(true)).toBe(true);
     expect(getValue(false)).toBe(false);
   });
