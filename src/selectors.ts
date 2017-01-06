@@ -60,8 +60,7 @@ export function isValid(name: string, state: IState): boolean {
     return false;
   }
 
-  // TS thinks 'form.fields' is not a functor
-  return memValid(<any> form.fields);
+  return memValid(form.fields);
 }
 
 
@@ -77,8 +76,7 @@ export function isTouched(name: string, state: IState): boolean {
     return false;
   }
 
-  // TS thinks 'form.fields' is not a functor
-  return memTouched(<any> form.fields);
+  return memTouched(form.fields);
 }
 
 
@@ -94,8 +92,7 @@ export function isDirty(name: string, state: IState): boolean {
     return false;
   }
 
-  // TS thinks 'form.fields' is not a functor
-  return memDirty(<any> form.fields);
+  return memDirty(form.fields);
 }
 
 
