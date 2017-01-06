@@ -1903,9 +1903,9 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-redux-form-lite@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/redux-form-lite/-/redux-form-lite-0.7.0.tgz#6e1bfae4ae08cca705f6be37675e8243e441f4f4"
+redux-form-lite@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/redux-form-lite/-/redux-form-lite-0.8.0.tgz#883ba312b4024fe2277b6140071cb16c49e4dc77"
   dependencies:
     ramda "^0.23.0"
 
