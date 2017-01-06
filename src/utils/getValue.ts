@@ -12,7 +12,7 @@ const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.fr
     .filter((option) => option.selected)
     .map((option) => option.value);
 
-const getValue = (ev: any): Value => {
+const getValue = (ev: React.SyntheticEvent<Target> | Value): Value => {
   if (!isEvent(ev)) {
     return ev;
   }

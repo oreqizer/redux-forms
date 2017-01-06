@@ -24,7 +24,7 @@ export type FieldArrayProps<T> = T & {
 
 const RindexMap = R.addIndex(R.map);
 
-class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
+class FieldArray<T> extends React.PureComponent<Props<T>, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
     component: React.PropTypes.func.isRequired,
@@ -32,7 +32,7 @@ class FieldArray<T> extends React.PureComponent<AllProps<T>, void> {
 
   static displayName = 'FieldArray';
 
-  constructor(props: AllProps<T>) {
+  constructor(props: Props<T>) {
     super(props);
 
     this.handleMap = this.handleMap.bind(this);
@@ -178,7 +178,7 @@ type ActionProps = {
   _arrayMove: actions.ArrayMoveCreator,
 };
 
-type AllProps<T> = StateProps & ActionProps & ConnectedProps<T>;
+type Props<T> = StateProps & ActionProps & ConnectedProps<T>;
 
 
 const bindActions = {

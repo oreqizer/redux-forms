@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import connectField, { ContextProps } from './utils/connectField';
-import fieldProps, { boolField, InputProps, MetaProps, IAllProps } from './utils/fieldProps';
+import fieldProps, { boolField, InputProps, MetaProps } from './utils/fieldProps';
 import getValue, { Value, Target } from './utils/getValue';
 import { shallowCompare } from './utils/helpers';
 
@@ -11,26 +11,26 @@ import * as actions from './actions';
 import { field, FieldObj } from "./utils/containers";
 
 
-export interface ISuppliedProps {
-  input: InputProps;
-  meta: MetaProps;
-}
+export type SuppliedProps = {
+  input: InputProps,
+  meta: MetaProps,
+};
 
-export interface IOwnProps {
-  name: string;
-  component: React.ComponentClass<ISuppliedProps> | React.SFC<ISuppliedProps> | string;
-  validate?: Validate;
-  normalize?: Normalize;
-  defaultValue?: string;
-  withRef?: (el: React.ReactElement<any>) => void;
-}
+export type FieldProps<T> = T & {
+  name: string,
+  component: React.ComponentClass<T & SuppliedProps> | React.SFC<T & SuppliedProps> | string,
+  validate?: Validate,
+  normalize?: Normalize,
+  defaultValue?: string,
+  withRef?: (el: React.ReactElement<any>) => void,
+};
 
 export type Validate = (value: Value) => string | null;
 
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.Component<AllProps, void> {
+class Field<T> extends React.Component<Props<T>, void> {
   // Must contain all props of 'StateProps & ActionProps'
   static defaultProps = {
     validate: () => null,
@@ -58,9 +58,7 @@ class Field extends React.Component<AllProps, void> {
 
   static displayName = 'Field';
 
-  props: AllProps;
-
-  constructor(props: AllProps) {
+  constructor(props: Props<T>) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
@@ -68,7 +66,7 @@ class Field extends React.Component<AllProps, void> {
     this.handleBlur = this.handleBlur.bind(this);
   }
 
-  shouldComponentUpdate(nextProps: AllProps) {
+  shouldComponentUpdate(nextProps: Props<T>) {
     const { _field } = this.props;
 
     if (!shallowCompare(boolField(this.props), boolField(nextProps))) {
@@ -84,7 +82,7 @@ class Field extends React.Component<AllProps, void> {
     }
   }
 
-  componentWillReceiveProps(next: AllProps) {
+  componentWillReceiveProps(next: Props<T>) {
     const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
@@ -107,7 +105,7 @@ class Field extends React.Component<AllProps, void> {
     _removeField(_form, name);
   }
 
-  newField(props: AllProps) {
+  newField(props: Props<T>) {
     const value = props.normalize(props.defaultValue);
     const newField = R.compose<FieldObj, FieldObj, FieldObj>(
       R.set(R.lensProp('value'), value),
@@ -117,7 +115,7 @@ class Field extends React.Component<AllProps, void> {
     props._addField(props._form, props.name, newField);
   }
 
-  handleChange(ev: React.SyntheticEvent<Target>) {
+  handleChange(ev: React.SyntheticEvent<Target> | Value) {
     const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
@@ -133,7 +131,7 @@ class Field extends React.Component<AllProps, void> {
     _fieldFocus(_form, name);
   }
 
-  handleBlur(ev: React.SyntheticEvent<Target>) {
+  handleBlur(ev: React.SyntheticEvent<Target> | Value) {
     const { _fieldBlur, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
@@ -151,11 +149,13 @@ class Field extends React.Component<AllProps, void> {
       return null;
     }
 
-    const { input, meta, custom } = fieldProps(R.mergeAll<IAllProps>([this.props, { ref: withRef }, _field, {
+    const props = R.mergeAll<T & InputProps & MetaProps>([this.props, { ref: withRef }, _field, {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
-    }]));
+    }]);
+
+    const { input, meta, custom } = fieldProps(props);
 
     if (typeof component === 'string') {
       return React.createElement(component, R.merge(custom, input));
@@ -167,7 +167,7 @@ class Field extends React.Component<AllProps, void> {
 }
 
 
-type ConnectedProps = IOwnProps & ContextProps;
+type ConnectedProps<T> = FieldProps<T> & ContextProps;
 
 type DefaultProps = {
   validate: Validate,
@@ -187,7 +187,7 @@ type ActionProps = {
   _fieldBlur: actions.FieldBlurCreator,
 };
 
-type AllProps = ConnectedProps & StateProps & ActionProps & DefaultProps;
+type Props<T> = ConnectedProps<T> & StateProps & ActionProps & DefaultProps;
 
 
 const bindActions = {
@@ -198,11 +198,11 @@ const bindActions = {
   _fieldBlur: actions.fieldBlur,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
+const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
   _field: R.path<FieldObj>([props._form, 'fields', props.name], state.reduxFormLite),
 }), bindActions)(Field);
 
-const Contexted = connectField<IOwnProps>(Connected);
+const Contexted = connectField(Connected);
 
 Contexted.displayName = Field.displayName;
 

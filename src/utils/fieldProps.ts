@@ -3,14 +3,10 @@ import * as R from 'ramda';
 import { Value, Target } from "./getValue";
 
 
-export interface IAllProps {
-  value: Value;
-  checked?: boolean;
-}
-
 export type InputProps = {
   name: string,
   value: Value,
+  checked?: boolean,
   onChange: (ev: React.SyntheticEvent<Target>) => void,
   onFocus: (ev: React.SyntheticEvent<Target>) => void,
   onBlur: (ev: React.SyntheticEvent<Target>) => void,
@@ -24,10 +20,10 @@ export type MetaProps = {
   active: boolean,
 };
 
-export type SeparatedProps = {
+export type SeparatedProps<T> = {
   input: InputProps;
   meta: MetaProps;
-  custom: Object;
+  custom: T;
 };
 
 
@@ -66,16 +62,16 @@ const FIELD_PROPS = [
 ];
 
 
-const maybeCheckProps = (all: IAllProps): IAllProps => {
+const maybeCheckProps = (all: InputProps): InputProps => {
   if (typeof all.value === 'boolean') {
     return R.merge(all, { checked: all.value });
   }
   return all;
 };
 
-const separateProps = (all: IAllProps): SeparatedProps => ({
-  input: R.pick<IAllProps, InputProps>(INPUT_PROPS, all),
-  meta: R.pick<IAllProps, MetaProps>(META_PROPS, all),
+const separateProps = <T>(all: T & InputProps & MetaProps): SeparatedProps<T> => ({
+  input: R.pick<InputProps, InputProps>(INPUT_PROPS, all),
+  meta: R.pick<InputProps, MetaProps>(META_PROPS, all),
   custom: R.omit(R.flatten([INPUT_PROPS, META_PROPS, FIELD_PROPS]), all),
 });
 

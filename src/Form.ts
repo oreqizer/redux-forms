@@ -16,23 +16,6 @@ export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
   withRef?: (el: HTMLFormElement) => void;
 }
 
-export type StateProps = {
-  _form: boolean,
-  _values: Object,
-  _valid: boolean,
-  _submitting: boolean,
-};
-
-export type ActionProps = {
-  _addForm: actions.AddFormCreator,
-  _removeForm: actions.RemoveFormCreator,
-  _touchAll: actions.TouchAllCreator,
-  _submitStart: actions.SubmitStartCreator,
-  _submitStop: actions.SubmitStopCreator,
-};
-
-export type Props<T> = StateProps & ActionProps & IFormProps & T;
-
 export type Context = {
   reduxFormLite: string;
 };
@@ -47,6 +30,8 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
     name: React.PropTypes.string.isRequired,
     persistent: React.PropTypes.bool,
   };
+
+  static displayName = 'Form';
 
   constructor(props: Props<T>) {
     super(props);
@@ -128,6 +113,25 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
   }
 }
 
+
+export type StateProps = {
+  _form: boolean,
+  _values: Object,
+  _valid: boolean,
+  _submitting: boolean,
+};
+
+export type ActionProps = {
+  _addForm: actions.AddFormCreator,
+  _removeForm: actions.RemoveFormCreator,
+  _touchAll: actions.TouchAllCreator,
+  _submitStart: actions.SubmitStartCreator,
+  _submitStop: actions.SubmitStopCreator,
+};
+
+export type Props<T> = StateProps & ActionProps & IFormProps & T;
+
+
 const bindActions = {
   _addForm: actions.addForm,
   _removeForm: actions.removeForm,
@@ -136,9 +140,13 @@ const bindActions = {
   _submitStop: actions.submitStop,
 };
 
-export default connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
+const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
   _form: Boolean(R.prop<FormObj>(props.name, state.reduxFormLite)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),
 }), bindActions)(Form);
+
+Connected.displayName = Form.displayName;
+
+export default Connected;
