@@ -1,35 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
+const R = require('ramda');
+
+const packages = require('./config/packages');
+
 
 const env = process.env.NODE_ENV;
 
-const reactExternal = {
-  root: 'React',
-  commonjs2: 'react',
-  commonjs: 'react',
-  amd: 'react',
-};
-
-const reduxExternal = {
-  root: 'Redux',
-  commonjs2: 'redux',
-  commonjs: 'redux',
-  amd: 'redux'
-};
-
-const reactReduxExternal = {
-  root: 'ReactRedux',
-  commonjs2: 'react-redux',
-  commonjs: 'react-redux',
-  amd: 'react-redux'
-};
-
 const config = {
-  externals: {
-    'react': reactExternal,
-    'redux': reduxExternal,
-    'react-redux': reactReduxExternal,
-  },
+  // package.entry
+  // package.externals
   module: {
     loaders: [
       { test: /\.tsx?$/, loader: 'babel-loader!ts-loader', exclude: /node_modules/ },
@@ -39,7 +19,9 @@ const config = {
     extensions: ['.js', '.ts', '.tsx'],
   },
   output: {
-    library: 'ReduxFormLite',
+    // package.outputPath
+    // package.outputFilename
+    // package.outputLibrary
     libraryTarget: 'umd',
   },
   plugins: [
@@ -63,4 +45,10 @@ if (env === 'production') {
   );
 }
 
-module.exports = config;
+module.exports = R.map((pkg) => R.compose(
+  R.assoc('entry', pkg.entry),
+  R.assoc('externals', pkg.externals),
+  R.assocPath(['output', 'path'], pkg.outputPath),
+  R.assocPath(['output', 'filename'], pkg.outputFilename),
+  R.assocPath(['output', 'library'], pkg.outputLibrary)
+)(config), packages);

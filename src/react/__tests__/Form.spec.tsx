@@ -5,11 +5,11 @@ import * as React from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import { form } from '../shared/containers';
 import { reducer } from 'redux-forms';
 import * as R from "ramda";
 
 import ConnectedForm from '../Form';
+import { form } from '../../shared/containers';
 
 
 // NOTE:

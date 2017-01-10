@@ -6,10 +6,10 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
 import { reducer } from 'redux-forms';
-import { form, field } from '../shared/containers';
 import * as R from 'ramda';
 
 import ConnectedFieldArray from '../FieldArray';
+import { form, field } from '../../shared/containers';
 
 
 // NOTE:
