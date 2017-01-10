@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as R from 'ramda';
 
-import { Context } from '../Form';
-import { isString, invariant } from './helpers';
+import { Context } from './Form';
+import { isString, invariant } from '../shared/helpers';
 
 
 export type FormProps = {

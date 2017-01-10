@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as actions from 'redux-forms/actions';
+import * as selectors from 'redux-forms/selectors';
 import * as R from 'ramda';
 
-import { FormObj } from "./utils/containers";
-import { isString, isPromise, isFunction, shallowCompare } from "./utils/helpers";
-import formProps, { toUpdate } from './utils/formProps';
-import * as actions from './actions';
-import * as selectors from './selectors';
+import { FormObj } from '../shared/containers';
+import { isString, isPromise, isFunction, shallowCompare } from '../shared/helpers';
+import formProps, { toUpdate } from '../shared/formProps';
 
 
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {

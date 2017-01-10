@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 
-import { Value } from './utils/getValue';
-import { form, field, FormObj, FieldObj } from './utils/containers';
-import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './utils/arrays';
+import { Value } from '../shared/getValue';
+import { form, field, FormObj, FieldObj } from '../shared/containers';
+import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './arrays';
 
 import {
   Action,

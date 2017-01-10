@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import reducer from '../formsReducer';
 import * as actions from '../actions';
 
-import { form, field } from '../utils/containers';
+import { form, field } from '../../shared/containers';
 
 
 describe('#formsReducer', () => {

@@ -1,5 +1,5 @@
-import { FieldObj } from "./utils/containers";
-import { Value } from "./utils/getValue";
+import { FieldObj } from "../shared/containers";
+import { Value } from "../shared/getValue";
 
 
 export const ADD_FORM = '@@redux-form-lite/ADD_FORM';

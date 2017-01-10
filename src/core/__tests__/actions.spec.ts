@@ -1,6 +1,6 @@
 import * as actions from '../actions';
 
-import { field } from "../utils/containers";
+import { field } from "../../shared/containers";
 
 
 describe('#actions', () => {

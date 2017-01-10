@@ -1,9 +1,5 @@
 {
-  "name": "redux-form-lite",
-  "version": "0.8.1",
-  "description": "A simple form management for Redux & React.",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "private": true,
   "scripts": {
     "test": "jest --no-cache",
     "test:watch": "jest --watch",
@@ -36,18 +32,8 @@
     "type": "git",
     "url": "git+https://github.com/oreqizer/redux-form-lite.git"
   },
-  "keywords": [
-    "form",
-    "forms",
-    "redux",
-    "react"
-  ],
   "author": "oreqizer",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/oreqizer/redux-form-lite/issues"
-  },
-  "homepage": "https://github.com/oreqizer/redux-form-lite#readme",
   "devDependencies": {
     "@types/enzyme": "^2.7.1",
     "@types/jest": "^16.0.3",
@@ -75,24 +61,7 @@
     "tslint": "^4.3.1",
     "tslint-react": "^2.2.0",
     "typescript": "^2.1.4",
-    "webpack": "^2.2.0-rc.3"
-  },
-  "peerDependencies": {
-    "react": "^15.4.1",
-    "react-redux": "^5.0.1",
-    "redux": "^3.6.0"
-  },
-  "dependencies": {
-    "ramda": "^0.23.0"
-  },
-  "files": [
-    "dist",
-    "lib",
-    "selectors.js",
-    "selectors.d.ts",
-    "actions.js",
-    "actions.d.ts",
-    "README.md",
-    "LICENSE"
-  ]
+    "webpack": "^2.2.0-rc.3",
+    "lerna": "2.0.0-beta.32"
+  }
 }

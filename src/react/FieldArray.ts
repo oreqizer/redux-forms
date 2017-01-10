@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as actions from 'redux-forms/actions';
 import * as R from 'ramda';
 
 import { Context } from './Form';
-import * as actions from './actions';
-import { Target } from './utils/getValue';
-import connectField, { ContextProps } from './utils/connectField';
-import fieldArrayProps, { FieldsProp } from './utils/fieldArrayProps';
-import { isNumber, isEvent } from "./utils/helpers";
+import connectField, { ContextProps } from './connectField';
+import { Target } from '../shared/getValue';
+import fieldArrayProps, { FieldsProp } from '../shared/fieldArrayProps';
+import { isNumber, isEvent } from "../shared/helpers";
 
 
 export type SuppliedProps = {
