@@ -1,1 +1,1 @@
-module.exports = require('./lib/selectors');
+module.exports = require('./lib/core/selectors');

@@ -1,1 +1,1 @@
-module.exports = require('./lib/actions');
+module.exports = require('./lib/core/actions');

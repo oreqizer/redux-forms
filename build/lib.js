@@ -21,6 +21,9 @@ const cmds = packages
     `${prefix}babel ${pkg.libOut} --out-dir ${pkg.libOut}`,
   ].join(' && '));
 
+// TODO:
+// include files as globs (selectors not exported)
+// clean file before building
 
 cmds.forEach((cmd) => {
   console.log('RUNNING: ' + cmd);
