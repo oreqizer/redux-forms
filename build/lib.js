@@ -24,6 +24,7 @@ const cmds = packages
 // TODO:
 // include files as globs (selectors not exported)
 // clean file before building
+// handle shared code better
 
 cmds.forEach((cmd) => {
   console.log('RUNNING: ' + cmd);
