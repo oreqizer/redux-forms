@@ -2,7 +2,7 @@
 const webpack = require('webpack');
 const R = require('ramda');
 
-const packages = require('./config/packages');
+const packages = require('./build/packages');
 
 
 const env = process.env.NODE_ENV;
@@ -25,7 +25,6 @@ const config = {
     libraryTarget: 'umd',
   },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env),
     }),

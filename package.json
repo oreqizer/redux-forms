@@ -7,7 +7,7 @@
     "lint": "npm run tslint",
     "tslint": "tslint src/**.{ts,tsx}",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && npm run dts",
-    "build:lib": "tsc && babel lib --out-dir lib",
+    "build:lib": "node ./build/lib",
     "build:umd": "webpack",
     "build:umd:min": "cross-env NODE_ENV=production webpack",
     "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
@@ -51,6 +51,7 @@
     "dts-bundle": "^0.6.1",
     "enzyme": "^2.7.0",
     "jest": "^18.1.0",
+    "lerna": "2.0.0-beta.32",
     "ramda": "^0.23.0",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.1",
@@ -62,7 +63,6 @@
     "tslint": "^4.3.1",
     "tslint-react": "^2.2.0",
     "typescript": "^2.1.4",
-    "webpack": "^2.2.0-rc.3",
-    "lerna": "2.0.0-beta.32"
+    "webpack": "^2.2.0-rc.3"
   }
 }

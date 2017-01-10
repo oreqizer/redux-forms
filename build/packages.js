@@ -49,6 +49,8 @@ module.exports = [{
   externals: {
     'ramda': ramdaExternal,
   },
+  libIn: path.join(__dirname, '../src/core/index.ts'),
+  libOut: path.join(__dirname, '../packages/redux-forms/lib'),
 }, {
   entry: path.join(__dirname, '../src/react/index.ts'),
   outputPath: path.join(__dirname, '../packages/redux-forms-react/dist'),
@@ -61,4 +63,6 @@ module.exports = [{
     'react-redux': reactReduxExternal,
     'redux-forms': reduxFormsExternal,
   },
+  libIn: path.join(__dirname, '../src/react/index.ts'),
+  libOut: path.join(__dirname, '../packages/redux-forms-react/lib'),
 }];
