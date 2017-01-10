@@ -19,6 +19,11 @@
   "bugs": {
     "url": "https://github.com/oreqizer/redux-forms/issues"
   },
+  "peerDependencies": {
+    "react": "^15.4.2",
+    "react-redux": "^5.0.1",
+    "redux": "^3.6.0"
+  },
   "dependencies": {
     "ramda": "^0.23.0",
     "redux-forms": "^0.8.1"
