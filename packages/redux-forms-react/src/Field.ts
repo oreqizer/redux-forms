@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as actions from 'redux-forms/actions';
+import { actions } from 'redux-forms';
 import * as R from 'ramda';
 
 import connectField, { ContextProps } from './connectField';
-import fieldProps, { boolField, InputProps, MetaProps } from '../shared/fieldProps';
-import getValue, { Value, Target } from '../shared/getValue';
-import { shallowCompare } from '../shared/helpers';
-import { field, FieldObj } from '../shared/containers';
+import fieldProps, { boolField, InputProps, MetaProps } from '../../redux-forms/src/shared/fieldProps';
+import getValue, { Value, Target } from '../../redux-forms/src/shared/getValue';
+import { shallowCompare } from '../../redux-forms/src/shared/helpers';
+import { field, FieldObj } from '../../redux-forms/src/shared/containers';
 
 
 export type SuppliedProps = {

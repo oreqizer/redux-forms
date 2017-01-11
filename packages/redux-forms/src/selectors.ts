@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 
 import { State } from './formsReducer';
-import { FormObj, FieldObj } from '../shared/containers';
-import { unflatten } from '../shared/helpers';
+import { FormObj, FieldObj } from './shared/containers';
+import { unflatten } from './shared/helpers';
 
 
 export interface IState {

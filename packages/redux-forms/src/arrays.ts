@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { FieldObj } from "../shared/containers";
+import { FieldObj } from "./shared/containers";
 
 
 export type Fields = { [key: string]: FieldObj };
