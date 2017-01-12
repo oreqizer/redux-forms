@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oreqizer/redux-form-lite.git"
+    "url": "git+https://github.com/oreqizer/redux-forms.git"
   },
   "author": "oreqizer",
   "license": "MIT",
