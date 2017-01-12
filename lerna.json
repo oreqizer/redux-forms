@@ -3,11 +3,9 @@
   "version": "0.9.1",
   "publishConfig": {
     "ignore": [
-      "*.md"
+      "*.md",
+      "*.spec.*"
     ]
-  },
-  "devDependencies": {
-    "ramda": "^0.23.0"
   },
   "packages": [
     "packages/*"
