@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as R from 'ramda';
 
-import { reducer } from 'redux-forms';
+import { reducer } from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import ConnectedField from '../Field';
 

@@ -10,9 +10,6 @@
   },
   "exclude": [
     "example",
-    "node_modules",
-    "**/__tests__/*",
-    "selectors.d.ts",
-    "actions.d.ts"
+    "node_modules"
   ]
 }
