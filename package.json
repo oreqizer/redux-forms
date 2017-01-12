@@ -14,7 +14,8 @@
     "clean:build": "rm -rf packages/*/lib",
     "clean:deps": "rm -rf node_modules packages/*/node_modules",
     "bootstrap": "npm run clean && yarn && lerna bootstrap && npm run build:lib",
-    "publish": "npm run clean && npm run build && npm test && npm run lint && lerna publish -i"
+    "prepublish": "npm run clean && npm run build && npm test && npm run lint",
+    "release": "npm prepublish && lerna publish -i"
   },
   "jest": {
     "moduleFileExtensions": [
