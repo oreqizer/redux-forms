@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as R from 'ramda';
 
-import { Context } from '../Form';
-import { isString, invariant } from './helpers';
+import { invariant, isString } from 'redux-forms/lib/shared/helpers';
+import { Context } from './Form';
 
 
 export type FormProps = {
@@ -21,20 +21,20 @@ export type Connected<T> = React.SFC<T & FormProps> & {
 
 
 export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
-  const ConnectedField: Connected<T> = (props: T & FormProps, { reduxFormLite }: Context) => {
+  const ConnectedField: Connected<T> = (props: T & FormProps, { reduxForms }: Context) => {
     invariant(
-      isString(reduxFormLite),
-      '[redux-form-lite] Field and FieldArray must be a children of the Form component.',
+      isString(reduxForms),
+      '[redux-forms] Field and FieldArray must be a children of the Form component.',
     );
 
     return React.createElement(Wrapped, R.merge(props, {
-      _form: reduxFormLite,
+      _form: reduxForms,
     }));
   };
 
 
   ConnectedField.contextTypes = {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   };
 
   ConnectedField.displayName = Wrapped.displayName;

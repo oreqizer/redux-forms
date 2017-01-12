@@ -4,14 +4,12 @@
     "module": "es6",
     "target": "es6",
     "jsx": "react",
-    "declaration": true,
+    "declaration": false,
     "noImplicitAny": true,
     "strictNullChecks": true
   },
   "exclude": [
-    "node_modules",
-    "**/__tests__",
-    "selectors.d.ts",
-    "actions.d.ts"
+    "example",
+    "node_modules"
   ]
 }

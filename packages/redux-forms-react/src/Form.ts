@@ -2,11 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
-import { FormObj } from "./utils/containers";
-import { isString, isPromise, isFunction, shallowCompare } from "./utils/helpers";
-import formProps, { toUpdate } from './utils/formProps';
-import * as actions from './actions';
-import * as selectors from './selectors';
+import { isString, isPromise, isFunction, shallowCompare } from 'redux-forms/lib/shared/helpers';
+import formProps, { toUpdate } from 'redux-forms/lib/shared/formProps';
+import * as containers from 'redux-forms/lib/containers';
+import * as actions from 'redux-forms/actions';
+import * as selectors from 'redux-forms/selectors';
 
 
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
@@ -17,13 +17,13 @@ export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
 }
 
 export type Context = {
-  reduxFormLite: string;
+  reduxForms: string;
 };
 
 
 class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
   static childContextTypes = {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   };
 
   static propTypes = {
@@ -32,6 +32,8 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
   };
 
   static displayName = 'Form';
+
+  props: Props<T>;
 
   constructor(props: Props<T>) {
     super(props);
@@ -63,7 +65,7 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
     const { name } = this.props;
 
     return {
-      reduxFormLite: name,
+      reduxForms: name,
     };
   }
 
@@ -141,7 +143,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: Boolean(R.prop<FormObj>(props.name, state.reduxFormLite)),
+  _form: Boolean(R.prop<containers.Form>(props.name, state.reduxForms)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),

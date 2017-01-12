@@ -1,4 +1,4 @@
 {
-  "presets": ["react", "es2015", "stage-3"],
+  "presets": ["react", ["es2015", { "loose": true }], "stage-3"],
   "plugins": ["ramda"]
 }

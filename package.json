@@ -1,22 +1,20 @@
 {
-  "name": "redux-form-lite",
-  "version": "0.8.1",
-  "description": "A simple form management for Redux & React.",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "private": true,
   "scripts": {
     "test": "jest --no-cache",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "npm run tslint",
-    "tslint": "tslint src/**.{ts,tsx}",
-    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && npm run dts",
-    "build:lib": "tsc && babel lib --out-dir lib",
-    "build:umd": "webpack src/index.ts dist/redux-form-lite.js",
-    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.ts dist/redux-form-lite.min.js",
-    "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
-    "clean": "rimraf lib dist",
-    "prepublish": "npm run clean && npm test && npm run build"
+    "tslint": "tslint -e '**/lib/**' --project tsconfig.json --type-check 'packages/**/*.{ts,tsx}'",
+    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "build:lib": "gulp",
+    "build:umd": "webpack",
+    "build:umd:min": "cross-env NODE_ENV=production webpack",
+    "clean": "npm run clean:deps && npm run clean:build",
+    "clean:build": "rm -rf packages/*/lib",
+    "clean:deps": "rm -rf node_modules packages/*/node_modules",
+    "bootstrap": "npm run clean && yarn && lerna bootstrap && npm run build:lib",
+    "release": "npm run clean:build && npm run build && npm test && npm run lint && lerna publish"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -36,18 +34,8 @@
     "type": "git",
     "url": "git+https://github.com/oreqizer/redux-form-lite.git"
   },
-  "keywords": [
-    "form",
-    "forms",
-    "redux",
-    "react"
-  ],
   "author": "oreqizer",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/oreqizer/redux-form-lite/issues"
-  },
-  "homepage": "https://github.com/oreqizer/redux-form-lite#readme",
   "devDependencies": {
     "@types/enzyme": "^2.7.1",
     "@types/jest": "^16.0.3",
@@ -61,38 +49,28 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-3": "^6.17.0",
+    "chalk": "^1.1.3",
     "cross-env": "^3.1.4",
-    "dts-bundle": "^0.6.1",
     "enzyme": "^2.7.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-plumber": "^1.1.0",
+    "gulp-typescript": "^3.1.4",
+    "gulp-util": "^3.0.8",
     "jest": "^18.1.0",
-    "react": "^15.4.1",
+    "lerna": "2.0.0-beta.32",
+    "ramda": "^0.23.0",
+    "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
     "redux": "^3.6.0",
     "rimraf": "^2.5.4",
+    "through2": "^2.0.3",
     "ts-loader": "^1.3.3",
     "tslint": "^4.3.1",
     "tslint-react": "^2.2.0",
     "typescript": "^2.1.4",
     "webpack": "^2.2.0-rc.3"
-  },
-  "peerDependencies": {
-    "react": "^15.4.1",
-    "react-redux": "^5.0.1",
-    "redux": "^3.6.0"
-  },
-  "dependencies": {
-    "ramda": "^0.23.0"
-  },
-  "files": [
-    "dist",
-    "lib",
-    "selectors.js",
-    "selectors.d.ts",
-    "actions.js",
-    "actions.d.ts",
-    "README.md",
-    "LICENSE"
-  ]
+  }
 }

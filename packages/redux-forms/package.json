@@ -1,0 +1,33 @@
+{
+  "name": "redux-forms",
+  "version": "0.9.1",
+  "description": "A simple form management for Redux.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oreqizer/redux-forms.git"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "redux"
+  ],
+  "author": "oreqizer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oreqizer/redux-forms/issues"
+  },
+  "dependencies": {
+    "ramda": "^0.23.0"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "actions.js",
+    "actions.d.ts",
+    "selectors.d.ts",
+    "selectors.js",
+    "README.md"
+  ]
+}

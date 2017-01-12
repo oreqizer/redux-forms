@@ -1,9 +1,9 @@
 import * as R from 'ramda';
 
-import { FieldObj } from "./containers";
+import { Field } from "./containers";
 
 
-export type Fields = { [key: string]: FieldObj };
+export type Fields = { [key: string]: Field };
 
 
 export function arrayUnshift(path: string, start: number) {

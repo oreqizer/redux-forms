@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
+import { Target } from 'redux-forms/lib/shared/getValue';
+import fieldArrayProps, { FieldsProp } from 'redux-forms/lib/shared/fieldArrayProps';
+import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
+import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
-import * as actions from './actions';
-import { Target } from './utils/getValue';
-import connectField, { ContextProps } from './utils/connectField';
-import fieldArrayProps, { FieldsProp } from './utils/fieldArrayProps';
-import { isNumber, isEvent } from "./utils/helpers";
+import connectField, { ContextProps } from './connectField';
 
 
 export type SuppliedProps = {
@@ -31,6 +31,8 @@ class FieldArray<T> extends React.PureComponent<Props<T>, void> {
   };
 
   static displayName = 'FieldArray';
+
+  props: Props<T>;
 
   constructor(props: Props<T>) {
     super(props);
@@ -195,7 +197,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxFormLite),
+  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxForms),
 }), bindActions)(FieldArray);
 
 const Contexted = connectField(Connected);

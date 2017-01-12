@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import getValue from '../getValue';
 
 const preventDefault = (id: any) => id;

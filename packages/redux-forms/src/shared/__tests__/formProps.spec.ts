@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import * as R from "ramda";
 
 import formProps, { toUpdate } from '../formProps';

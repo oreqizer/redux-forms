@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -7,9 +5,9 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as R from 'ramda';
 
+import { reducer } from 'redux-forms/lib/index';
+import { form, field } from 'redux-forms/lib/containers';
 import ConnectedField from '../Field';
-import reducer from '../formsReducer';
-import { form, field } from '../utils/containers';
 
 
 // NOTE:
@@ -48,21 +46,21 @@ const event = (value: string) => ({
 
 const options = {
   context: {
-    reduxFormLite: 'test',
+    reduxForms: 'test',
   },
   childContextTypes: {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   },
 };
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxFormLite: reducer,
+  reduxForms: reducer,
 }), {
-  reduxFormLite: { test: form },
+  reduxForms: { test: form },
 });
 
-const getForm = (state: any) => state.getState().reduxFormLite.test;
+const getForm = (state: any) => state.getState().reduxForms.test;
 
 
 describe('#Field', () => {

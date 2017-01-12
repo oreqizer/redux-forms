@@ -1,6 +1,6 @@
 import * as selectors from '../selectors';
 
-import { form, field } from "../utils/containers";
+import { form, field } from "../containers";
 
 
 const demoform = {
@@ -57,27 +57,27 @@ const submitform = {
 const emptystate: any = {};
 
 const state = {
-  reduxFormLite: { test: demoform },
+  reduxForms: { test: demoform },
 };
 
 const state2 = {
-  reduxFormLite: { test: demoform2 },
+  reduxForms: { test: demoform2 },
 };
 
 const errstate = {
-  reduxFormLite: { test: errform },
+  reduxForms: { test: errform },
 };
 
 const touchstate = {
-  reduxFormLite: { test: touchform },
+  reduxForms: { test: touchform },
 };
 
 const dirtystate = {
-  reduxFormLite: { test: dirtyform },
+  reduxForms: { test: dirtyform },
 };
 
 const submitstate = {
-  reduxFormLite: { test: submitform },
+  reduxForms: { test: submitform },
 };
 
 

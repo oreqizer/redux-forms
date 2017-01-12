@@ -2,13 +2,12 @@ import * as R from 'ramda';
 
 import reducer from '../formsReducer';
 import * as actions from '../actions';
-
-import { form, field } from '../utils/containers';
+import { form, field } from '../containers';
 
 
 describe('#formsReducer', () => {
   it('should return initial state', () => {
-    const state = reducer(undefined, <any> {});
+    const state = reducer(undefined, {} as any);
 
     expect(state).toEqual({});
   });

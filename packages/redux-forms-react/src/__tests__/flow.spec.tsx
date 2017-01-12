@@ -3,11 +3,11 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
-import reducer from '../formsReducer';
+import { reducer } from 'redux-forms/lib/index';
+import { form, field } from 'redux-forms/lib/containers';
 import Form from '../Form';
 import Field from '../Field';
 import FieldArray from '../FieldArray';
-import { form, field } from "../utils/containers";
 
 
 const FlatFields = (props: any) => (
@@ -58,10 +58,10 @@ const MyForm = () => (
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxFormLite: reducer,
+  reduxForms: reducer,
 }));
 
-const getForm = (store: any) => store.getState().reduxFormLite.test;
+const getForm = (store: any) => store.getState().reduxForms.test;
 
 
 describe('#flow', () => {
