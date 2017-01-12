@@ -5,7 +5,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "npm run tslint",
-    "tslint": "tslint src/**.{ts,tsx}",
+    "tslint": "tslint -e '**/lib/**' --type-check 'packages/**/*.{ts,tsx}'",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "gulp",
     "build:umd": "webpack",

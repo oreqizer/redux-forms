@@ -50,7 +50,7 @@ export type Flat = { [key: string]: any };
 // NOTE: ugly imperative code
 // A rewrite would be welcome.
 export function unflatten(obj: Flat) {
-  let result = {};
+  const result = {};
 
   Object.keys(obj)
     .forEach((prop) => prop.split('.')

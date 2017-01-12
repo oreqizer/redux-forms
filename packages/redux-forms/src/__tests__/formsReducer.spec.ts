@@ -7,7 +7,7 @@ import { form, field } from '../containers';
 
 describe('#formsReducer', () => {
   it('should return initial state', () => {
-    const state = reducer(undefined, <any> {});
+    const state = reducer(undefined, {} as any);
 
     expect(state).toEqual({});
   });
