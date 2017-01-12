@@ -2,7 +2,7 @@
 const webpack = require('webpack');
 const R = require('ramda');
 
-const packages = require('./build/packages');
+const packages = require('./webpack.packages.js');
 
 
 const env = process.env.NODE_ENV;

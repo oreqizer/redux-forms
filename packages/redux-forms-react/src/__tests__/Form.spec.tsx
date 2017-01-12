@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { createStore, combineReducers } from 'redux';
