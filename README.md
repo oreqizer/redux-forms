@@ -9,6 +9,8 @@ A simple form manager for Redux with bindings for:
 * **React** as `redux-forms-react`
 * **Inferno** (WIP, not yet)
 
+API is similar to [redux-form](https://github.com/erikras/redux-form) - another amazing form manager. The reason I created `redux-forms` is to keep the library as small as possible and offer bindings for multiple UI libraries (even your own!).
+
 ### Installation
 
 Simply:
