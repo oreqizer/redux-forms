@@ -1,4 +1,4 @@
-# redux-form-lite
+# redux-forms
 
 [![npm](https://img.shields.io/npm/v/redux-form-lite.svg)](https://www.npmjs.com/package/redux-form-lite)
 [![Build Status](https://travis-ci.org/oreqizer/redux-form-lite.svg?branch=master)](https://travis-ci.org/oreqizer/redux-form-lite)

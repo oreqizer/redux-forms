@@ -1,12 +1,12 @@
 import * as R from 'ramda';
 
 import { State } from './formsReducer';
-import { FormObj, FieldObj } from './shared/containers';
+import { Form } from './containers';
 import { unflatten } from './shared/helpers';
 
 
 export interface IState {
-  reduxFormLite: State;
+  reduxForms: State;
 }
 
 type Memoize<T> = (x: T[]) => T;
@@ -22,7 +22,7 @@ const memValue = R.memoize(R.compose(
 ));
 
 export function valueSelector(name: string, state: IState): Object {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
   }
@@ -37,7 +37,7 @@ const memError = R.memoize(R.compose(
 ));
 
 export function errorSelector(name: string, state: IState): Object {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
   }
@@ -55,7 +55,7 @@ const memValid = R.memoize(R.compose(
 ));
 
 export function isValid(name: string, state: IState): boolean {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -71,7 +71,7 @@ const memTouched = R.memoize(R.compose(
 ));
 
 export function isTouched(name: string, state: IState): boolean {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -87,7 +87,7 @@ const memDirty = R.memoize(R.compose(
 ));
 
 export function isDirty(name: string, state: IState): boolean {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -97,7 +97,7 @@ export function isDirty(name: string, state: IState): boolean {
 
 
 export function isSubmitting(name: string, state: IState): boolean {
-  const form = R.path<FormObj>(['reduxFormLite', name], state);
+  const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }

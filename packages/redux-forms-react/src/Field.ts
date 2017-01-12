@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
-import { field, Field } from 'redux-forms/lib/containers';
+import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
 import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
 import { shallowCompare } from 'redux-forms/lib/shared/helpers';
@@ -108,10 +108,10 @@ class Field<T> extends React.Component<Props<T>, void> {
 
   newField(props: Props<T>) {
     const value = props.normalize(props.defaultValue);
-    const newField = R.compose<Field, Field, Field>(
+    const newField = R.compose<containers.Field, containers.Field, containers.Field>(
       R.set(R.lensProp('value'), value),
       R.set(R.lensProp('error'), props.validate(value)),
-    )(field);
+    )(containers.field);
 
     props._addField(props._form, props.name, newField);
   }
@@ -177,7 +177,7 @@ type DefaultProps = {
 };
 
 type StateProps = {
-  _field: Field | null,
+  _field: containers.Field | null,
 };
 
 type ActionProps = {
@@ -200,7 +200,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _field: R.path<Field>([props._form, 'fields', props.name], state.reduxFormLite),
+  _field: R.path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
 }), bindActions)(Field);
 
 const Contexted = connectField(Connected);

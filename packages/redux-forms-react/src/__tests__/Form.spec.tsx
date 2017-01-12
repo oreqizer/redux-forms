@@ -34,12 +34,12 @@ const MyComp = () => (
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxFormLite: reducer,
+  reduxForms: reducer,
 }), {
-  reduxFormLite: { test: form },
+  reduxForms: { test: form },
 });
 
-const getForm = (state: any) => state.getState().reduxFormLite.test;
+const getForm = (state: any) => state.getState().reduxForms.test;
 
 const event = (pd: Function) => ({
   preventDefault: pd,
@@ -215,7 +215,7 @@ describe('#Form', () => {
     ));
 
     expect((wrapper.instance() as any).getChildContext()).toEqual({
-      reduxFormLite: 'test',
+      reduxForms: 'test',
     });
   });
 
@@ -384,7 +384,7 @@ describe('#connect(Form)', () => {
       </Provider>
     ));
 
-    expect(store.getState().reduxFormLite).toEqual({ test: form });
+    expect(store.getState().reduxForms).toEqual({ test: form });
   });
 
   it('should remove a form', () => {
@@ -399,7 +399,7 @@ describe('#connect(Form)', () => {
 
     wrapper.unmount();
 
-    expect(store.getState().reduxFormLite).toEqual({});
+    expect(store.getState().reduxForms).toEqual({});
   });
 
   it('should not remove a form if persistent', () => {
@@ -414,6 +414,6 @@ describe('#connect(Form)', () => {
 
     wrapper.unmount();
 
-    expect(store.getState().reduxFormLite).toEqual({ test: form });
+    expect(store.getState().reduxForms).toEqual({ test: form });
   });
 });

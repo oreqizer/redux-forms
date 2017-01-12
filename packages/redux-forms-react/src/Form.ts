@@ -17,13 +17,13 @@ export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
 }
 
 export type Context = {
-  reduxFormLite: string;
+  reduxForms: string;
 };
 
 
 class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
   static childContextTypes = {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   };
 
   static propTypes = {
@@ -65,7 +65,7 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
     const { name } = this.props;
 
     return {
-      reduxFormLite: name,
+      reduxForms: name,
     };
   }
 
@@ -143,7 +143,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: Boolean(R.prop<containers.FormObj>(props.name, state.reduxFormLite)),
+  _form: Boolean(R.prop<containers.Form>(props.name, state.reduxForms)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),

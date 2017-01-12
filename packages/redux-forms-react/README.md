@@ -1,6 +1,6 @@
-# redux-forms
+# redux-forms-react
 
 Contains:
-* reducer
-* actions
-* selectors
+* Form
+* Field
+* FieldArray

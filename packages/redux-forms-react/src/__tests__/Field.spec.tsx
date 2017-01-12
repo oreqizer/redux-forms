@@ -46,21 +46,21 @@ const event = (value: string) => ({
 
 const options = {
   context: {
-    reduxFormLite: 'test',
+    reduxForms: 'test',
   },
   childContextTypes: {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   },
 };
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxFormLite: reducer,
+  reduxForms: reducer,
 }), {
-  reduxFormLite: { test: form },
+  reduxForms: { test: form },
 });
 
-const getForm = (state: any) => state.getState().reduxFormLite.test;
+const getForm = (state: any) => state.getState().reduxForms.test;
 
 
 describe('#Field', () => {

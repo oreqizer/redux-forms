@@ -197,7 +197,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxFormLite),
+  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxForms),
 }), bindActions)(FieldArray);
 
 const Contexted = connectField(Connected);

@@ -15,10 +15,10 @@ const Decorated: any = connectField(MyComp);
 
 const context = {
   context: {
-    reduxFormLite: 'test',
+    reduxForms: 'test',
   },
   childContextTypes: {
-    reduxFormLite: React.PropTypes.string.isRequired,
+    reduxForms: React.PropTypes.string.isRequired,
   },
 };
 

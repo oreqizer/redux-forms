@@ -2,33 +2,33 @@ import { Field } from "./containers";
 import { Value } from "./shared/getValue";
 
 
-export const ADD_FORM = '@@redux-form-lite/ADD_FORM';
-export const REMOVE_FORM = '@@redux-form-lite/REMOVE_FORM';
-export const ADD_FIELD = '@@redux-form-lite/ADD_FIELD';
-export const REMOVE_FIELD = '@@redux-form-lite/REMOVE_FIELD';
-export const TOUCH_ALL = '@@redux-form-lite/TOUCH_ALL';
-export const SUBMIT_START = '@@redux-form-lite/SUBMIT_START';
-export const SUBMIT_STOP = '@@redux-form-lite/SUBMIT_STOP';
+export const ADD_FORM = '@@redux-forms/ADD_FORM';
+export const REMOVE_FORM = '@@redux-forms/REMOVE_FORM';
+export const ADD_FIELD = '@@redux-forms/ADD_FIELD';
+export const REMOVE_FIELD = '@@redux-forms/REMOVE_FIELD';
+export const TOUCH_ALL = '@@redux-forms/TOUCH_ALL';
+export const SUBMIT_START = '@@redux-forms/SUBMIT_START';
+export const SUBMIT_STOP = '@@redux-forms/SUBMIT_STOP';
 
-export const ADD_ARRAY = '@@redux-form-lite/ADD_ARRAY';
-export const REMOVE_ARRAY = '@@redux-form-lite/REMOVE_ARRAY';
-export const ARRAY_PUSH = '@@redux-form-lite/ARRAY_PUSH';
-export const ARRAY_POP = '@@redux-form-lite/ARRAY_POP';
-export const ARRAY_UNSHIFT = '@@redux-form-lite/ARRAY_UNSHIFT';
-export const ARRAY_SHIFT = '@@redux-form-lite/ARRAY_SHIFT';
-export const ARRAY_INSERT = '@@redux-form-lite/ARRAY_INSERT';
-export const ARRAY_REMOVE = '@@redux-form-lite/ARRAY_REMOVE';
-export const ARRAY_SWAP = '@@redux-form-lite/ARRAY_SWAP';
-export const ARRAY_MOVE = '@@redux-form-lite/ARRAY_MOVE';
+export const ADD_ARRAY = '@@redux-forms/ADD_ARRAY';
+export const REMOVE_ARRAY = '@@redux-forms/REMOVE_ARRAY';
+export const ARRAY_PUSH = '@@redux-forms/ARRAY_PUSH';
+export const ARRAY_POP = '@@redux-forms/ARRAY_POP';
+export const ARRAY_UNSHIFT = '@@redux-forms/ARRAY_UNSHIFT';
+export const ARRAY_SHIFT = '@@redux-forms/ARRAY_SHIFT';
+export const ARRAY_INSERT = '@@redux-forms/ARRAY_INSERT';
+export const ARRAY_REMOVE = '@@redux-forms/ARRAY_REMOVE';
+export const ARRAY_SWAP = '@@redux-forms/ARRAY_SWAP';
+export const ARRAY_MOVE = '@@redux-forms/ARRAY_MOVE';
 
-export const FIELD_CHANGE = '@@redux-form-lite/FIELD_CHANGE';
-export const FIELD_FOCUS = '@@redux-form-lite/FIELD_FOCUS';
-export const FIELD_BLUR = '@@redux-form-lite/FIELD_BLUR';
-export const FIELD_VALUE = '@@redux-form-lite/FIELD_VALUE';
-export const FIELD_ERROR = '@@redux-form-lite/FIELD_ERROR';
+export const FIELD_CHANGE = '@@redux-forms/FIELD_CHANGE';
+export const FIELD_FOCUS = '@@redux-forms/FIELD_FOCUS';
+export const FIELD_BLUR = '@@redux-forms/FIELD_BLUR';
+export const FIELD_VALUE = '@@redux-forms/FIELD_VALUE';
+export const FIELD_ERROR = '@@redux-forms/FIELD_ERROR';
 
 
-export type AddFormAction = { type: '@@redux-form-lite/ADD_FORM', payload: {
+export type AddFormAction = { type: '@@redux-forms/ADD_FORM', payload: {
   name: string,
 } };
 
@@ -40,7 +40,7 @@ export const addForm: AddFormCreator = (name) => ({
 });
 
 
-export type RemoveFormAction = { type: '@@redux-form-lite/REMOVE_FORM', payload: {
+export type RemoveFormAction = { type: '@@redux-forms/REMOVE_FORM', payload: {
   name: string,
 } };
 
@@ -52,7 +52,7 @@ export const removeForm: RemoveFormCreator = (name) => ({
 });
 
 
-export type AddFieldAction = { type: '@@redux-form-lite/ADD_FIELD', payload: {
+export type AddFieldAction = { type: '@@redux-forms/ADD_FIELD', payload: {
   form: string,
   id: string,
   field: Field,
@@ -66,7 +66,7 @@ export const addField: AddFieldCreator = (form, id, field) => ({
 });
 
 
-export type RemoveFieldAction = { type: '@@redux-form-lite/REMOVE_FIELD', payload: {
+export type RemoveFieldAction = { type: '@@redux-forms/REMOVE_FIELD', payload: {
   form: string,
   id: string,
 } };
@@ -79,7 +79,7 @@ export const removeField: RemoveFieldCreator = (form, id) => ({
 });
 
 
-export type TouchAllAction = { type: '@@redux-form-lite/TOUCH_ALL', payload: {
+export type TouchAllAction = { type: '@@redux-forms/TOUCH_ALL', payload: {
   form: string,
 } };
 
@@ -91,7 +91,7 @@ export const touchAll: TouchAllCreator = (form) => ({
 });
 
 
-export type SubmitStartAction = { type: '@@redux-form-lite/SUBMIT_START', payload: {
+export type SubmitStartAction = { type: '@@redux-forms/SUBMIT_START', payload: {
   form: string,
 } };
 
@@ -103,7 +103,7 @@ export const submitStart: SubmitStartCreator = (form) => ({
 });
 
 
-export type SubmitStopAction = { type: '@@redux-form-lite/SUBMIT_STOP', payload: {
+export type SubmitStopAction = { type: '@@redux-forms/SUBMIT_STOP', payload: {
   form: string,
 } };
 
@@ -115,7 +115,7 @@ export const submitStop: SubmitStopCreator = (form) => ({
 });
 
 
-export type AddArrayAction = { type: '@@redux-form-lite/ADD_ARRAY', payload: {
+export type AddArrayAction = { type: '@@redux-forms/ADD_ARRAY', payload: {
   form: string,
   id: string,
 } };
@@ -128,7 +128,7 @@ export const addArray: AddArrayCreator = (form, id) => ({
 });
 
 
-export type RemoveArrayAction = { type: '@@redux-form-lite/REMOVE_ARRAY', payload: {
+export type RemoveArrayAction = { type: '@@redux-forms/REMOVE_ARRAY', payload: {
   form: string,
   id: string,
 } };
@@ -141,7 +141,7 @@ export const removeArray: RemoveArrayCreator = (form, id) => ({
 });
 
 
-export type ArrayPushAction = { type: '@@redux-form-lite/ARRAY_PUSH', payload: {
+export type ArrayPushAction = { type: '@@redux-forms/ARRAY_PUSH', payload: {
   form: string,
   id: string,
 } };
@@ -154,7 +154,7 @@ export const arrayPush: ArrayPushCreator = (form, id) => ({
 });
 
 
-export type ArrayPopAction = { type: '@@redux-form-lite/ARRAY_POP', payload: {
+export type ArrayPopAction = { type: '@@redux-forms/ARRAY_POP', payload: {
   form: string,
   id: string,
 } };
@@ -167,7 +167,7 @@ export const arrayPop: ArrayPopCreator = (form, id) => ({
 });
 
 
-export type ArrayUnshiftAction = { type: '@@redux-form-lite/ARRAY_UNSHIFT', payload: {
+export type ArrayUnshiftAction = { type: '@@redux-forms/ARRAY_UNSHIFT', payload: {
   form: string,
   id: string,
 } };
@@ -180,7 +180,7 @@ export const arrayUnshift: ArrayUnshiftCreator = (form, id) => ({
 });
 
 
-export type ArrayShiftAction = { type: '@@redux-form-lite/ARRAY_SHIFT', payload: {
+export type ArrayShiftAction = { type: '@@redux-forms/ARRAY_SHIFT', payload: {
   form: string,
   id: string,
 } };
@@ -193,7 +193,7 @@ export const arrayShift: ArrayShiftCreator = (form, id) => ({
 });
 
 
-export type ArrayInsertAction = { type: '@@redux-form-lite/ARRAY_INSERT', payload: {
+export type ArrayInsertAction = { type: '@@redux-forms/ARRAY_INSERT', payload: {
   form: string,
   id: string,
   index: number,
@@ -207,7 +207,7 @@ export const arrayInsert: ArrayInsertCreator = (form, id, index) => ({
 });
 
 
-export type ArrayRemoveAction = { type: '@@redux-form-lite/ARRAY_REMOVE', payload: {
+export type ArrayRemoveAction = { type: '@@redux-forms/ARRAY_REMOVE', payload: {
   form: string,
   id: string,
   index: number,
@@ -221,7 +221,7 @@ export const arrayRemove: ArrayRemoveCreator = (form, id, index) => ({
 });
 
 
-export type ArraySwapAction = { type: '@@redux-form-lite/ARRAY_SWAP', payload: {
+export type ArraySwapAction = { type: '@@redux-forms/ARRAY_SWAP', payload: {
   form: string,
   id: string,
   index1: number,
@@ -236,7 +236,7 @@ export const arraySwap: ArraySwapCreator = (form, id, index1, index2) => ({
 });
 
 
-export type ArrayMoveAction = { type: '@@redux-form-lite/ARRAY_MOVE', payload: {
+export type ArrayMoveAction = { type: '@@redux-forms/ARRAY_MOVE', payload: {
   form: string,
   id: string,
   from: number,
@@ -251,7 +251,7 @@ export const arrayMove: ArrayMoveCreator = (form, id, from, to) => ({
 });
 
 
-export type FieldChangeAction = { type: '@@redux-form-lite/FIELD_CHANGE', payload: {
+export type FieldChangeAction = { type: '@@redux-forms/FIELD_CHANGE', payload: {
   form: string,
   field: string,
   value: Value,
@@ -269,7 +269,7 @@ export const fieldChange: FieldChangeCreator = (form, field, value, error, dirty
 });
 
 
-export type FieldFocusAction = { type: '@@redux-form-lite/FIELD_FOCUS', payload: {
+export type FieldFocusAction = { type: '@@redux-forms/FIELD_FOCUS', payload: {
   form: string,
   field: string,
 } };
@@ -282,7 +282,7 @@ export const fieldFocus: FieldFocusCreator = (form, field) => ({
 });
 
 
-export type FieldBlurAction = { type: '@@redux-form-lite/FIELD_BLUR', payload: {
+export type FieldBlurAction = { type: '@@redux-forms/FIELD_BLUR', payload: {
   form: string,
   field: string,
   value: Value,

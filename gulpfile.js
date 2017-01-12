@@ -7,25 +7,34 @@ const chalk = require('chalk');
 const through = require('through2');
 
 
-const scripts = [
+const srcts = [
   './packages/*/src/**/*.{ts,tsx}',
   '!**/__tests__/**',
 ];
 
-const dest = './packages2';
+const srcbabel = './packages/*/lib/**/*.js';
 
-const tsOptions = ts.createProject('tsconfig.json', { declaration: true });
+const dest = './packages';
+
+const tsOptions = {
+  module: 'es6',
+  target: 'es6',
+  jsx: 'react',
+  declaration: true,
+  noImplicitAny: true,
+  strictNullChecks: true,
+};
 
 const mapDest = (path) => path.replace(/(packages\/[^/]+)\/src\//, '$1/lib/');
 
 
-gulp.task('default', ['build']);
+gulp.task('default', ['babel']);
 
-gulp.task('build', () =>
-  gulp.src(scripts)
+gulp.task('ts', () =>
+  gulp.src(srcts)
     .pipe(plumber())
     .pipe(through.obj((file, enc, callback) => {
-      gutil.log(`Compiling ${chalk.cyan(file.path)}...`);
+      gutil.log(`Compiling ${chalk.blue(file.path)}...`);
       callback(null, file);
     }))
     .pipe(ts(tsOptions))
@@ -33,4 +42,14 @@ gulp.task('build', () =>
       file.path = mapDest(file.path);
       callback(null, file);
     }))
+    .pipe(gulp.dest(dest)));
+
+gulp.task('babel', ['ts'], () =>
+  gulp.src(srcbabel)
+    .pipe(plumber())
+    .pipe(through.obj((file, enc, callback) => {
+      gutil.log(`Transpiling ${chalk.yellow(file.path)}...`);
+      callback(null, file);
+    }))
+    .pipe(babel())
     .pipe(gulp.dest(dest)));

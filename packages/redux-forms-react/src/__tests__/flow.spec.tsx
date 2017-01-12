@@ -58,10 +58,10 @@ const MyForm = () => (
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
-  reduxFormLite: reducer,
+  reduxForms: reducer,
 }));
 
-const getForm = (store: any) => store.getState().reduxFormLite.test;
+const getForm = (store: any) => store.getState().reduxForms.test;
 
 
 describe('#flow', () => {
