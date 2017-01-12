@@ -1,13 +1,13 @@
-import * as React from '../../.';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import { actions } from 'redux-forms';
 import * as R from 'ramda';
 
+import { Target } from 'redux-forms/lib/shared/getValue';
+import fieldArrayProps, { FieldsProp } from 'redux-forms/lib/shared/fieldArrayProps';
+import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
+import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
 import connectField, { ContextProps } from './connectField';
-import { Target } from '../../redux-forms/src/shared/getValue';
-import fieldArrayProps, { FieldsProp } from '../../redux-forms/src/shared/fieldArrayProps';
-import { isNumber, isEvent } from "../../redux-forms/src/shared/helpers";
 
 
 export type SuppliedProps = {
@@ -31,6 +31,8 @@ class FieldArray<T> extends React.PureComponent<Props<T>, void> {
   };
 
   static displayName = 'FieldArray';
+
+  props: Props<T>;
 
   constructor(props: Props<T>) {
     super(props);

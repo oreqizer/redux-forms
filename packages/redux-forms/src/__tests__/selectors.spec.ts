@@ -1,6 +1,6 @@
 import * as selectors from '../selectors';
 
-import { form, field } from "../../shared/containers";
+import { form, field } from "../containers";
 
 
 const demoform = {

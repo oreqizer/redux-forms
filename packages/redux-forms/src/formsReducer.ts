@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 import { Value } from './shared/getValue';
-import { form, field, FormObj, FieldObj } from './shared/containers';
+import { form, field, Form, Field } from './containers';
 import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './arrays';
 
 import {
@@ -32,7 +32,7 @@ import {
 
 
 export type State = {
-  [form: string]: FormObj,
+  [form: string]: Form,
 };
 
 
@@ -41,7 +41,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
     // Form
     // ---
     case ADD_FORM:
-      return R.assocPath<FormObj, State>(
+      return R.assocPath<Form, State>(
         [a.payload.name], form, state,
       );
 
@@ -51,7 +51,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case ADD_FIELD:
-      return R.assocPath<FieldObj, State>(
+      return R.assocPath<Field, State>(
         [a.payload.form, 'fields', a.payload.id], a.payload.field, state,
       );
 

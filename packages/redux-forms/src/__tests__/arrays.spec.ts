@@ -1,6 +1,6 @@
 import { arrayUnshift, arrayShift, arraySwap, arrayMove } from '../arrays';
 
-import { field } from '../../shared/containers';
+import { field } from '../containers';
 
 
 const field0 = { ...field, value: '0' };

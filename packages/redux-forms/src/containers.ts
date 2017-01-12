@@ -1,4 +1,4 @@
-import { Value } from "./getValue";
+import { Value } from "./shared/getValue";
 
 
 export const form = {
@@ -17,19 +17,19 @@ export const field = {
 };
 
 
-export type FieldObj = {
+export type Form = {
+  // key - value pairs of field id and the field object
+  fields: { [key: string]: Field },
+  // a map of array names and its lengths
+  arrays: { [key: string]: number },
+  submitting: boolean,
+};
+
+export type Field = {
   value: Value;
   visited: boolean;
   touched: boolean;
   active: boolean;
   error: string | null;
   dirty: boolean;
-};
-
-export type FormObj = {
-  // key - value pairs of field id and the field object
-  fields: { [key: string]: FieldObj },
-  // a map of array names and it's lengths
-  arrays: { [key: string]: number },
-  submitting: boolean,
 };

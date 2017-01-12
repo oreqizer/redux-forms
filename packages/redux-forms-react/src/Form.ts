@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { actions } from 'redux-forms';
-import { selectors } from 'redux-forms';
 import * as R from 'ramda';
 
-import { FormObj } from '../../redux-forms/src/shared/containers';
-import { isString, isPromise, isFunction, shallowCompare } from '../../redux-forms/src/shared/helpers';
-import formProps, { toUpdate } from '../../redux-forms/src/shared/formProps';
+import { isString, isPromise, isFunction, shallowCompare } from 'redux-forms/lib/shared/helpers';
+import formProps, { toUpdate } from 'redux-forms/lib/shared/formProps';
+import * as containers from 'redux-forms/lib/containers';
+import * as actions from 'redux-forms/actions';
+import * as selectors from 'redux-forms/selectors';
 
 
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
@@ -32,6 +32,8 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
   };
 
   static displayName = 'Form';
+
+  props: Props<T>;
 
   constructor(props: Props<T>) {
     super(props);
@@ -141,7 +143,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: Boolean(R.prop<FormObj>(props.name, state.reduxFormLite)),
+  _form: Boolean(R.prop<containers.FormObj>(props.name, state.reduxFormLite)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),

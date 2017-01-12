@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { actions } from 'redux-forms';
 import * as R from 'ramda';
 
+import { field, Field } from 'redux-forms/lib/containers';
+import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
+import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
+import { shallowCompare } from 'redux-forms/lib/shared/helpers';
+import * as actions from 'redux-forms/actions';
 import connectField, { ContextProps } from './connectField';
-import fieldProps, { boolField, InputProps, MetaProps } from '../../redux-forms/src/shared/fieldProps';
-import getValue, { Value, Target } from '../../redux-forms/src/shared/getValue';
-import { shallowCompare } from '../../redux-forms/src/shared/helpers';
-import { field, FieldObj } from '../../redux-forms/src/shared/containers';
 
 
 export type SuppliedProps = {
@@ -56,6 +56,8 @@ class Field<T> extends React.Component<Props<T>, void> {
   };
 
   static displayName = 'Field';
+
+  props: Props<T>;
 
   constructor(props: Props<T>) {
     super(props);
@@ -106,7 +108,7 @@ class Field<T> extends React.Component<Props<T>, void> {
 
   newField(props: Props<T>) {
     const value = props.normalize(props.defaultValue);
-    const newField = R.compose<FieldObj, FieldObj, FieldObj>(
+    const newField = R.compose<Field, Field, Field>(
       R.set(R.lensProp('value'), value),
       R.set(R.lensProp('error'), props.validate(value)),
     )(field);
@@ -175,7 +177,7 @@ type DefaultProps = {
 };
 
 type StateProps = {
-  _field: FieldObj | null,
+  _field: Field | null,
 };
 
 type ActionProps = {
@@ -198,7 +200,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _field: R.path<FieldObj>([props._form, 'fields', props.name], state.reduxFormLite),
+  _field: R.path<Field>([props._form, 'fields', props.name], state.reduxFormLite),
 }), bindActions)(Field);
 
 const Contexted = connectField(Connected);

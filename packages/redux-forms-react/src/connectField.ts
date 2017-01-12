@@ -1,8 +1,8 @@
-import * as React from '../../.';
+import * as React from 'react';
 import * as R from 'ramda';
 
+import { invariant, isString } from 'redux-forms/lib/shared/helpers';
 import { Context } from './Form';
-import { isString, invariant } from '../../redux-forms/src/shared/helpers';
 
 
 export type FormProps = {

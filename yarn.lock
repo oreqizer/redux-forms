@@ -2184,7 +2184,7 @@ gulp-typescript@^3.1.4:
     through2 "~2.0.1"
     vinyl-fs "~2.4.3"
 
-gulp-util@^3, gulp-util@^3.0.0, gulp-util@~3.0.7:
+gulp-util@^3, gulp-util@^3.0.0, gulp-util@^3.0.8, gulp-util@~3.0.7:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   dependencies:
@@ -4598,7 +4598,7 @@ through2@^0.6.0, through2@^0.6.1:
     readable-stream ">=1.0.33-1 <1.1.0-0"
     xtend ">=4.0.0 <4.1.0-0"
 
-through2@^2, through2@^2.0.0, through2@~2.0.0, through2@~2.0.1:
+through2@^2, through2@^2.0.0, through2@^2.0.3, through2@~2.0.0, through2@~2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:

@@ -1,4 +1,4 @@
-import { FieldObj } from "./shared/containers";
+import { Field } from "./containers";
 import { Value } from "./shared/getValue";
 
 
@@ -55,10 +55,10 @@ export const removeForm: RemoveFormCreator = (name) => ({
 export type AddFieldAction = { type: '@@redux-form-lite/ADD_FIELD', payload: {
   form: string,
   id: string,
-  field: FieldObj,
+  field: Field,
 } };
 
-export type AddFieldCreator = (form: string, id: string, field: FieldObj) => AddFieldAction;
+export type AddFieldCreator = (form: string, id: string, field: Field) => AddFieldAction;
 
 export const addField: AddFieldCreator = (form, id, field) => ({
   type: ADD_FIELD,
