@@ -6,7 +6,7 @@
 
 A simple form manager for Redux with bindings for:
 
-* **React**
+* **React** as `redux-forms-react`
 * **Inferno** (WIP, not yet)
 
 ### Installation
@@ -19,7 +19,7 @@ Or for the oldschool:
 
 `npm i redux-forms --save`
 
-Each binding package then has its own module with the name `redux-forms-<binding>`. For example, to install the **React** bindings, install the package `redux-forms-react`.
+Then just install bindings for any UI library you prefer.
 
 ### Quickstart
 
