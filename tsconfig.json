@@ -9,8 +9,9 @@
     "strictNullChecks": true
   },
   "exclude": [
+    "example",
     "node_modules",
-    "**/__tests__",
+    "**/__tests__/*",
     "selectors.d.ts",
     "actions.d.ts"
   ]
