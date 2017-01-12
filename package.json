@@ -10,7 +10,11 @@
     "build:lib": "gulp",
     "build:umd": "webpack",
     "build:umd:min": "cross-env NODE_ENV=production webpack",
-    "prepublish": "npm test && npm run lint && npm run build"
+    "clean": "npm run clean:deps && npm run clean:build",
+    "clean:build": "rm -rf packages/*/lib",
+    "clean:deps": "rm -rf node_modules packages/*/node_modules",
+    "bootstrap": "npm run clean && yarn && lerna bootstrap && npm run build:lib",
+    "publish": "echo \"TODO\""
   },
   "jest": {
     "moduleFileExtensions": [
