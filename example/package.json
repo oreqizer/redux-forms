@@ -1,7 +1,8 @@
 {
-  "name": "redux-form-lite-example",
+  "name": "redux-forms-example",
+  "private": true,
   "version": "0.0.0",
-  "description": "An example of redux-form-lite.",
+  "description": "An example of redux-forms.",
   "main": "index.jsx",
   "scripts": {
     "build": "webpack index.jsx bundle.js"
@@ -19,7 +20,8 @@
     "react": "^15.4.1",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
-    "redux-form-lite": "^0.8.0",
+    "redux-forms": "^0.9.0",
+    "redux-forms-react": "^0.9.0",
     "redux-logger": "^2.7.4"
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Field } from 'redux-form-lite';
+import { Form, Field } from 'redux-forms-react';
 
 const MyForm = (props) => (
   <Form name="second" onSubmit={props.onSubmit}>
