@@ -1,6 +1,8 @@
 # redux-forms-react
 
-React bindings for `redux-forms`.
+[![npm](https://img.shields.io/npm/v/redux-forms-react.svg)](https://www.npmjs.com/package/redux-forms-react)
+
+**React** bindings for `redux-forms`.
 
 Contains:
 * **Form**

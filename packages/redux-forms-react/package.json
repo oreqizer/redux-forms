@@ -4,10 +4,7 @@
   "description": "A simple form management for React & Redux.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/oreqizer/redux-forms.git"
-  },
+  "repository": "https://github.com/oreqizer/redux-forms/tree/master/packages/redux-forms-react",
   "keywords": [
     "form",
     "forms",
