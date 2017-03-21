@@ -13,7 +13,7 @@ export function isPromise<T>(cand: any): cand is PromiseLike<T> {
   return Boolean(cand) && typeof cand === 'object' && typeof cand.then === 'function';
 }
 
-export function isFunction(cand: any): cand is Function {
+export function isFunction(cand: any): cand is Function {  // tslint:disable-line ban-types
   return typeof cand === 'function';
 }
 

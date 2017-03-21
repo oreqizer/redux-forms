@@ -9,10 +9,11 @@ import * as actions from 'redux-forms/actions';
 import * as selectors from 'redux-forms/selectors';
 
 
+// FIXME don't use 'values: any'. TS doesn't understand I have my own onSubmit
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
   name: string;
   persistent?: boolean;
-  onSubmit?: (values: Object) => Promise<any> | void;
+  onSubmit?: (values: any) => Promise<any> | void;
   withRef?: (el: HTMLFormElement) => void;
 }
 
@@ -118,7 +119,7 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
 
 export type StateProps = {
   _form: boolean,
-  _values: Object,
+  _values: any,
   _valid: boolean,
   _submitting: boolean,
 };

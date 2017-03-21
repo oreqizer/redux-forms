@@ -3,7 +3,13 @@ import * as R from 'ramda';
 import { State } from './formsReducer';
 import { Form } from './containers';
 import { unflatten } from './shared/helpers';
+import { Value } from './shared/getValue';
 
+
+export type Values = { [key: string]: Value | Value[] | Values[] };
+
+export type Error = string | null;
+export type Errors = { [key: string]: Error | Error[] | Errors[] };
 
 export interface IState {
   reduxForms: State;
@@ -21,7 +27,7 @@ const memValue = R.memoize(R.compose(
   R.map(R.prop('value')),
 ));
 
-export function valueSelector(name: string, state: IState): Object {
+export function valueSelector(name: string, state: IState): Values {
   const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
@@ -36,7 +42,7 @@ const memError = R.memoize(R.compose(
   R.map(R.prop('error')),
 ));
 
-export function errorSelector(name: string, state: IState): Object {
+export function errorSelector(name: string, state: IState): Errors {
   const form = R.path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;

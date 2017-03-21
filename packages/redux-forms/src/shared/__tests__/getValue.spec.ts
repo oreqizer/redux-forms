@@ -30,7 +30,8 @@ const evFiles: any = (files: string[]) => ({
   },
 });
 
-const evSelect: any = (options: Object[]) => ({
+type Option = { selected: boolean, value: string };
+const evSelect: any = (options: Option[]) => ({
   preventDefault,
   stopPropagation,
   target: {

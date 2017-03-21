@@ -39,7 +39,8 @@ const newStore = () => createStore(combineReducers<any>({
 
 const getForm = (state: any) => state.getState().reduxForms.test;
 
-const event = (pd: Function) => ({
+type Fn = Function;  // tslint:disable-line ban-types
+const event = (pd: Fn) => ({
   preventDefault: pd,
 });
 
@@ -312,8 +313,8 @@ describe('#Form', () => {
   });
 
   it('should fire submit start and stop', () => {
-    let cb: Function = (id: any) => id;
-    const then = (fn: Function) => { cb = fn; };
+    let cb: Fn = (id: any) => id;
+    const then = (fn: Fn) => { cb = fn; };
 
     const pd = jest.fn();
     const onSubmit: any = () => ({ then });
