@@ -3,12 +3,24 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 
 import { Target } from 'redux-forms/lib/shared/getValue';
-import fieldArrayProps, { FieldsProp } from 'redux-forms/lib/shared/fieldArrayProps';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
 import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
 import connectField, { ContextProps } from './connectField';
 
+
+export type FieldsProp = {
+  length: number,
+  map: (fn: (el: string, index: number) => any) => any[],
+  push: () => void,
+  pop: () => void,
+  unshift: () => void,
+  shift: () => void,
+  insert: (index: number) => void,
+  remove: (index: number) => void,
+  swap: (index1: number, index2: number) => void,
+  move: (from: number, to: number) => void,
+};
 
 export type SuppliedProps = {
   name?: string,
