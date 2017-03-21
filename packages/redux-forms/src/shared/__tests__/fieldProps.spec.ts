@@ -26,25 +26,9 @@ const props = {
   touched: true,
   active: false,
 
-  // to omit
+  // field
   // ---
-  component: 'input',
-  defaultValue: 'kek',
-  normalize: R.identity,
-  validate: R.identity,
-  withRef: R.identity,
-  _form: 'form',
   _field: {},
-  _addField: R.identity,
-  _removeField: R.identity,
-  _fieldChange: R.identity,
-  _fieldFocus: R.identity,
-  _fieldBlur: R.identity,
-
-  // custom
-  // ---
-  damage: 'tons of',
-  wow: 'so test',
 };
 
 const props2 = Object.assign({}, props, {
@@ -71,30 +55,6 @@ describe('#fieldProps', () => {
     expect(result.meta.visited).toBe(false);
     expect(result.meta.touched).toBe(true);
     expect(result.meta.active).toBe(false);
-  });
-
-  it('should omit props', () => {
-    const result: any = fieldProps(props);
-
-    expect(result.custom.component).toBeUndefined();
-    expect(result.custom.defaultValue).toBeUndefined();
-    expect(result.custom.normalize).toBeUndefined();
-    expect(result.custom.validate).toBeUndefined();
-    expect(result.custom.withRef).toBeUndefined();
-    expect(result.custom._form).toBeUndefined();
-    expect(result.custom._field).toBeUndefined();
-    expect(result.custom._addField).toBeUndefined();
-    expect(result.custom._removeField).toBeUndefined();
-    expect(result.custom._fieldChange).toBeUndefined();
-    expect(result.custom._fieldFocus).toBeUndefined();
-    expect(result.custom._fieldBlur).toBeUndefined();
-  });
-
-  it('should separate custom props', () => {
-    const result: any = fieldProps(props);
-
-    expect(result.custom.damage).toBe('tons of');
-    expect(result.custom.wow).toBe('so test');
   });
 
   it('should add a "checked" prop for boolean value', () => {

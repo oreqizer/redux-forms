@@ -13,11 +13,9 @@ import FieldArray from '../FieldArray';
 const FlatFields = (props: any) => (
   <div className="FlatFields">
     {props.fields.map((id: string) => (
-      <Field
-        key={id}
-        name={id}
-        component="input"
-      />
+      <Field key={id} name={id}>
+        <input type="text"/>
+      </Field>
     ))}
   </div>
 );
@@ -26,14 +24,12 @@ const DeepFields = (props: any) => (
   <div className="DeepFields">
     {props.fields.map((id: string) => (
       <div className="DeepField" key={id}>
-        <Field
-          name={`${id}.name`}
-          component="input"
-        />
-        <Field
-          name={`${id}.surname`}
-          component="input"
-        />
+        <Field name={`${id}.name`}>
+          <input type="text" />
+        </Field>
+        <Field name={`${id}.surname`}>
+          <input type="text" />
+        </Field>
       </div>
     ))}
   </div>
@@ -41,18 +37,15 @@ const DeepFields = (props: any) => (
 
 const MyForm = () => (
   <Form name="test" className="Form">
-    <Field
-      name="title"
-      component="input"
-    />
-    <FieldArray
-      name="flatarray"
-      component={FlatFields}
-    />
-    <FieldArray
-      name="deeparray"
-      component={DeepFields}
-    />
+    <Field name="title">
+      <input type="text" />
+    </Field>
+    <FieldArray name="flatarray">
+      <FlatFields />
+    </FieldArray>
+    <FieldArray name="deeparray">
+      <DeepFields />
+    </FieldArray>
   </Form>
 );
 

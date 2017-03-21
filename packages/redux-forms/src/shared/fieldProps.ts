@@ -20,10 +20,9 @@ export type MetaProps = {
   active: boolean,
 };
 
-export type SeparatedProps<T> = {
+export type SeparatedProps = {
   input: InputProps;
   meta: MetaProps;
-  custom: T;
 };
 
 
@@ -44,23 +43,6 @@ const META_PROPS = [
   'visited',
 ];
 
-const FIELD_PROPS = [
-  'component',
-  'defaultValue',
-  'normalize',
-  'validate',
-  'withRef',
-  // state
-  '_form',
-  '_field',
-  // actions
-  '_addField',
-  '_removeField',
-  '_fieldChange',
-  '_fieldFocus',
-  '_fieldBlur',
-];
-
 
 const maybeCheckProps = (all: InputProps): InputProps => {
   if (typeof all.value === 'boolean') {
@@ -69,10 +51,9 @@ const maybeCheckProps = (all: InputProps): InputProps => {
   return all;
 };
 
-const separateProps = <T>(all: T & InputProps & MetaProps): SeparatedProps<T> => ({
+const separateProps = <T>(all: T & InputProps & MetaProps): SeparatedProps => ({
   input: R.pick<InputProps, InputProps>(INPUT_PROPS, all),
   meta: R.pick<InputProps, MetaProps>(META_PROPS, all),
-  custom: R.omit(R.flatten([INPUT_PROPS, META_PROPS, FIELD_PROPS]), all),
 });
 
 export default R.compose(separateProps, maybeCheckProps);
