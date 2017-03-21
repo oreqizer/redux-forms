@@ -47,11 +47,15 @@ const MyForm = (props) => (
   <Form name="contact">
     <div>
       <label htmlFor="name">Name</label>
-      <Field name="name" component="input" type="text" />
+      <Field name="name">
+        <input type="text" />
+      </Field>
     </div>
     <div>
       <label htmlFor="email">Email</label>
-      <Field name="email" component="input" type="email" />
+      <Field name="email">
+        <input type="email" />
+      </Field>
     </div>
     <button type="submit">Submit</button>
   </Form>
@@ -70,3 +74,14 @@ That's it! This is how you mount the most basic form. For more advanced usage, c
 * [FieldArray](https://oreqizer.gitbooks.io/redux-forms/content/fieldarray.html)
 * [selectors](https://oreqizer.gitbooks.io/redux-forms/content/selectors.html)
 * [actions](https://oreqizer.gitbooks.io/redux-forms/content/actions.html)
+
+### Differences vs. redux-form 6
+
+There are essentially two major API differences:
+
+1. No `reduxForm` decorator, you rather wrap your form in a `Form` component.
+2. `Field` and `FieldArray` don't take `component` prop, but supply the necessary properties 
+directly to the children
+
+There are many features missing, but that's intentional - I try to keep the library as 
+lightweight as possible.
