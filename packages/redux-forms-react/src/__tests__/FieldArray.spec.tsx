@@ -43,7 +43,7 @@ const options = {
 
 const event = { target: { value: 'doge' } };
 
-const eventFn = (pd: Function) => ({
+const eventFn = (pd: () => any) => ({
   preventDefault: pd,
   stopPropagation: R.identity,
 });
@@ -547,7 +547,7 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').push();
+    wrapper.prop<any>('fields').push();
 
     expect(getForm(store).arrays).toEqual({ test: 1 });
   });
@@ -565,8 +565,8 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').push();
-    wrapper.prop('fields').pop();
+    wrapper.prop<any>('fields').push();
+    wrapper.prop<any>('fields').pop();
 
     expect(getForm(store).arrays).toEqual({ test: 0 });
   });
@@ -584,7 +584,7 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').unshift();
+    wrapper.prop<any>('fields').unshift();
 
     expect(getForm(store).arrays).toEqual({ test: 1 });
   });
@@ -602,8 +602,8 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').unshift();
-    wrapper.prop('fields').shift();
+    wrapper.prop<any>('fields').unshift();
+    wrapper.prop<any>('fields').shift();
 
     expect(getForm(store).arrays).toEqual({ test: 0 });
   });
@@ -621,7 +621,7 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').insert(0);
+    wrapper.prop<any>('fields').insert(0);
 
     expect(getForm(store).arrays).toEqual({ test: 1 });
   });
@@ -639,8 +639,8 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').insert(0);
-    wrapper.prop('fields').remove(0);
+    wrapper.prop<any>('fields').insert(0);
+    wrapper.prop<any>('fields').remove(0);
 
     expect(getForm(store).arrays).toEqual({ test: 0 });
   });
@@ -658,9 +658,9 @@ describe('#connect(FieldArray)', () => {
       options,
     ).find(MyComp);
 
-    wrapper.prop('fields').push();
-    wrapper.prop('fields').push();
+    wrapper.prop<any>('fields').push();
+    wrapper.prop<any>('fields').push();
 
-    expect(wrapper.prop('fields').map(R.identity)).toEqual(['test.0', 'test.1']);
+    expect(wrapper.prop<any>('fields').map(R.identity)).toEqual(['test.0', 'test.1']);
   });
 });

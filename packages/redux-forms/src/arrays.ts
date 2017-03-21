@@ -7,7 +7,11 @@ export type Fields = { [key: string]: Field };
 
 
 export function arrayUnshift(path: string, start: number) {
-  const toParts = R.compose(R.tail, R.split('.'), R.replace(path, ''));
+  const toParts = R.compose<string, string, string[], string[]>(
+    R.tail,
+    R.split('.'),
+    R.replace(path, ''),
+  );
 
   return (fields: Fields): Fields => R.reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
@@ -28,7 +32,11 @@ export function arrayUnshift(path: string, start: number) {
 }
 
 export function arrayShift(path: string, start: number) {
-  const toParts = R.compose(R.tail, R.split('.'), R.replace(path, ''));
+  const toParts = R.compose<string, string, string[], string[]>(
+    R.tail,
+    R.split('.'),
+    R.replace(path, ''),
+  );
 
   return (fields: Fields): Fields => R.reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {

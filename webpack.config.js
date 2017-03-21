@@ -11,8 +11,8 @@ const config = {
   // package.entry
   // package.externals
   module: {
-    loaders: [
-      { test: /\.tsx?$/, loader: 'babel-loader!ts-loader', exclude: /node_modules/ },
+    rules: [
+      { test: /\.tsx?$/, use: ['babel-loader', 'ts-loader'], exclude: /node_modules/ },
     ],
   },
   resolve: {
