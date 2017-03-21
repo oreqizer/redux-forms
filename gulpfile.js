@@ -8,8 +8,11 @@ const chalk = require('chalk');
 const through = require('through2');
 
 
+const base = './packages/redux-forms/src/**/*.{ts,tsx}';
+
 const srcts = [
   './packages/*/src/**/*.{ts,tsx}',
+  '!' + base,
   '!**/__tests__/**',
 ];
 
@@ -31,7 +34,21 @@ const mapDest = (path) => path.replace(/(packages\/[^/]+)\/src\//, '$1/lib/');
 
 gulp.task('default', ['babel']);
 
-gulp.task('ts', () =>
+gulp.task('ts:base', () =>
+  gulp.src(base)
+    .pipe(plumber())
+    .pipe(through.obj((file, enc, callback) => {
+      gutil.log(`Compiling ${chalk.blue(file.path)}...`);
+      callback(null, file);
+    }))
+    .pipe(ts(tsOptions))
+    .pipe(through.obj((file, enc, callback) => {
+      file.path = mapDest(file.path);
+      callback(null, file);
+    }))
+    .pipe(gulp.dest('./packages/redux-forms/lib/')));
+
+gulp.task('ts', ['ts:base'], () =>
   gulp.src(srcts)
     .pipe(plumber())
     .pipe(through.obj((file, enc, callback) => {
