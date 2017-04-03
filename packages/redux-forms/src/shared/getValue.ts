@@ -3,7 +3,7 @@ import { isEvent } from './helpers';
 
 export type Target = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-export type Value = string | string[] | boolean | FileList | null;
+export type Value = any;
 
 
 const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
