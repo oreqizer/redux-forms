@@ -1903,12 +1903,18 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-redux-forms-react@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/redux-forms-react/-/redux-forms-react-0.9.0.tgz#11a2e31ae8010d6f9f702fefc8b7854815a9d1ab"
+redux-forms-react@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/redux-forms-react/-/redux-forms-react-0.10.0.tgz#500b78e617d0cb7c01d1f507d7011b970e383c64"
   dependencies:
     ramda "^0.23.0"
-    redux-forms "^0.9.0"
+    redux-forms "^0.10.0"
+
+redux-forms@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-0.10.0.tgz#251210a5e5400078c8dfcd6941417cb0b1719e56"
+  dependencies:
+    ramda "^0.23.0"
 
 redux-forms@^0.9.0:
   version "0.9.0"

@@ -21,10 +21,9 @@ const InputArray = props => (
     </button>
     {props.fields.map((id, index) =>
       <div key={id}>
-        <Field
-          name={id}
-          component={Input}
-        />
+        <Field name={id}>
+          <Input />
+        </Field>
         <button onClick={(ev) => { ev.preventDefault(); props.fields.insert(index) }}>
           Insert field
         </button>
@@ -53,16 +52,14 @@ const DeepArray = props => (
     {props.fields.map(id =>
       <div key={id}>
         name:
-        <Field
-          name={`${id}.name`}
-          component={Input}
-        />
+        <Field name={`${id}.name`}>
+          <Input />
+        </Field>
         <br />
         surname:
-        <Field
-          name={`${id}.surname`}
-          component={Input}
-        />
+        <Field name={`${id}.surname`}>
+          <Input />
+        </Field>
       </div>
     )}
   </div>
@@ -77,25 +74,24 @@ const MyForm = props => (
     <Field
       name="test"
       defaultValue="default"
-      component={Input}
-    />
+    >
+      <Input />
+    </Field>
     <h4>second Field</h4>
     <Field
       name="test2"
       validate={validate}
-      placeholder="longer than 5 chars"
-      component={Input}
-    />
+    >
+      <Input placeholder="longer than 5 chars" />
+    </Field>
     <br />
-    <FieldArray
-      name="hobbies"
-      component={InputArray}
-    />
+    <FieldArray name="hobbies">
+      <InputArray />
+    </FieldArray>
     <br />
-    <FieldArray
-      name="profiles"
-      component={DeepArray}
-    />
+    <FieldArray name="profiles">
+      <DeepArray />
+    </FieldArray>
     <div>---</div>
     <br />
     Values:

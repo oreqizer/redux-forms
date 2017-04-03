@@ -5,21 +5,17 @@ const MyForm = (props) => (
   <Form name="second" onSubmit={props.onSubmit}>
     <h2>My form 2 (native inputs):</h2>
     input
-    <Field
-      name="test"
-      component="input"
-    />
+    <Field name="test">
+      <input type="text" />
+    </Field>
     textarea
-    <Field
-      name="test2"
-      component="textarea"
-    />
+    <Field name="test2">
+      <textarea />
+    </Field>
     checkbox
-    <Field
-      name="test3"
-      component="input"
-      type="checkbox"
-    />
+    <Field name="test3">
+      <input type="checkbox"/>
+    </Field>
     <div>---</div>
     <button type="submit">
       Submit
