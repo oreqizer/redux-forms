@@ -10,6 +10,17 @@ A simple form manager for Redux with bindings for:
 
 API is similar to [redux-form](https://github.com/erikras/redux-form) - another amazing form manager. The reason I created `redux-forms` is to keep the library as small as possible and offer bindings for multiple UI libraries (even your own!).
 
+### Size
+
+* `redux-forms` alone is **6kb** gzipped.
+* `redux-forms-react` is **9kb** with `redux-forms` included!
+
+**Dependencies**
+
+* Ramda
+
+The build process includes `babel-plugin-ramda`, so no unnecessary functions get into your bundle!
+
 ### Installation
 
 Simply:
