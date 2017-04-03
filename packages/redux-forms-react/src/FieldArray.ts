@@ -1,40 +1,55 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as R from 'ramda';
+import {
+  addIndex,
+  map,
+  path,
+} from 'ramda';
 
 import { Target } from 'redux-forms/lib/shared/getValue';
-import fieldArrayProps, { FieldsProp } from 'redux-forms/lib/shared/fieldArrayProps';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
 import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
 import connectField, { ContextProps } from './connectField';
 
 
+export type FieldsProp = {
+  length: number,
+  map: (fn: (el: string, index: number) => any) => any[],
+  push: () => void,
+  pop: () => void,
+  unshift: () => void,
+  shift: () => void,
+  insert: (index: number) => void,
+  remove: (index: number) => void,
+  swap: (index1: number, index2: number) => void,
+  move: (from: number, to: number) => void,
+};
+
 export type SuppliedProps = {
   name?: string,
   fields: FieldsProp,
 };
 
-export type FieldArrayProps<T> = T & {
+export type FieldArrayProps = {
   name: string,
-  component: React.ComponentClass<T & SuppliedProps> | React.SFC<T & SuppliedProps>,
-  withRef?: (el: React.ReactElement<any>) => void,
+  children?: React.ReactElement<any>,  // TODO find out how to specify children
 };
 
 
-const RindexMap = R.addIndex(R.map);
+const RindexMap = addIndex(map);
 
-class FieldArray<T> extends React.PureComponent<Props<T>, void> {
+class FieldArray extends React.PureComponent<Props, void> {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    component: React.PropTypes.func.isRequired,
+    children: React.PropTypes.node.isRequired,
   };
 
   static displayName = 'FieldArray';
 
-  props: Props<T>;
+  props: Props;
 
-  constructor(props: Props<T>) {
+  constructor(props: Props) {
     super(props);
 
     this.handleMap = this.handleMap.bind(this);
@@ -138,30 +153,31 @@ class FieldArray<T> extends React.PureComponent<Props<T>, void> {
   }
 
   render() {
-    const { component, withRef, _array } = this.props;
+    const { children, _array } = this.props;
 
-    if (!isNumber(_array)) {
+    if (!children || !isNumber(_array)) {
       return null;
     }
 
-    // React.SFC vs. React.ClassComponent collision
-    return React.createElement(component as any, fieldArrayProps(R.merge(this.props, { ref: withRef }), {
-      length: _array,
-      map: this.handleMap,
-      push: this.handlePush,
-      pop: this.handlePop,
-      unshift: this.handleUnshift,
-      shift: this.handleShift,
-      insert: this.handleInsert,
-      remove: this.handleRemove,
-      swap: this.handleSwap,
-      move: this.handleMove,
-    }));
+    return React.cloneElement(children, {
+      fields: {
+        length: _array,
+        map: this.handleMap,
+        push: this.handlePush,
+        pop: this.handlePop,
+        unshift: this.handleUnshift,
+        shift: this.handleShift,
+        insert: this.handleInsert,
+        remove: this.handleRemove,
+        swap: this.handleSwap,
+        move: this.handleMove,
+      },
+    });
   }
 }
 
 
-type ConnectedProps<T> = FieldArrayProps<T> & ContextProps;
+type ConnectedProps = FieldArrayProps & ContextProps;
 
 type StateProps = {
   _array?: number,
@@ -180,7 +196,7 @@ type ActionProps = {
   _arrayMove: actions.ArrayMoveCreator,
 };
 
-type Props<T> = StateProps & ActionProps & ConnectedProps<T>;
+type Props = StateProps & ActionProps & ConnectedProps;
 
 
 const bindActions = {
@@ -196,8 +212,8 @@ const bindActions = {
   _arrayMove: actions.arrayMove,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxForms),
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state: any, props: ConnectedProps) => ({
+  _array: path<number>([props._form, 'arrays', props.name], state.reduxForms),
 }), bindActions)(FieldArray);
 
 const Contexted = connectField(Connected);

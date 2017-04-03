@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { isEvent } from './helpers';
 
 

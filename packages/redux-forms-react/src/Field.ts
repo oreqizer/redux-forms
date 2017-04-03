@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as R from 'ramda';
+import {
+  identity,
+  not,
+  compose,
+  set,
+  lensProp,
+  merge,
+  path,
+} from 'ramda';
 
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
@@ -15,13 +23,12 @@ export type SuppliedProps = {
   meta: MetaProps,
 };
 
-export type FieldProps<T> = T & {
+export type FieldProps = {
   name: string,
-  component: React.ComponentClass<T & SuppliedProps> | React.SFC<T & SuppliedProps> | string,
   validate?: Validate,
   normalize?: Normalize,
   defaultValue?: string,
-  withRef?: (el: React.ReactElement<any>) => void,
+  children?: React.ReactElement<any>,  // TODO find out how to specify children
 };
 
 export type Validate = (value: Value) => string | null;
@@ -29,27 +36,25 @@ export type Validate = (value: Value) => string | null;
 export type Normalize = (value: Value) => Value;
 
 
-class Field<T> extends React.Component<Props<T>, void> {
+class Field extends React.Component<Props, void> {
   // Must contain all props of 'StateProps & ActionProps'
   static defaultProps = {
     validate: () => null,
-    normalize: R.identity,
+    normalize: identity,
     defaultValue: '',
     // state
     _field: null,
     // actions
-    _addField: R.identity,
-    _removeField: R.identity,
-    _fieldChange: R.identity,
-    _fieldFocus: R.identity,
-    _fieldBlur: R.identity,
+    _addField: identity,
+    _removeField: identity,
+    _fieldChange: identity,
+    _fieldFocus: identity,
+    _fieldBlur: identity,
   };
 
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    component: React.PropTypes.oneOfType([
-      React.PropTypes.string, React.PropTypes.func,
-    ]).isRequired,
+    children: React.PropTypes.node.isRequired,
     validate: React.PropTypes.func,
     normalize: React.PropTypes.func,
     defaultValue: React.PropTypes.string,
@@ -57,9 +62,9 @@ class Field<T> extends React.Component<Props<T>, void> {
 
   static displayName = 'Field';
 
-  props: Props<T>;
+  props: Props;
 
-  constructor(props: Props<T>) {
+  constructor(props: Props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
@@ -67,14 +72,14 @@ class Field<T> extends React.Component<Props<T>, void> {
     this.handleBlur = this.handleBlur.bind(this);
   }
 
-  shouldComponentUpdate(nextProps: Props<T>) {
+  shouldComponentUpdate(nextProps: Props) {
     const { _field } = this.props;
 
     if (!shallowCompare(boolField(this.props), boolField(nextProps))) {
       return true;
     }
 
-    return R.not(_field && nextProps._field && shallowCompare(_field, nextProps._field));
+    return not(_field && nextProps._field && shallowCompare(_field, nextProps._field));
   }
 
   componentWillMount() {
@@ -83,7 +88,7 @@ class Field<T> extends React.Component<Props<T>, void> {
     }
   }
 
-  componentWillReceiveProps(next: Props<T>) {
+  componentWillReceiveProps(next: Props) {
     const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
     if (!next._field) {
@@ -106,11 +111,11 @@ class Field<T> extends React.Component<Props<T>, void> {
     _removeField(_form, name);
   }
 
-  newField(props: Props<T>) {
+  newField(props: Props) {
     const value = props.normalize(props.defaultValue);
-    const newField = R.compose<containers.Field, containers.Field, containers.Field>(
-      R.set(R.lensProp('value'), value),
-      R.set(R.lensProp('error'), props.validate(value)),
+    const newField = compose<containers.Field, containers.Field, containers.Field>(
+      set(lensProp('value'), value),
+      set(lensProp('error'), props.validate(value)),
     )(containers.field);
 
     props._addField(props._form, props.name, newField);
@@ -143,32 +148,36 @@ class Field<T> extends React.Component<Props<T>, void> {
   }
 
   render() {
-    const { component, withRef, _field } = this.props;
+    const { children, name, _field } = this.props;
 
     // Wait until field is initialized
-    if (!_field) {
+    if (!_field || !children) {
       return null;
     }
 
-    const props = R.mergeAll<T & InputProps & MetaProps>([this.props, { ref: withRef }, _field, {
+    const props = merge( _field, {
+      name,
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
-    }]);
+    });
 
-    const { input, meta, custom } = fieldProps(props);
+    const { input, meta } = fieldProps(props);
 
-    if (typeof component === 'string') {
-      return React.createElement(component, R.merge(custom, input));
+    switch (children.type) {
+      case 'input':
+      case 'select':
+      case 'textarea':
+        return React.cloneElement(children, input);
+
+      default:
+        return React.cloneElement(children, { input, meta });
     }
-
-    // React.SFC vs. React.ClassComponent collision
-    return React.createElement(component as any, R.merge(custom, { input, meta }));
   }
 }
 
 
-type ConnectedProps<T> = FieldProps<T> & ContextProps;
+type ConnectedProps = FieldProps & ContextProps;
 
 type DefaultProps = {
   validate: Validate,
@@ -188,7 +197,7 @@ type ActionProps = {
   _fieldBlur: actions.FieldBlurCreator,
 };
 
-type Props<T> = ConnectedProps<T> & StateProps & ActionProps & DefaultProps;
+type Props = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
 
 const bindActions = {
@@ -199,8 +208,8 @@ const bindActions = {
   _fieldBlur: actions.fieldBlur,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps<{}>>((state, props: ConnectedProps<{}>) => ({
-  _field: R.path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state: any, props: ConnectedProps) => ({
+  _field: path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
 }), bindActions)(Field);
 
 const Contexted = connectField(Connected);

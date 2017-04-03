@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as R from 'ramda';
+import {
+  merge,
+  prop,
+} from 'ramda';
 
 import { isString, isPromise, isFunction, shallowCompare } from 'redux-forms/lib/shared/helpers';
 import formProps, { toUpdate } from 'redux-forms/lib/shared/formProps';
@@ -109,7 +112,7 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
       return null;
     }
 
-    return React.createElement('form', formProps(R.merge(this.props, {
+    return React.createElement('form', formProps(merge(this.props, {
       ref: withRef,
       onSubmit: this.handleSubmit,
     })), children);
@@ -144,7 +147,7 @@ const bindActions = {
 };
 
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
-  _form: Boolean(R.prop<containers.Form>(props.name, state.reduxForms)),
+  _form: Boolean(prop<containers.Form>(props.name, state.reduxForms)),
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),

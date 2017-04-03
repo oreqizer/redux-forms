@@ -1,4 +1,10 @@
-import * as R from 'ramda';
+import {
+  compose,
+  keys,
+  reduce,
+  prop,
+  length,
+} from 'ramda';
 
 
 export function isString(cand: any): cand is string {
@@ -29,7 +35,7 @@ export function isEvent(cand: any): cand is React.SyntheticEvent<any> {
 
 export type Props = { [key: string]: any };
 
-const keyCount = R.compose(R.length, R.keys);
+const keyCount = compose(length, keys);
 
 export function shallowCompare(props1: Props, props2: Props): boolean {
   if (props1 === props2) {
@@ -40,8 +46,8 @@ export function shallowCompare(props1: Props, props2: Props): boolean {
     return false;
   }
 
-  return R.reduce((acc, key) =>
-    acc && R.prop(key, props1) === R.prop(key, props2), true, R.keys(props1));
+  return reduce((acc, key) =>
+    acc && prop(key, props1) === prop(key, props2), true, keys(props1));
 }
 
 
