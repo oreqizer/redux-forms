@@ -1,4 +1,18 @@
-import * as R from 'ramda';
+import {
+  compose,
+  tail,
+  split,
+  replace,
+  reduce,
+  assoc,
+  prop,
+  head,
+  prepend,
+  keys,
+  any,
+  map,
+  identity,
+} from 'ramda';
 
 import { Field } from "./containers";
 
@@ -7,47 +21,47 @@ export type Fields = { [key: string]: Field };
 
 
 export function arrayUnshift(path: string, start: number) {
-  const toParts = R.compose<string, string, string[], string[]>(
-    R.tail,
-    R.split('.'),
-    R.replace(path, ''),
+  const toParts = compose<string, string, string[], string[]>(
+    tail,
+    split('.'),
+    replace(path, ''),
   );
 
-  return (fields: Fields): Fields => R.reduce((acc, key) => {
+  return (fields: Fields): Fields => reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
-      return R.assoc(key, R.prop(key, fields), acc);
+      return assoc(key, prop(key, fields), acc);
     }
 
     const parts = toParts(key);
-    const index = Number(R.head(parts));
+    const index = Number(head(parts));
 
     if (Number.isNaN(index) || index < start) {
-      return R.assoc(key, R.prop(key, fields), acc);
+      return assoc(key, prop(key, fields), acc);
     }
 
     const lead = `${path}.${index + 1}`;
-    const newkey = R.prepend(lead, R.tail(parts)).join('.');
-    return R.assoc(newkey, R.prop(key, fields), acc);
-  }, {}, R.keys(fields));
+    const newkey = prepend(lead, tail(parts)).join('.');
+    return assoc(newkey, prop(key, fields), acc);
+  }, {}, keys(fields));
 }
 
 export function arrayShift(path: string, start: number) {
-  const toParts = R.compose<string, string, string[], string[]>(
-    R.tail,
-    R.split('.'),
-    R.replace(path, ''),
+  const toParts = compose<string, string, string[], string[]>(
+    tail,
+    split('.'),
+    replace(path, ''),
   );
 
-  return (fields: Fields): Fields => R.reduce((acc, key) => {
+  return (fields: Fields): Fields => reduce((acc, key) => {
     if (key.indexOf(path) !== 0) {
-      return R.assoc(key, R.prop(key, fields), acc);
+      return assoc(key, prop(key, fields), acc);
     }
 
     const parts = toParts(key);
-    const index = Number(R.head(parts));
+    const index = Number(head(parts));
 
     if (Number.isNaN(index) || index < start) {
-      return R.assoc(key, R.prop(key, fields), acc);
+      return assoc(key, prop(key, fields), acc);
     }
 
     const newindex = index - 1;
@@ -56,23 +70,23 @@ export function arrayShift(path: string, start: number) {
     }
 
     const lead = `${path}.${newindex}`;
-    const newkey = R.prepend(lead, R.tail(parts)).join('.');
-    return R.assoc(newkey, R.prop(key, fields), acc);
-  }, {}, R.keys(fields));
+    const newkey = prepend(lead, tail(parts)).join('.');
+    return assoc(newkey, prop(key, fields), acc);
+  }, {}, keys(fields));
 }
 
 
 function hasPaths(pos1: string, pos2: string, fields: Fields) {
-  const keys = R.keys(fields);
-  const ok1 = R.compose(
-    R.any(R.identity),
-    R.map<string, boolean>((key) => key.indexOf(pos1) === 0),
-  )(keys);
+  const keyz = keys(fields);
+  const ok1 = compose(
+    any(identity),
+    map<string, boolean>((key) => key.indexOf(pos1) === 0),
+  )(keyz);
 
-  const ok2 = R.compose(
-    R.any(R.identity),
-    R.map<string, boolean>((key) => key.indexOf(pos2) === 0),
-  )(keys);
+  const ok2 = compose(
+    any(identity),
+    map<string, boolean>((key) => key.indexOf(pos2) === 0),
+  )(keyz);
 
   return ok1 && ok2;
 }
@@ -86,17 +100,17 @@ export function arraySwap(path: string, index1: number, index2: number) {
       return fields;
     }
 
-    return R.reduce((acc, key) => {
+    return reduce((acc, key) => {
       if (key.indexOf(pos1) === 0) {
-        return R.assoc(R.replace(pos1, pos2, key), R.prop(key, fields), acc);
+        return assoc(replace(pos1, pos2, key), prop(key, fields), acc);
       }
 
       if (key.indexOf(pos2) === 0) {
-        return R.assoc(R.replace(pos2, pos1, key), R.prop(key, fields), acc);
+        return assoc(replace(pos2, pos1, key), prop(key, fields), acc);
       }
 
-      return R.assoc(key, R.prop(key, fields), acc);
-    }, {}, R.keys(fields));
+      return assoc(key, prop(key, fields), acc);
+    }, {}, keys(fields));
   };
 }
 
@@ -109,8 +123,8 @@ export function arrayMove(path: string, index1: number, index2: number) {
       return fields;
     }
 
-    return R.compose<Fields, Fields, Fields, Fields>(
-      R.assoc(pos2, R.prop(pos1, fields)),
+    return compose<Fields, Fields, Fields, Fields>(
+      assoc(pos2, prop(pos1, fields)),
       arrayUnshift(path, index2),
       arrayShift(path, index1),
     )(fields);

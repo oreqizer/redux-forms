@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as R from 'ramda';
+import {
+  merge,
+} from 'ramda';
 
 import { invariant, isString } from 'redux-forms/lib/shared/helpers';
 import { Context } from './Form';
@@ -27,7 +29,7 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
       '[redux-forms] Field and FieldArray must be a children of the Form component.',
     );
 
-    return React.createElement(Wrapped, R.merge(props, {
+    return React.createElement(Wrapped, merge(props, {
       _form: reduxForms,
     }));
   };

@@ -1,4 +1,10 @@
-import * as R from 'ramda';
+import {
+  merge,
+  pick,
+  compose,
+  over,
+  lensProp,
+} from 'ramda';
 
 import { Value, Target } from "./getValue";
 
@@ -46,17 +52,17 @@ const META_PROPS = [
 
 const maybeCheckProps = (all: InputProps): InputProps => {
   if (typeof all.value === 'boolean') {
-    return R.merge(all, { checked: all.value });
+    return merge(all, { checked: all.value });
   }
   return all;
 };
 
 const separateProps = <T>(all: T & InputProps & MetaProps): SeparatedProps => ({
-  input: R.pick<InputProps, InputProps>(INPUT_PROPS, all),
-  meta: R.pick<InputProps, MetaProps>(META_PROPS, all),
+  input: pick<InputProps, InputProps>(INPUT_PROPS, all),
+  meta: pick<InputProps, MetaProps>(META_PROPS, all),
 });
 
-export default R.compose(separateProps, maybeCheckProps);
+export default compose(separateProps, maybeCheckProps);
 
 
-export const boolField = R.over(R.lensProp('_field'), Boolean);
+export const boolField = over(lensProp('_field'), Boolean);

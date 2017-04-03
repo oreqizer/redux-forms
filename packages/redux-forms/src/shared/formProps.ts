@@ -1,4 +1,6 @@
-import * as R from 'ramda';
+import {
+  omit,
+} from 'ramda';
 
 
 export type Omitted = {
@@ -35,7 +37,7 @@ const FORM_PROPS = [
   '_submitStop',
 ];
 
-const formProps = <T>(props: Omitted & T): T => R.omit(FORM_PROPS, props);
+const formProps = <T>(props: Omitted & T): T => omit(FORM_PROPS, props);
 
 export default formProps;
 
@@ -52,4 +54,4 @@ const NOT_TO_UPDATE = [
   '_submitting',
 ];
 
-export const toUpdate = <T>(all: T & NotUpdated): T => R.omit(NOT_TO_UPDATE, all);
+export const toUpdate = <T>(all: T & NotUpdated): T => omit(NOT_TO_UPDATE, all);

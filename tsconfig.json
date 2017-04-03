@@ -6,7 +6,8 @@
     "jsx": "react",
     "declaration": false,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "example",

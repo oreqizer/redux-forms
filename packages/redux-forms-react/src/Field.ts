@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as R from 'ramda';
+import {
+  identity,
+  not,
+  compose,
+  set,
+  lensProp,
+  merge,
+  path,
+} from 'ramda';
 
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
@@ -32,16 +40,16 @@ class Field extends React.Component<Props, void> {
   // Must contain all props of 'StateProps & ActionProps'
   static defaultProps = {
     validate: () => null,
-    normalize: R.identity,
+    normalize: identity,
     defaultValue: '',
     // state
     _field: null,
     // actions
-    _addField: R.identity,
-    _removeField: R.identity,
-    _fieldChange: R.identity,
-    _fieldFocus: R.identity,
-    _fieldBlur: R.identity,
+    _addField: identity,
+    _removeField: identity,
+    _fieldChange: identity,
+    _fieldFocus: identity,
+    _fieldBlur: identity,
   };
 
   static propTypes = {
@@ -71,7 +79,7 @@ class Field extends React.Component<Props, void> {
       return true;
     }
 
-    return R.not(_field && nextProps._field && shallowCompare(_field, nextProps._field));
+    return not(_field && nextProps._field && shallowCompare(_field, nextProps._field));
   }
 
   componentWillMount() {
@@ -105,9 +113,9 @@ class Field extends React.Component<Props, void> {
 
   newField(props: Props) {
     const value = props.normalize(props.defaultValue);
-    const newField = R.compose<containers.Field, containers.Field, containers.Field>(
-      R.set(R.lensProp('value'), value),
-      R.set(R.lensProp('error'), props.validate(value)),
+    const newField = compose<containers.Field, containers.Field, containers.Field>(
+      set(lensProp('value'), value),
+      set(lensProp('error'), props.validate(value)),
     )(containers.field);
 
     props._addField(props._form, props.name, newField);
@@ -147,7 +155,7 @@ class Field extends React.Component<Props, void> {
       return null;
     }
 
-    const props = R.merge( _field, {
+    const props = merge( _field, {
       name,
       onChange: this.handleChange,
       onFocus: this.handleFocus,
@@ -200,8 +208,8 @@ const bindActions = {
   _fieldBlur: actions.fieldBlur,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _field: R.path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state: any, props: ConnectedProps) => ({
+  _field: path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
 }), bindActions)(Field);
 
 const Contexted = connectField(Connected);

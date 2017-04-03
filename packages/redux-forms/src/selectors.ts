@@ -1,4 +1,14 @@
-import * as R from 'ramda';
+import {
+  memoize,
+  compose,
+  map,
+  prop,
+  path,
+  values,
+  none,
+  any,
+  identity,
+} from 'ramda';
 
 import { State } from './formsReducer';
 import { Form } from './containers';
@@ -20,15 +30,15 @@ type Memoize<T> = (x: T[]) => T;
 
 const EMPTY = {};
 
-const memUnflatten = R.memoize(unflatten) as Memoize<{}>;
+const memUnflatten = memoize(unflatten) as Memoize<{}>;
 
-const memValue = R.memoize(R.compose(
+const memValue = memoize(compose(
   memUnflatten,
-  R.map(R.prop('value')),
+  map(prop('value')),
 ));
 
 export function valueSelector(name: string, state: IState): Values {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
   }
@@ -37,13 +47,13 @@ export function valueSelector(name: string, state: IState): Values {
 }
 
 
-const memError = R.memoize(R.compose(
+const memError = memoize(compose(
   memUnflatten,
-  R.map(R.prop('error')),
+  map(prop('error')),
 ));
 
 export function errorSelector(name: string, state: IState): Errors {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
   }
@@ -52,16 +62,16 @@ export function errorSelector(name: string, state: IState): Errors {
 }
 
 
-const memValues = R.memoize(R.values) as Memoize<{}>;
+const memValues = memoize(values) as Memoize<{}>;
 
-const memValid = R.memoize(R.compose(
-  R.none(Boolean),
+const memValid = memoize(compose(
+  none(Boolean),
   memValues,
-  R.map(R.prop('error')),
+  map(prop('error')),
 ));
 
 export function isValid(name: string, state: IState): boolean {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -70,14 +80,14 @@ export function isValid(name: string, state: IState): boolean {
 }
 
 
-const memTouched = R.memoize(R.compose(
-  R.any(R.identity),
+const memTouched = memoize(compose(
+  any(identity),
   memValues,
-  R.map(R.prop('touched')),
+  map(prop('touched')),
 ));
 
 export function isTouched(name: string, state: IState): boolean {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -86,14 +96,14 @@ export function isTouched(name: string, state: IState): boolean {
 }
 
 
-const memDirty = R.memoize(R.compose(
-  R.any(R.identity),
+const memDirty = memoize(compose(
+  any(identity),
   memValues,
-  R.map(R.prop('dirty')),
+  map(prop('dirty')),
 ));
 
 export function isDirty(name: string, state: IState): boolean {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }
@@ -103,7 +113,7 @@ export function isDirty(name: string, state: IState): boolean {
 
 
 export function isSubmitting(name: string, state: IState): boolean {
-  const form = R.path<Form>(['reduxForms', name], state);
+  const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return false;
   }

@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as R from 'ramda';
+import {
+  addIndex,
+  map,
+  path,
+} from 'ramda';
 
 import { Target } from 'redux-forms/lib/shared/getValue';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
@@ -33,7 +37,7 @@ export type FieldArrayProps = {
 };
 
 
-const RindexMap = R.addIndex(R.map);
+const RindexMap = addIndex(map);
 
 class FieldArray extends React.PureComponent<Props, void> {
   static propTypes = {
@@ -208,8 +212,8 @@ const bindActions = {
   _arrayMove: actions.arrayMove,
 };
 
-const Connected = connect<StateProps, ActionProps, ConnectedProps>((state, props: ConnectedProps) => ({
-  _array: R.path<number>([props._form, 'arrays', props.name], state.reduxForms),
+const Connected = connect<StateProps, ActionProps, ConnectedProps>((state: any, props: ConnectedProps) => ({
+  _array: path<number>([props._form, 'arrays', props.name], state.reduxForms),
 }), bindActions)(FieldArray);
 
 const Contexted = connectField(Connected);
