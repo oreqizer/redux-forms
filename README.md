@@ -39,11 +39,11 @@ Mount the `redux-forms` reducer to your root reducer as `reduxForms`.
 
 ```js
 import { createStore, combineReducers } from 'redux';
-import { reducer } from 'redux-forms';
+import reduxFormsReducer from 'redux-forms';
 
 const rootReducer = combineReducers({
   // ... your other reducers
-  reduxForms: reducer,
+  reduxForms: reduxFormsReducer,
 });
 
 const store = createStore(rootReducer);
