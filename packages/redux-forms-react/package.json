@@ -1,6 +1,6 @@
 {
   "name": "redux-forms-react",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "A simple form management for React & Redux.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "ramda": "^0.23.0",
-    "redux-forms": "^0.10.1"
+    "redux-forms": "^0.11.0"
   },
   "files": [
     "dist",

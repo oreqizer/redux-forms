@@ -105,12 +105,6 @@ class Field extends React.Component<Props, void> {
     }
   }
 
-  componentWillUnmount() {
-    const { _removeField, _form, name } = this.props;
-
-    _removeField(_form, name);
-  }
-
   newField(props: Props) {
     const value = props.normalize(props.defaultValue);
     const newField = compose<containers.Field, containers.Field, containers.Field>(
@@ -191,7 +185,6 @@ type StateProps = {
 
 type ActionProps = {
   _addField: actions.AddFieldCreator,
-  _removeField: actions.RemoveFieldCreator,
   _fieldChange: actions.FieldChangeCreator,
   _fieldFocus: actions.FieldFocusCreator,
   _fieldBlur: actions.FieldBlurCreator,
@@ -202,7 +195,6 @@ type Props = ConnectedProps & StateProps & ActionProps & DefaultProps;
 
 const bindActions = {
   _addField: actions.addField,
-  _removeField: actions.removeField,
   _fieldChange: actions.fieldChange,
   _fieldFocus: actions.fieldFocus,
   _fieldBlur: actions.fieldBlur,

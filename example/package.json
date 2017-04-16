@@ -10,18 +10,18 @@
   "author": "oreqizer",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-loader": "^6.2.9",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "webpack": "2.1.0-beta.25"
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "2.4.1"
   },
   "dependencies": {
-    "react": "^15.4.1",
-    "react-redux": "^4.4.6",
+    "react": "^15.5.4",
+    "react-redux": "^5.0.4",
     "redux": "^3.6.0",
-    "redux-forms": "^0.9.0",
-    "redux-forms-react": "^0.10.0",
-    "redux-logger": "^2.7.4"
+    "redux-forms": "^0.11.0",
+    "redux-forms-react": "^0.11.0",
+    "redux-logger": "^3.0.1"
   }
 }

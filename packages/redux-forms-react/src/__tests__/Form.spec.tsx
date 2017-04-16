@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import * as R from "ramda";
 
-import { reducer } from 'redux-forms/lib/index';
+import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import ConnectedForm from '../Form';
 

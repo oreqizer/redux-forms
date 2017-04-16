@@ -71,12 +71,6 @@ class FieldArray extends React.PureComponent<Props, void> {
     }
   }
 
-  componentWillUnmount() {
-    const { _form, name, _removeArray } = this.props;
-
-    _removeArray(_form, name);
-  }
-
   handleMap<T>(fn: (el: string, index: number) => T): T[] {
     const { name, _array } = this.props;
 
@@ -185,7 +179,6 @@ type StateProps = {
 
 type ActionProps = {
   _addArray: actions.AddArrayCreator,
-  _removeArray: actions.RemoveArrayCreator,
   _arrayPush: actions.ArrayPushCreator,
   _arrayPop: actions.ArrayPopCreator,
   _arrayUnshift: actions.ArrayUnshiftCreator,
@@ -201,7 +194,6 @@ type Props = StateProps & ActionProps & ConnectedProps;
 
 const bindActions = {
   _addArray: actions.addArray,
-  _removeArray: actions.removeArray,
   _arrayPush: actions.arrayPush,
   _arrayPop: actions.arrayPop,
   _arrayUnshift: actions.arrayUnshift,

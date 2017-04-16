@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { reducer } from 'redux-forms';
-import createLogger from 'redux-logger';
+import reduxForms from 'redux-forms';
+import { createLogger } from 'redux-logger';
 
 import MyForm from './src/MyForm';
 import FlatForm from './src/FlatForm';
@@ -11,7 +11,7 @@ import FlatForm from './src/FlatForm';
 
 const logger = createLogger({ collapsed: true });
 const store = createStore(combineReducers({
-  reduxForms: reducer,
+  reduxForms,
 }), {}, applyMiddleware(logger));
 
 

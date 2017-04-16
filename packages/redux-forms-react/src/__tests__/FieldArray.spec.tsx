@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
 import * as R from 'ramda';
 
-import { reducer } from 'redux-forms/lib/index';
+import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import ConnectedFieldArray from '../FieldArray';
 
@@ -18,7 +18,6 @@ import ConnectedFieldArray from '../FieldArray';
 // - _array: string[]
 // actions:
 // - _addArray: AddArrayCreator
-// - _removeArray: RemoveArrayCreator
 // - _arrayPush: ArrayPushCreator
 // - _arrayPop: ArrayPopCreator
 // - _arrayUnshift: ArrayUnshiftCreator
@@ -104,24 +103,6 @@ describe('#FieldArray', () => {
     ));
 
     expect(addArray).toBeCalledWith('form', 'array');
-  });
-
-  it('should remove an array', () => {
-    const removeArray = jest.fn();
-    const wrapper = mount((
-      <FieldArray
-        name="array"
-        _form="form"
-        _addArray={jest.fn()}
-        _removeArray={removeArray}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.unmount();
-
-    expect(removeArray).toBeCalledWith('form', 'array');
   });
 
   it('should provide array length', () => {
@@ -505,23 +486,6 @@ describe('#connect(FieldArray)', () => {
     );
 
     expect(getForm(store).arrays).toEqual({ test: 0 });
-  });
-
-  it('should remove an array', () => {
-    const store = newStore();
-    const wrapper = mount((
-        <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
-        </Provider>
-      ),
-      options,
-    );
-
-    wrapper.unmount();
-
-    expect(getForm(store).arrays).toEqual({});
   });
 
   it('should push a field', () => {

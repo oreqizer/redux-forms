@@ -3,7 +3,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { mount } from "enzyme";
 
-import { reducer } from 'redux-forms/lib/index';
+import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import Form from '../Form';
 import Field from '../Field';

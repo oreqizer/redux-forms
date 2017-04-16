@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as R from 'ramda';
 
-import { reducer } from 'redux-forms/lib/index';
+import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import ConnectedField from '../Field';
 
@@ -18,7 +18,6 @@ import ConnectedField from '../Field';
 // - _field: FieldObject
 // actions:
 // - _addField: AddFieldCreator
-// - _removeField: RemoveFieldCreator
 // - _fieldChange: FieldChangeCreator
 // - _fieldFocus: FieldFocusCreator
 // - _fieldBlur: FieldBlurCreator
@@ -375,27 +374,6 @@ describe('#Field', () => {
     expect(fieldChange).toBeCalledWith('form', 'test', '', null, true);
   });
 
-  it('should unmount a field', () => {
-    const removeField = jest.fn();
-    const wrapper = shallow((
-      <Field
-        name="test"
-        _form="form"
-        _field={field}
-        _addField={jest.fn()}
-        _removeField={removeField}
-      >
-        <input />
-      </Field>
-    ));
-
-    expect(removeField).not.toBeCalled();
-
-    wrapper.unmount();
-
-    expect(removeField).toBeCalledWith('form', 'test');
-  });
-
   it('should fire a change action', () => {
     const fieldChange = jest.fn();
     const wrapper = shallow((
@@ -745,21 +723,6 @@ describe('#connect(Field)', () => {
 
     expect(getForm(store).fields).toEqual({ test: field });
     expect(wrapper.find('input').length).toBe(1);
-  });
-
-  it('should remove a field', () => {
-    const store = newStore();
-    const wrapper = mount((
-      <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
-      </Provider>
-    ), options);
-
-    wrapper.unmount();
-
-    expect(getForm(store).fields).toEqual({});
   });
 
   it('should handle a change event', () => {
