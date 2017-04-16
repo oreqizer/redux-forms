@@ -1,6 +1,1 @@
-import reducer from './formsReducer';
-
-
-export {
-  reducer,
-};
+export { default } from './formsReducer';
