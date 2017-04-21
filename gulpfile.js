@@ -8,11 +8,15 @@ const chalk = require('chalk');
 const through = require('through2');
 
 
-const base = './packages/redux-forms/src/**/*.{ts,tsx}';
+const base = [
+  './types/*',
+  './packages/redux-forms/src/**/*.{ts,tsx}'
+];
 
 const srcts = [
+  './types/*',
   './packages/*/src/**/*.{ts,tsx}',
-  '!' + base,
+  '!./packages/redux-forms/src/**/*.{ts,tsx}',
   '!**/__tests__/**',
 ];
 
@@ -27,6 +31,7 @@ const tsOptions = {
   declaration: true,
   noImplicitAny: true,
   strictNullChecks: true,
+  allowSyntheticDefaultImports: true,
 };
 
 const mapDest = (path) => path.replace(/(packages\/[^/]+)\/src\//, '$1/lib/');

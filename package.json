@@ -5,7 +5,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "npm run tslint",
-    "tslint": "tslint -e '**/lib/**' 'packages/**/*.{ts,tsx}'",
+    "tslint": "tslint -e '**/lib/**' --project tsconfig.json --type-check 'packages/**/*.{ts,tsx}'",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "gulp",
     "build:umd": "webpack",
@@ -39,7 +39,6 @@
   "devDependencies": {
     "@types/enzyme": "~2.7.8",
     "@types/jest": "~19.2.2",
-    "@types/prop-types": "^15.5.1",
     "@types/ramda": "0.0.6",
     "@types/react-redux": "~4.4.38",
     "@types/redux": "~3.6.0",
