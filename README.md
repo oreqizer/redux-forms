@@ -10,7 +10,12 @@ A simple form manager for Redux with bindings for:
 
 API is similar to [redux-form](https://github.com/erikras/redux-form) - another amazing form manager. The reason I created `redux-forms` is to keep the library as small as possible and offer bindings for multiple UI libraries (even your own!).
 
-### Size
+### Packages
+
+* `redux-forms` [![npm](https://img.shields.io/npm/v/redux-forms.svg)](https://www.npmjs.com/package/redux-forms)
+* `redux-forms-react` [![npm](https://img.shields.io/npm/v/redux-forms-react.svg)](https://www.npmjs.com/package/redux-forms-react)
+
+## Size
 
 * `redux-forms` alone is **6kb** gzipped.
 * `redux-forms-react` is **9kb** with `redux-forms` included!
@@ -21,7 +26,7 @@ API is similar to [redux-form](https://github.com/erikras/redux-form) - another 
 
 The build process includes `babel-plugin-ramda`, so no unnecessary functions get into your bundle!
 
-### Installation
+## Installation
 
 Simply:
 
@@ -33,7 +38,7 @@ Or for the oldschool:
 
 Then just install bindings for any UI library you prefer.
 
-### Quickstart
+## Quickstart
 
 Mount the `redux-forms` reducer to your root reducer as `reduxForms`.
 
@@ -77,7 +82,7 @@ export default MyForm;
 
 That's it! This is how you mount the most basic form. For more advanced usage, check out the API - there are examples for each use case.
 
-### Documentation
+## Documentation
 
 * [reducer](https://oreqizer.gitbooks.io/redux-forms/content/reducer.html)
 * [Form](https://oreqizer.gitbooks.io/redux-forms/content/form.html)
