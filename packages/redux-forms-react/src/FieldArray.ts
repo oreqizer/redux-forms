@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   addIndex,
@@ -41,8 +42,8 @@ const RindexMap = addIndex(map);
 
 class FieldArray extends React.PureComponent<Props, void> {
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
-    children: React.PropTypes.node.isRequired,
+    name: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
   };
 
   static displayName = 'FieldArray';

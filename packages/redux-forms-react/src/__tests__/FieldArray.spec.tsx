@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
@@ -36,7 +37,7 @@ const options = {
     reduxForms: 'test',
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.string.isRequired,
+    reduxForms: PropTypes.string.isRequired,
   },
 };
 

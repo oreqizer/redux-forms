@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 
 import connectField from '../connectField';
@@ -18,7 +19,7 @@ const context = {
     reduxForms: 'test',
   },
   childContextTypes: {
-    reduxForms: React.PropTypes.string.isRequired,
+    reduxForms: PropTypes.string.isRequired,
   },
 };
 

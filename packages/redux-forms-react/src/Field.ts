@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   identity,
@@ -53,11 +54,11 @@ class Field extends React.Component<Props, void> {
   };
 
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
-    children: React.PropTypes.node.isRequired,
-    validate: React.PropTypes.func,
-    normalize: React.PropTypes.func,
-    defaultValue: React.PropTypes.string,
+    name: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    validate: PropTypes.func.isRequired,
+    normalize: PropTypes.func.isRequired,
+    defaultValue: PropTypes.string.isRequired,
   };
 
   static displayName = 'Field';

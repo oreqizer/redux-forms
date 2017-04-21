@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {
   merge,
 } from 'ramda';
@@ -36,7 +37,7 @@ export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> 
 
 
   ConnectedField.contextTypes = {
-    reduxForms: React.PropTypes.string.isRequired,
+    reduxForms: PropTypes.string.isRequired,
   };
 
   ConnectedField.displayName = Wrapped.displayName;

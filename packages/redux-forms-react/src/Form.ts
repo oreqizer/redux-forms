@@ -1,6 +1,8 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
+  identity,
   merge,
   prop,
 } from 'ramda';
@@ -26,13 +28,33 @@ export type Context = {
 
 
 class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
+  static defaultProps = {
+    persistent: false,
+    onSubmit: () => null,
+    withRef: () => null,
+    // state
+    _form: false,
+    _values: {},
+    _valid: false,
+    _submitting: false,
+    // actions
+    _addForm: identity,
+    _removeForm: identity,
+    _touchAll: identity,
+    _submitStart: identity,
+    _submitStop: identity,
+  };
+
   static childContextTypes = {
-    reduxForms: React.PropTypes.string.isRequired,
+    reduxForms: PropTypes.string.isRequired,
   };
 
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
-    persistent: React.PropTypes.bool,
+    name: PropTypes.string.isRequired,
+    // TODO this shouldn't be required, but TS bitches about things
+    persistent: PropTypes.bool.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    withRef: PropTypes.func.isRequired,
   };
 
   static displayName = 'Form';
