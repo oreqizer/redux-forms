@@ -18,7 +18,7 @@ import * as selectors from 'redux-forms/selectors';
 export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
   name: string;
   persistent?: boolean;
-  onSubmit?: (values: any) => Promise<any> | void;
+  onSubmit?: (values: any) => Promise<any> | null | undefined;
   withRef?: (el: HTMLFormElement) => void;
 }
 
@@ -27,7 +27,7 @@ export type Context = {
 };
 
 
-class Form<T> extends React.Component<Props<T>, void> implements React.ChildContextProvider<Context> {
+class Form extends React.Component<Props, {}> implements React.ChildContextProvider<Context> {
   static defaultProps = {
     persistent: false,
     onSubmit: () => null,
@@ -59,15 +59,15 @@ class Form<T> extends React.Component<Props<T>, void> implements React.ChildCont
 
   static displayName = 'Form';
 
-  props: Props<T>;
+  props: Props;
 
-  constructor(props: Props<T>) {
+  constructor(props: Props) {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  shouldComponentUpdate(nextProps: Props<T>) {
+  shouldComponentUpdate(nextProps: Props) {
     return !shallowCompare(toUpdate(this.props), toUpdate(nextProps));
   }
 
@@ -150,14 +150,14 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  _addForm: actions.AddFormCreator,
-  _removeForm: actions.RemoveFormCreator,
-  _touchAll: actions.TouchAllCreator,
-  _submitStart: actions.SubmitStartCreator,
-  _submitStop: actions.SubmitStopCreator,
+  _addForm: typeof actions.addForm,
+  _removeForm: typeof actions.removeForm,
+  _touchAll: typeof actions.touchAll,
+  _submitStart: typeof actions.submitStart,
+  _submitStop: typeof actions.submitStop,
 };
 
-export type Props<T> = StateProps & ActionProps & IFormProps & T;
+export type Props = StateProps & ActionProps & IFormProps;
 
 
 const bindActions = {

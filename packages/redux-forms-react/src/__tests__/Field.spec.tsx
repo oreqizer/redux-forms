@@ -35,7 +35,7 @@ const Component = (props: any) => (
 );
 
 const pattern = '__val__ km';
-const validate = (value: string) => value.includes('always error') ? null : 'bad format';
+const validate = (value: string) => R.contains('always error', value) ? null : 'bad format';
 const normalize = (value: string) => pattern.replace('__val__', value);
 
 const event = (value: string) => ({

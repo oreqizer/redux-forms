@@ -23,7 +23,7 @@
     "redux": "^3.6.0"
   },
   "dependencies": {
-    "ramda": "^0.23.0",
+    "ramda": "^0.24.1",
     "redux-forms": "^0.11.0"
   },
   "files": [

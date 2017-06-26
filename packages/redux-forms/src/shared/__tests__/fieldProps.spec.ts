@@ -31,9 +31,10 @@ const props = {
   _field: {},
 };
 
-const props2 = Object.assign({}, props, {
+const props2 = {
+  ...props,
   value: true,
-});
+};
 
 describe('#fieldProps', () => {
   it('should separate input props', () => {

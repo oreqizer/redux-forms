@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { ComponentDecorator } from 'react-redux';
 import {
   identity,
   not,
@@ -37,20 +38,11 @@ export type Validate = (value: Value) => string | null;
 export type Normalize = (value: Value) => Value;
 
 
-class Field extends React.Component<Props, void> {
-  // Must contain all props of 'StateProps & ActionProps'
+class Field extends React.Component<Props, {}> {
   static defaultProps = {
     validate: () => null,
     normalize: identity,
     defaultValue: '',
-    // state
-    _field: null,
-    // actions
-    _addField: identity,
-    _removeField: identity,
-    _fieldChange: identity,
-    _fieldFocus: identity,
-    _fieldBlur: identity,
   };
 
   static propTypes = {
@@ -185,10 +177,10 @@ type StateProps = {
 };
 
 type ActionProps = {
-  _addField: actions.AddFieldCreator,
-  _fieldChange: actions.FieldChangeCreator,
-  _fieldFocus: actions.FieldFocusCreator,
-  _fieldBlur: actions.FieldBlurCreator,
+  _addField: typeof actions.addField,
+  _fieldChange: typeof actions.fieldChange,
+  _fieldFocus: typeof actions.fieldFocus,
+  _fieldBlur: typeof actions.fieldBlur,
 };
 
 type Props = ConnectedProps & StateProps & ActionProps & DefaultProps;

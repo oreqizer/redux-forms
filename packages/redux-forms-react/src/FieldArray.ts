@@ -5,6 +5,7 @@ import {
   addIndex,
   map,
   path,
+  repeat,
 } from 'ramda';
 
 import { Target } from 'redux-forms/lib/shared/getValue';
@@ -28,7 +29,6 @@ export type FieldsProp = {
 };
 
 export type SuppliedProps = {
-  name?: string,
   fields: FieldsProp,
 };
 
@@ -40,7 +40,7 @@ export type FieldArrayProps = {
 
 const RindexMap = addIndex(map);
 
-class FieldArray extends React.PureComponent<Props, void> {
+class FieldArray extends React.PureComponent<Props, {}> {
   static propTypes = {
     name: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
@@ -75,8 +75,12 @@ class FieldArray extends React.PureComponent<Props, void> {
   handleMap<T>(fn: (el: string, index: number) => T): T[] {
     const { name, _array } = this.props;
 
-    const array = Array.from(Array(_array));
-    return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
+    if (isNumber(_array)) {
+      const array = repeat(null, _array);
+      return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
+    }
+
+    return [];
   }
 
   handlePush(ev?: React.SyntheticEvent<Target>) {
@@ -96,7 +100,7 @@ class FieldArray extends React.PureComponent<Props, void> {
       ev.preventDefault();
     }
 
-    if (_array > 0) {
+    if (isNumber(_array) && _array > 0) {
       _arrayPop(_form, name);
     }
   }
@@ -118,7 +122,7 @@ class FieldArray extends React.PureComponent<Props, void> {
       ev.preventDefault();
     }
 
-    if (_array > 0) {
+    if (isNumber(_array) && _array > 0) {
       _arrayShift(_form, name);
     }
   }
@@ -179,15 +183,15 @@ type StateProps = {
 };
 
 type ActionProps = {
-  _addArray: actions.AddArrayCreator,
-  _arrayPush: actions.ArrayPushCreator,
-  _arrayPop: actions.ArrayPopCreator,
-  _arrayUnshift: actions.ArrayUnshiftCreator,
-  _arrayShift: actions.ArrayShiftCreator,
-  _arrayInsert: actions.ArrayInsertCreator,
-  _arrayRemove: actions.ArrayRemoveCreator,
-  _arraySwap: actions.ArraySwapCreator,
-  _arrayMove: actions.ArrayMoveCreator,
+  _addArray: typeof actions.addArray,
+  _arrayPush: typeof actions.arrayPush,
+  _arrayPop: typeof actions.arrayPop,
+  _arrayUnshift: typeof actions.arrayUnshift,
+  _arrayShift: typeof actions.arrayShift,
+  _arrayInsert: typeof actions.arrayInsert,
+  _arrayRemove: typeof actions.arrayRemove,
+  _arraySwap: typeof actions.arraySwap,
+  _arrayMove: typeof actions.arrayMove,
 };
 
 type Props = StateProps & ActionProps & ConnectedProps;
