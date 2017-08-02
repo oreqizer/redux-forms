@@ -12,7 +12,7 @@ import { Target } from 'redux-forms/lib/shared/getValue';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
 import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
-import connectField, { ContextProps } from './connectField';
+import connectField, { FormProp } from './connectField';
 
 
 export type FieldsProp = {
@@ -176,7 +176,7 @@ class FieldArray extends React.PureComponent<Props, {}> {
 }
 
 
-type ConnectedProps = FieldArrayProps & ContextProps;
+type ConnectedProps = FieldArrayProps & FormProp;
 
 type StateProps = {
   _array?: number,
