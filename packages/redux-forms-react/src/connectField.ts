@@ -8,23 +8,20 @@ import { invariant, isString } from 'redux-forms/lib/shared/helpers';
 import { Context } from './Form';
 
 
-export type FormProps = {
-  name: string,
-};
-
-export type ContextProps = {
+export type FormProp = {
   _form: string,
 };
 
-export type WrappedField<T> = React.ComponentClass<T & FormProps & ContextProps>;
+export type WrappedField<T> = React.ComponentClass<T & FormProp>;
 
-export type Connected<T> = React.SFC<T & FormProps> & {
-  WrappedComponent?: WrappedField<T>,
+export type Connected<T> = React.SFC<T> & {
+  WrappedComponent?: React.ComponentClass<T>,
 };
 
 
-export default function connectField<T>(Wrapped: WrappedField<T>): Connected<T> {
-  const ConnectedField: Connected<T> = (props: T & FormProps, { reduxForms }: Context) => {
+// TODO add option to supply from prop
+export default function connectField<T>(Wrapped: React.ComponentClass<T & FormProp>): Connected<T> {
+  const ConnectedField: Connected<T> = (props: T, { reduxForms }: Context) => {
     invariant(
       isString(reduxForms),
       '[redux-forms] Field and FieldArray must be a children of the Form component.',
