@@ -33,7 +33,7 @@ export type FieldProps = {
   name: string,
   validate?: Validate,
   normalize?: Normalize,
-  defaultValue?: string,
+  defaultValue?: Value,
 };
 
 type ConnectedProps = FieldProps & FormProp;
@@ -62,10 +62,9 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
     static propTypes = {
       name: PropTypes.string.isRequired,
-      children: PropTypes.node,
-      validate: PropTypes.func,
-      normalize: PropTypes.func,
-      defaultValue: PropTypes.string,
+      validate: PropTypes.func.isRequired,
+      normalize: PropTypes.func.isRequired,
+      defaultValue: PropTypes.any.isRequired,
     };
 
     props: Props<T>;
