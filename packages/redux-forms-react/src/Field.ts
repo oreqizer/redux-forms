@@ -29,7 +29,7 @@ export type FieldProps = {
   name: string,
   validate?: Validate,
   normalize?: Normalize,
-  defaultValue?: string,
+  defaultValue?: Value,
   children?: React.ReactElement<any>,  // TODO find out how to specify children
 };
 
@@ -50,7 +50,7 @@ class Field extends React.Component<Props, {}> {
     children: PropTypes.node.isRequired,
     validate: PropTypes.func.isRequired,
     normalize: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string.isRequired,
+    defaultValue: PropTypes.any.isRequired,
   };
 
   static displayName = 'Field';
@@ -169,7 +169,7 @@ type ConnectedProps = FieldProps & ContextProps;
 type DefaultProps = {
   validate: Validate,
   normalize: Normalize,
-  defaultValue: string,
+  defaultValue: Value,
 };
 
 type StateProps = {
