@@ -172,7 +172,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
   }
 
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
-    (state: IReduxFormsState, props: ConnectedProps) => ({
+    (state: IReduxFormsState, props: ConnectedProps & T) => ({
       _field: path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
     }),
     {
