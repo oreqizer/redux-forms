@@ -12,11 +12,11 @@ import {
   path,
 } from 'ramda';
 
+import { IReduxFormsState } from 'redux-forms/lib';
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
 import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
 import { shallowCompare } from 'redux-forms/lib/shared/helpers';
-import { State } from 'redux-forms/lib/formsReducer';
 import * as actions from 'redux-forms/actions';
 import connectField, { FormProp } from './connectField';
 
@@ -163,7 +163,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
       const { input, meta, rest } = fieldProps(props);
 
-      // SFC vs Component types collision
+      // TODO SFC not compatibile with class... wtf TS
       return React.createElement(Component as any, merge(rest, {
         input,
         meta,
@@ -171,12 +171,8 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
   }
 
-  interface IReduxState {
-    reduxForms: State;
-  }
-
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
-    (state: IReduxState, props: ConnectedProps) => ({
+    (state: IReduxFormsState, props: ConnectedProps) => ({
       _field: path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
     }),
     {
