@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ComponentDecorator } from 'react-redux';
 import {
   identity,
   not,
@@ -12,7 +11,7 @@ import {
   path,
 } from 'ramda';
 
-import { IReduxFormsState } from 'redux-forms/lib';
+import { IReduxFormsState } from 'redux-forms/lib/index';
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
 import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
@@ -31,9 +30,9 @@ export type Normalize = (value: Value) => Value;
 
 export type FieldProps = {
   name: string,
-  validate?: Validate,
-  normalize?: Normalize,
-  defaultValue?: Value,
+  validate: Validate,
+  normalize: Normalize,
+  defaultValue: Value,
 };
 
 type ConnectedProps = FieldProps & FormProp;

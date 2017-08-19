@@ -173,7 +173,7 @@ const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IF
   _values: selectors.valueSelector(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),
-}), bindActions)(Form);
+}), bindActions)(Form as any);
 
 Connected.displayName = Form.displayName;
 
