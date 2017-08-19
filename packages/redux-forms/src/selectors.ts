@@ -81,7 +81,7 @@ export function isValid(name: string, state: IState): boolean {
 
 
 const memTouched = memoize(compose(
-  any(identity),
+  any(Boolean),
   memValues,
   map(prop('touched')),
 ));
@@ -97,7 +97,7 @@ export function isTouched(name: string, state: IState): boolean {
 
 
 const memDirty = memoize(compose(
-  any(identity),
+  any(Boolean),
   memValues,
   map(prop('dirty')),
 ));

@@ -35,7 +35,7 @@ export function arrayUnshift(path: string, start: number) {
     const parts = toParts(key);
     const index = Number(head(parts));
 
-    if (Number.isNaN(index) || index < start) {
+    if (isNaN(index) || index < start) {
       return assoc(key, prop(key, fields), acc);
     }
 
@@ -60,7 +60,7 @@ export function arrayShift(path: string, start: number) {
     const parts = toParts(key);
     const index = Number(head(parts));
 
-    if (Number.isNaN(index) || index < start) {
+    if (isNaN(index) || index < start) {
       return assoc(key, prop(key, fields), acc);
     }
 
@@ -79,12 +79,12 @@ export function arrayShift(path: string, start: number) {
 function hasPaths(pos1: string, pos2: string, fields: Fields) {
   const keyz = keys(fields);
   const ok1 = compose(
-    any(identity),
+    any(Boolean),
     map<string, boolean>((key) => key.indexOf(pos1) === 0),
   )(keyz);
 
   const ok2 = compose(
-    any(identity),
+    any(Boolean),
     map<string, boolean>((key) => key.indexOf(pos2) === 0),
   )(keyz);
 

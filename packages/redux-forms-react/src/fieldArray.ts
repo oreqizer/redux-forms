@@ -9,7 +9,7 @@ import {
   merge,
 } from 'ramda';
 
-import { IReduxFormsState } from 'redux-forms/lib';
+import { IReduxFormsState } from 'redux-forms/lib/index';
 import fieldArrayProps from 'redux-forms/lib/shared/fieldArrayProps';
 import { Target } from 'redux-forms/lib/shared/getValue';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
