@@ -8,7 +8,7 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import ConnectedFieldArray from '../FieldArray';
+import fieldArray from '../FieldArray';
 
 
 // NOTE:
@@ -26,11 +26,13 @@ import ConnectedFieldArray from '../FieldArray';
 // - _arrayInsert: ArrayInsertCreator
 // - _arrayRemove: ArrayRemoveCreator
 // - _arraySwap: ArraySwapCreator
-const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
-
 const Component = (props: any) => (
   <div className="Component" />
 );
+
+const ConnectedFieldArray = fieldArray(Component);
+
+const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
 
 const options = {
   context: {
@@ -42,11 +44,6 @@ const options = {
 };
 
 const event = { target: { value: 'doge' } };
-
-const eventFn = (pd: () => any) => ({
-  preventDefault: pd,
-  stopPropagation: R.identity,
-});
 
 const MyComp = () => (
   <div className="MyComp" />
@@ -68,9 +65,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.name()).toBe('FieldArray');
@@ -83,9 +78,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={1}
         _addArray={addArray}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(addArray).not.toBeCalled();
@@ -98,9 +91,7 @@ describe('#FieldArray', () => {
         name="array"
         _form="form"
         _addArray={addArray}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(addArray).toBeCalledWith('form', 'array');
@@ -114,9 +105,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').length).toBe(1);
@@ -128,9 +117,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={2}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').map(R.identity)).toEqual(['array.0', 'array.1']);
@@ -142,9 +129,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={2}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').map((_: any, i: number) => i)).toEqual([0, 1]);
@@ -159,33 +144,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').push();
 
     expect(push).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on push', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayPush={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').push(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should not handle pop', () => {
@@ -197,9 +161,7 @@ describe('#FieldArray', () => {
         _array={0}
         _addArray={jest.fn()}
         _arrayPop={pop}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').pop();
@@ -216,33 +178,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPop={pop}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').pop();
 
     expect(pop).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on pop', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayPop={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').pop(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should handle unshift', () => {
@@ -254,33 +195,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayUnshift={unshift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').unshift();
 
     expect(unshift).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on unshift', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayUnshift={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').unshift(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should not handle shift', () => {
@@ -292,9 +212,7 @@ describe('#FieldArray', () => {
         _array={0}
         _addArray={jest.fn()}
         _arrayShift={shift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').shift();
@@ -311,33 +229,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayShift={shift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').shift();
 
     expect(shift).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on shift', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayShift={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').shift(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should handle insert', () => {
@@ -349,9 +246,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayInsert={insert}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').insert(1);
@@ -368,9 +263,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayRemove={remove}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').remove(1);
@@ -387,9 +280,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arraySwap={swap}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').swap(0, 1);
@@ -406,9 +297,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayMove={move}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').move(0, 1);
@@ -421,9 +310,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.isEmptyRender()).toBe(true);
@@ -435,9 +322,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={1}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.find('.Component').length).toBe(1);
