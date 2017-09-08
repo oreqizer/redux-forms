@@ -53,7 +53,7 @@ export function shallowCompare(props1: Props, props2: Props): boolean {
 
 export type Flat = { [key: string]: any };
 
-// NOTE: ugly imperative code
+// FIXME: ugly code
 // A rewrite would be welcome.
 export function unflatten(obj: Flat) {
   const result = {};

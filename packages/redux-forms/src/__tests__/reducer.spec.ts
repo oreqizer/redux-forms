@@ -1,4 +1,4 @@
-import reducer from '../formsReducer';
+import reducer from '../reducer';
 import * as actions from '../actions';
 import { form, field } from '../containers';
 

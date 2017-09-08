@@ -3,14 +3,12 @@ import { isEvent } from './helpers';
 
 export type Target = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-export type Value = any;
-
 
 const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
     .filter((option) => option.selected)
     .map((option) => option.value);
 
-const getValue = (ev: React.SyntheticEvent<Target> | Value): Value => {
+const getValue = (ev: React.SyntheticEvent<Target> | any): any => {
   if (!isEvent(ev)) {
     return ev;
   }
