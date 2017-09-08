@@ -21,7 +21,7 @@ import connectField, { FormProp } from './connectField';
 export type SuppliedProps = {
   fields: {
     length: number,
-    map: (fn: (el: string, index: number) => any) => any[],
+    map: <T>(fn: (el: string, index: number) => T) => T[],
     push: () => void,
     pop: () => void,
     unshift: () => void,
@@ -101,44 +101,28 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
       return [];
     }
 
-    handlePush(ev?: React.SyntheticEvent<Target>) {
+    handlePush() {
       const { _form, name, _arrayPush } = this.props;
-
-      if (isEvent(ev)) {
-        ev.preventDefault();
-      }
 
       _arrayPush(_form, name);
     }
 
-    handlePop(ev?: React.SyntheticEvent<Target>) {
+    handlePop() {
       const { _form, name, _array, _arrayPop } = this.props;
-
-      if (isEvent(ev)) {
-        ev.preventDefault();
-      }
 
       if (isNumber(_array) && _array > 0) {
         _arrayPop(_form, name);
       }
     }
 
-    handleUnshift(ev?: React.SyntheticEvent<Target>) {
+    handleUnshift() {
       const { _form, name, _arrayUnshift } = this.props;
-
-      if (isEvent(ev)) {
-        ev.preventDefault();
-      }
 
       _arrayUnshift(_form, name);
     }
 
-    handleShift(ev?: React.SyntheticEvent<Target>) {
+    handleShift() {
       const { _form, name, _array, _arrayShift } = this.props;
-
-      if (isEvent(ev)) {
-        ev.preventDefault();
-      }
 
       if (isNumber(_array) && _array > 0) {
         _arrayShift(_form, name);
