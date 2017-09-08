@@ -13,11 +13,9 @@ import {
 import { State } from './formsReducer';
 import { Form } from './containers';
 import { unflatten } from './shared/helpers';
-import { Value } from './shared/getValue';
 
 
-export type Values = { [key: string]: Value | Value[] | Values[] };
-
+export type Values = { [key: string]: any | any[] | Values[] };
 export type Error = string | null;
 export type Errors = { [key: string]: Error | Error[] | Errors[] };
 
@@ -37,7 +35,7 @@ const memValue = memoize(compose(
   map(prop('value')),
 ));
 
-export function valueSelector(name: string, state: IState): Values {
+export function getValues(name: string, state: IState): Values {
   const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
@@ -52,7 +50,7 @@ const memError = memoize(compose(
   map(prop('error')),
 ));
 
-export function errorSelector(name: string, state: IState): Errors {
+export function getErrors(name: string, state: IState): Errors {
   const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
