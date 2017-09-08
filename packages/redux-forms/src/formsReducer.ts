@@ -11,7 +11,6 @@ import {
   compose,
 } from 'ramda';
 
-import { Value } from './shared/getValue';
 import { form, field, Form, Field } from './containers';
 import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './arrays';
 
@@ -39,6 +38,9 @@ import {
   FIELD_CHANGE,
   FIELD_FOCUS,
   FIELD_BLUR,
+  FIELD_VALUE,
+  FIELD_ERROR,
+  FIELD_DIRTY,
 } from './actions';
 
 
@@ -176,25 +178,34 @@ export default function formsReducer(state: State = {}, a: Action): State {
     // ---
     case FIELD_CHANGE:
       return compose<State, State, State, State>(
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
       )(state);
 
     case FIELD_FOCUS:
       return compose<State, State, State>(
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'active'], true),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'visited'], true),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'active'], true),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'visited'], true),
       )(state);
 
     case FIELD_BLUR:
       return compose<State, State, State, State, State, State>(
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'active'], false),
-          assocPath<Value, State>([a.payload.form, 'fields', a.payload.field, 'touched'], true),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
+          assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
       )(state);
+
+    case FIELD_VALUE:
+      return assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value, state);
+
+    case FIELD_ERROR:
+      return assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error, state);
+
+    case FIELD_DIRTY:
+      return assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty, state);
 
     default:
       return state;
