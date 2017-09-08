@@ -295,4 +295,28 @@ describe('#formsReducer', () => {
 
     expect(state.form.fields.field.visited).toBe(true);
   });
+
+  it('should change field value', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldValue('form', 'field', 'value'));
+
+    expect(state.form.fields.field.value).toBe('value');
+  });
+
+  it('should change field error', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldError('form', 'field', 'error'));
+
+    expect(state.form.fields.field.error).toBe('error');
+  });
+
+  it('should change field dirty', () => {
+    const state: any = reducer({
+      form: { ...form, fields: { field } },
+    }, actions.fieldDirty('form', 'field', true));
+
+    expect(state.form.fields.field.dirty).toBe(true);
+  });
 });
