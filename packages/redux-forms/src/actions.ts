@@ -1,5 +1,4 @@
 import { Field } from './containers';
-import { Value } from './shared/getValue';
 
 
 export const ADD_FORM = '@@redux-forms/ADD_FORM';
@@ -26,6 +25,7 @@ export const FIELD_FOCUS = '@@redux-forms/FIELD_FOCUS';
 export const FIELD_BLUR = '@@redux-forms/FIELD_BLUR';
 export const FIELD_VALUE = '@@redux-forms/FIELD_VALUE';
 export const FIELD_ERROR = '@@redux-forms/FIELD_ERROR';
+export const FIELD_DIRTY = '@@redux-forms/FIELD_DIRTY';
 
 
 export type AddFormAction = { type: '@@redux-forms/ADD_FORM', payload: {
@@ -220,13 +220,13 @@ export const arrayMove = (form: string, id: string, from: number, to: number): A
 export type FieldChangeAction = { type: '@@redux-forms/FIELD_CHANGE', payload: {
   form: string,
   field: string,
-  value: Value,
+  value: any,
   error: string | null,
   dirty: boolean,
 } };
 
 export const fieldChange = (
-  form: string, field: string, value: Value, error: string | null, dirty: boolean,
+  form: string, field: string, value: any, error: string | null, dirty: boolean,
 ): FieldChangeAction => ({
   type: FIELD_CHANGE,
   payload: { form, field, value, error, dirty },
@@ -247,37 +247,76 @@ export const fieldFocus = (form, field): FieldFocusAction => ({
 export type FieldBlurAction = { type: '@@redux-forms/FIELD_BLUR', payload: {
   form: string,
   field: string,
-  value: Value,
+  value: any,
   error: string | null,
   dirty: boolean,
 } };
 
 export const fieldBlur = (
-  form: string, field: string, value: Value, error: string | null, dirty: boolean,
+  form: string, field: string, value: any, error: string | null, dirty: boolean,
 ): FieldBlurAction => ({
   type: FIELD_BLUR,
   payload: { form, field, value, error, dirty },
 });
 
 
+export type FieldValueAction = { type: '@@redux-forms/FIELD_VALUE', payload: {
+  form: string,
+  field: string,
+  value: any,
+} };
+
+export const fieldValue = (form: string, field: string, value: any): FieldValueAction => ({
+  type: FIELD_VALUE,
+  payload: { form, field, value },
+});
+
+
+export type FieldErrorAction = { type: '@@redux-forms/FIELD_ERROR', payload: {
+  form: string,
+  field: string,
+  error: string | null,
+} };
+
+export const fieldError = (form: string, field: string, error: string | null): FieldErrorAction => ({
+  type: FIELD_ERROR,
+  payload: { form, field, error },
+});
+
+
+export type FieldDirtyAction = { type: '@@redux-forms/FIELD_DIRTY', payload: {
+  form: string,
+  field: string,
+  dirty: boolean,
+} };
+
+export const fieldDirty = (form: string, field: string, dirty: boolean): FieldDirtyAction => ({
+  type: FIELD_DIRTY,
+  payload: { form, field, dirty },
+});
+
+
 export type Action =
-    AddFormAction |
-    RemoveFormAction |
-    AddFieldAction |
-    RemoveFieldAction |
-    TouchAllAction |
-    SubmitStartAction |
-    SubmitStopAction |
-    AddArrayAction |
-    RemoveArrayAction |
-    ArrayPushAction |
-    ArrayPopAction |
-    ArrayUnshiftAction |
-    ArrayShiftAction |
-    ArrayInsertAction |
-    ArrayRemoveAction |
-    ArraySwapAction |
-    ArrayMoveAction |
-    FieldChangeAction |
-    FieldFocusAction |
-    FieldBlurAction ;
+    | AddFormAction
+    | RemoveFormAction
+    | AddFieldAction
+    | RemoveFieldAction
+    | TouchAllAction
+    | SubmitStartAction
+    | SubmitStopAction
+    | AddArrayAction
+    | RemoveArrayAction
+    | ArrayPushAction
+    | ArrayPopAction
+    | ArrayUnshiftAction
+    | ArrayShiftAction
+    | ArrayInsertAction
+    | ArrayRemoveAction
+    | ArraySwapAction
+    | ArrayMoveAction
+    | FieldChangeAction
+    | FieldFocusAction
+    | FieldBlurAction
+    | FieldValueAction
+    | FieldErrorAction
+    | FieldDirtyAction;
