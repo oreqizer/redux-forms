@@ -174,23 +174,22 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
     }
   }
 
-  const bindActions = {
-    _addArray: actions.addArray,
-    _arrayPush: actions.arrayPush,
-    _arrayPop: actions.arrayPop,
-    _arrayUnshift: actions.arrayUnshift,
-    _arrayShift: actions.arrayShift,
-    _arrayInsert: actions.arrayInsert,
-    _arrayRemove: actions.arrayRemove,
-    _arraySwap: actions.arraySwap,
-    _arrayMove: actions.arrayMove,
-  };
 
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
     (state: IReduxFormsState, props: ConnectedProps & T) => ({
       _array: path<number>([props._form, 'arrays', props.name], state.reduxForms),
     }),
-    bindActions,
+    {
+      _addArray: actions.addArray,
+      _arrayPush: actions.arrayPush,
+      _arrayPop: actions.arrayPop,
+      _arrayUnshift: actions.arrayUnshift,
+      _arrayShift: actions.arrayShift,
+      _arrayInsert: actions.arrayInsert,
+      _arrayRemove: actions.arrayRemove,
+      _arraySwap: actions.arraySwap,
+      _arrayMove: actions.arrayMove,
+    },
   );
 
   // TODO SFC not compatibile with class... wtf TS
