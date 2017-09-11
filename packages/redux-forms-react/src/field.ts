@@ -14,7 +14,7 @@ import {
 import { IReduxFormsState } from 'redux-forms/lib/index';
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
-import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
+import getValue, { Target } from 'redux-forms/lib/shared/getValue';
 import { shallowCompare } from 'redux-forms/lib/shared/helpers';
 import * as actions from 'redux-forms/actions';
 import connectField, { FormProp } from './connectField';
@@ -25,14 +25,14 @@ export type SuppliedProps = {
   meta: MetaProps,
 };
 
-export type Validate = (value: Value) => string | null;
-export type Normalize = (value: Value) => Value;
+export type Validate = (value: any) => string | null;
+export type Normalize = (value: any) => any;
 
 export type FieldProps = {
   name: string,
   validate: Validate,
   normalize: Normalize,
-  defaultValue: Value,
+  defaultValue: any,
 };
 
 type ConnectedProps = FieldProps & FormProp;
@@ -119,7 +119,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
       props._addField(props._form, props.name, newField);
     }
 
-    handleChange(ev: React.SyntheticEvent<Target> | Value) {
+    handleChange(ev: React.SyntheticEvent<Target> | any) {
       const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
       const value = normalize(getValue(ev));
@@ -135,7 +135,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
       _fieldFocus(_form, name);
     }
 
-    handleBlur(ev: React.SyntheticEvent<Target> | Value) {
+    handleBlur(ev: React.SyntheticEvent<Target> | any) {
       const { _fieldBlur, _form, name, normalize, validate, defaultValue } = this.props;
 
       const value = normalize(getValue(ev));

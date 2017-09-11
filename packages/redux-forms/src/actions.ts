@@ -238,7 +238,7 @@ export type FieldFocusAction = { type: '@@redux-forms/FIELD_FOCUS', payload: {
   field: string,
 } };
 
-export const fieldFocus = (form, field): FieldFocusAction => ({
+export const fieldFocus = (form: string, field: string): FieldFocusAction => ({
   type: FIELD_FOCUS,
   payload: { form, field },
 });
