@@ -95,7 +95,7 @@ const separateProps = <T>(all: All<T>): SeparatedProps<T> => ({
   rest: omit<T>(IGNORE_PROPS, all),
 });
 
-export default compose(separateProps, maybeCheckProps);
+export default <T>(all: All<T>) => separateProps(maybeCheckProps(all));
 
 
 export const boolField = over(lensProp('_field'), Boolean);

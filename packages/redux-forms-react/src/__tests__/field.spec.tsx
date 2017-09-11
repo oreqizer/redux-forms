@@ -8,21 +8,8 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import ConnectedField from '../Field';
+import fieldDecorator from '../field';
 
-
-// NOTE:
-// We're unwrapping 'Field' from 'connect' and 'connectField'.
-// Props needed mocking:
-// - _form: string
-// state:
-// - _field: FieldObject
-// actions:
-// - _addField: AddFieldCreator
-// - _fieldChange: FieldChangeCreator
-// - _fieldFocus: FieldFocusCreator
-// - _fieldBlur: FieldBlurCreator
-const Field = (ConnectedField as any).WrappedComponent.WrappedComponent;
 
 const Component = (props: any) => (
   <input
@@ -33,6 +20,9 @@ const Component = (props: any) => (
     onBlur={props.input.onBlur}
   />
 );
+
+const ConnectedField = fieldDecorator(Component);
+const Field = (ConnectedField as any).WrappedComponent.WrappedComponent;
 
 const pattern = '__val__ km';
 const validate = (value: string) => R.contains('always error', value) ? null : 'bad format';
@@ -63,7 +53,7 @@ const newStore = () => createStore(combineReducers<any>({
 const getForm = (state: any) => state.getState().reduxForms.test;
 
 
-describe('#Field', () => {
+describe('#field', () => {
   it('should not add a field', () => {
     const addField = jest.fn();
     const wrapper = shallow((
@@ -72,9 +62,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).not.toBeCalled();
@@ -88,9 +76,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', field);
@@ -105,9 +91,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', {
@@ -125,9 +109,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', {
@@ -145,9 +127,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', {
@@ -166,9 +146,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', {
@@ -189,9 +167,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={addField}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(addField).toBeCalledWith('form', 'test', {
@@ -208,9 +184,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -227,9 +201,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -246,9 +218,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -268,9 +238,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -290,9 +258,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -312,9 +278,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -335,9 +299,7 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     const addField = jest.fn();
@@ -365,9 +327,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     wrapper.setProps({ defaultValue: '250' });
@@ -383,9 +343,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldChange).not.toBeCalled();
@@ -405,9 +363,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldChange).not.toBeCalled();
@@ -427,9 +383,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldChange).not.toBeCalled();
@@ -449,9 +403,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldChange).not.toBeCalled();
@@ -473,9 +425,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldChange={fieldChange}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldChange).not.toBeCalled();
@@ -494,9 +444,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldFocus={fieldFocus}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldFocus).not.toBeCalled();
@@ -515,9 +463,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldBlur={fieldBlur}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldBlur).not.toBeCalled();
@@ -537,9 +483,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldBlur={fieldBlur}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldBlur).not.toBeCalled();
@@ -559,9 +503,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldBlur={fieldBlur}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldBlur).not.toBeCalled();
@@ -581,9 +523,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldBlur={fieldBlur}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldBlur).not.toBeCalled();
@@ -605,9 +545,7 @@ describe('#Field', () => {
         _form="form"
         _field={field}
         _fieldBlur={fieldBlur}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(fieldBlur).not.toBeCalled();
@@ -625,45 +563,20 @@ describe('#Field', () => {
         _form="form"
         _field={null}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
+      />
     ));
 
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  it('should pass props to a string component', () => {
+  it('should pass props', () => {
     const wrapper = shallow((
       <Field
         name="test"
         _form="form"
         _field={field}
         _addField={jest.fn()}
-      >
-        <input />
-      </Field>
-    ));
-
-    expect(wrapper.prop('name')).toBe('test');
-    expect(wrapper.prop('value')).toBe('');
-    expect(wrapper.prop('onChange')).toBeDefined();
-    expect(wrapper.prop('onFocus')).toBeDefined();
-    expect(wrapper.prop('onBlur')).toBeDefined();
-
-    expect(wrapper.prop('component')).toBeUndefined();
-  });
-
-  it('should pass props to a custom component', () => {
-    const wrapper = shallow((
-      <Field
-        name="test"
-        _form="form"
-        _field={field}
-        _addField={jest.fn()}
-      >
-        <Component />
-      </Field>
+      />
     ));
 
     expect(wrapper.prop('input').value).toBe('');
@@ -682,17 +595,12 @@ describe('#Field', () => {
     expect(wrapper.prop('component')).toBeUndefined();
     expect(wrapper.prop('field')).toBeUndefined();
   });
-});
 
-
-describe('#connect(Field)', () => {
   it('should not mount without context', () => {
     const store = newStore();
     const wrapperFn = () => mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField name="test" />
       </Provider>
     ));
 
@@ -700,25 +608,46 @@ describe('#connect(Field)', () => {
   });
 
   it('should have a correct name', () => {
+    const Component2: any = (props: any) => (
+      <input
+        type="text"
+        value={props.input.value}
+        onChange={props.input.onChange}
+        onFocus={props.input.onFocus}
+        onBlur={props.input.onBlur}
+      />
+    );
+
+    Component2.displayName = 'Input';
+
+    const ConnectedField2 = fieldDecorator(Component2);
+
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField2 name="test" />
       </Provider>
     ), options);
 
-    expect(wrapper.find(ConnectedField).name()).toBe('Field');
+    expect(wrapper.find(ConnectedField2).name()).toBe('field(Input)');
+  });
+
+  it('should have a default name', () => {
+    const store = newStore();
+    const wrapper = mount((
+      <Provider store={store}>
+        <ConnectedField name="test" />
+      </Provider>
+    ), options);
+
+    expect(wrapper.find(ConnectedField).name()).toBe('field(Component)');
   });
 
   it('should add a field', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField name="test" />
       </Provider>
     ), options);
 
@@ -730,9 +659,7 @@ describe('#connect(Field)', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField name="test" />
       </Provider>
     ), options);
 
@@ -749,9 +676,7 @@ describe('#connect(Field)', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField name="test" />
       </Provider>
     ), options);
 
@@ -768,9 +693,7 @@ describe('#connect(Field)', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
-        <ConnectedField name="test">
-          <input />
-        </ConnectedField>
+        <ConnectedField name="test" />
       </Provider>
     ), options);
 
