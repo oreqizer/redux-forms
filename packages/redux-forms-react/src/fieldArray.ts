@@ -93,12 +93,8 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
     handleMap<U>(fn: (el: string, index: number) => U): U[] {
       const { name, _array } = this.props;
 
-      if (isNumber(_array)) {
-        const array = repeat(null, _array);
-        return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
-      }
-
-      return [];
+      const array = repeat(null, _array);
+      return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
     }
 
     handlePush() {
@@ -161,7 +157,7 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
       }
 
       // TODO SFC not compatibile with class... wtf TS
-      return React.cloneElement(Component as any, merge(fieldArrayProps(this.props), {
+      return React.createElement(Component as any, merge(fieldArrayProps(this.props), {
         fields: {
           length: _array,
           map: this.handleMap,
@@ -202,7 +198,7 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
 
   const Contexted = connectField(Connected);
 
-  Contexted.displayName = `fieldArray(${Component.displayName})`;
+  Contexted.displayName = `fieldArray(${Component.displayName || 'Component'})`;
 
   return Contexted;
 }
