@@ -30,9 +30,9 @@ export type Normalize = (value: any) => any;
 
 export type FieldProps = {
   name: string,
-  validate: Validate,
-  normalize: Normalize,
-  defaultValue: any,
+  normalize?: Normalize,
+  defaultValue?: any,
+  validate?: Validate,
 };
 
 type ConnectedProps = FieldProps & FormProp;
@@ -54,16 +54,15 @@ type Props<T> = T & ConnectedProps & StateProps & ActionProps;
 function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.ComponentType<T & FieldProps> {
   class Field extends React.Component {
     static defaultProps = {
-      validate: () => null,
       normalize: identity,
       defaultValue: '',
     };
 
     static propTypes = {
       name: PropTypes.string.isRequired,
-      validate: PropTypes.func.isRequired,
       normalize: PropTypes.func.isRequired,
       defaultValue: PropTypes.any.isRequired,
+      validate: PropTypes.func,
     };
 
     props: Props<T>;
@@ -93,7 +92,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     componentWillReceiveProps(next: Props<T>) {
-      const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
+      const { _fieldChange, _form, name, defaultValue } = this.props;
 
       if (!next._field) {
         this.newField(next);
@@ -102,7 +101,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
       if (defaultValue !== next.defaultValue) {
         const value = next.normalize(next._field.value);
-        const error = next.validate(value);
+        const error = next.validate ? next.validate(value) : next._field.error;
         const dirty = next.defaultValue !== value;
 
         _fieldChange(_form, name, value, error, dirty);
@@ -113,17 +112,17 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
       const value = props.normalize(props.defaultValue);
       const newField = compose<containers.Field, containers.Field, containers.Field>(
         set(lensProp('value'), value),
-        set(lensProp('error'), props.validate(value)),
+        set(lensProp('error'), props.validate ? props.validate(value) : null),
       )(containers.field);
 
       props._addField(props._form, props.name, newField);
     }
 
     handleChange(ev: React.SyntheticEvent<Target> | any) {
-      const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
+      const { _fieldChange, _form, _field, name, normalize, validate, defaultValue } = this.props;
 
       const value = normalize(getValue(ev));
-      const error = validate(value);
+      const error = validate ? validate(value) : _field.error;
       const dirty = value !== defaultValue;
 
       _fieldChange(_form, name, value, error, dirty);
@@ -136,10 +135,10 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     handleBlur(ev: React.SyntheticEvent<Target> | any) {
-      const { _fieldBlur, _form, name, normalize, validate, defaultValue } = this.props;
+      const { _fieldBlur, _form, _field, name, normalize, validate, defaultValue } = this.props;
 
       const value = normalize(getValue(ev));
-      const error = validate(value);
+      const error = validate ? validate(value) : _field.error;
       const dirty = value !== defaultValue;
 
       _fieldBlur(_form, name, value, error, dirty);
@@ -187,7 +186,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
   const Contexted = connectField(Connected);
 
-  Contexted.displayName = `field(${Connected.displayName})`;
+  Contexted.displayName = `field(${Component.displayName || 'Component'})`;
 
   return Contexted;
 }

@@ -6,6 +6,7 @@
     "jsx-no-multiline-js": false,
     "member-access": false,
     "no-consecutive-blank-lines": false,
+    "no-submodule-imports": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": ["single", "jsx-double"]
