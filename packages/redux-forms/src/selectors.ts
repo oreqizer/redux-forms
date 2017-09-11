@@ -10,7 +10,7 @@ import {
   identity,
 } from 'ramda';
 
-import { State } from './formsReducer';
+import { State } from './reducer';
 import { Form } from './containers';
 import { unflatten } from './shared/helpers';
 

@@ -7,12 +7,12 @@ import {
   omit,
 } from 'ramda';
 
-import { Value, Target } from './getValue';
+import { Target } from './getValue';
 
 
 export type InputProps = {
   name: string,
-  value: Value,
+  value: any,
   checked?: boolean,
   onChange: (ev: React.SyntheticEvent<Target>) => void,
   onFocus: (ev: React.SyntheticEvent<Target>) => void,
