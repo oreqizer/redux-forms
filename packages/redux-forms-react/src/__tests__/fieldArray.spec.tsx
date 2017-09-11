@@ -10,28 +10,11 @@ import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
 import fieldArray from '../FieldArray';
 
-
-// NOTE:
-// We're unwrapping 'FieldArray' from 'connect' and 'connectFieldArray'.
-// Props needed mocking:
-// - _form: string
-// state:
-// - _array: string[]
-// actions:
-// - _addArray: AddArrayCreator
-// - _arrayPush: ArrayPushCreator
-// - _arrayPop: ArrayPopCreator
-// - _arrayUnshift: ArrayUnshiftCreator
-// - _arrayShift: ArrayShiftCreator
-// - _arrayInsert: ArrayInsertCreator
-// - _arrayRemove: ArrayRemoveCreator
-// - _arraySwap: ArraySwapCreator
 const Component = (props: any) => (
   <div className="Component" />
 );
 
 const ConnectedFieldArray = fieldArray(Component);
-
 const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
 
 const options = {
@@ -45,10 +28,6 @@ const options = {
 
 const event = { target: { value: 'doge' } };
 
-const MyComp = () => (
-  <div className="MyComp" />
-);
-
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
   reduxForms: reducer,
@@ -59,18 +38,7 @@ const newStore = () => createStore(combineReducers<any>({
 const getForm = (state: any) => state.getState().reduxForms.test;
 
 
-describe('#FieldArray', () => {
-  it('should have a correct name', () => {
-    const wrapper = mount((
-      <FieldArray
-        name="array"
-        _addArray={jest.fn()}
-      />
-    ));
-
-    expect(wrapper.name()).toBe('FieldArray');
-  });
-
+describe('#fieldArray', () => {
   it('should not add an array', () => {
     const addArray = jest.fn();
     const wrapper = mount((
@@ -327,17 +295,12 @@ describe('#FieldArray', () => {
 
     expect(wrapper.find('.Component').length).toBe(1);
   });
-});
 
-
-describe('#connect(FieldArray)', () => {
   it('should not mount without context', () => {
     const store = newStore();
     const wrapperFn = () => mount((
       <Provider store={store}>
-        <ConnectedFieldArray name="test">
-          <MyComp />
-        </ConnectedFieldArray>
+        <ConnectedFieldArray name="test" />
       </Provider>
     ));
 
@@ -345,27 +308,44 @@ describe('#connect(FieldArray)', () => {
   });
 
   it('should have a correct name', () => {
+    const Component2: any = (props: any) => (
+      <div className="Component" />
+    );
+
+    Component2.displayName = 'Array';
+
+    const ConnectedFieldArray2 = fieldArray(Component2);
+
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray2 name="test" />
         </Provider>
       ),
       options,
     );
 
-    expect(wrapper.find(ConnectedFieldArray).name()).toBe('FieldArray');
+    expect(wrapper.find(ConnectedFieldArray2).name()).toBe('fieldArray(Array)');
   });
 
-  it('should add an array', () => {
+  it('should have a correct default name', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
+        </Provider>
+      ),
+      options,
+    );
+
+    expect(wrapper.find(ConnectedFieldArray).name()).toBe('fieldArray(Component)');
+  });
+
+  it('should actually add an array', () => {
+    const store = newStore();
+    const wrapper = mount((
+        <Provider store={store}>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
@@ -378,13 +358,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
 
@@ -395,13 +373,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
     wrapper.prop<any>('fields').pop();
@@ -413,13 +389,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').unshift();
 
@@ -430,13 +404,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').unshift();
     wrapper.prop<any>('fields').shift();
@@ -448,13 +420,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').insert(0);
 
@@ -465,13 +435,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').insert(0);
     wrapper.prop<any>('fields').remove(0);
@@ -483,13 +451,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
     wrapper.prop<any>('fields').push();
