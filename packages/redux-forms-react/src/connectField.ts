@@ -24,7 +24,7 @@ export default function connectField<T>(Wrapped: React.ComponentClass<T & FormPr
   const ConnectedField: Connected<T> = (props: T, { reduxForms }: Context) => {
     invariant(
       isString(reduxForms),
-      '[redux-forms] Field and FieldArray must be a children of the Form component.',
+      '[redux-forms] \'field(...)\' and \'fieldArray(...)\' must be a child of the Form component.',
     );
 
     return React.createElement(Wrapped, merge(props, {
