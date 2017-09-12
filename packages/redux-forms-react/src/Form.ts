@@ -26,6 +26,23 @@ export type Context = {
   reduxForms: string;
 };
 
+export type StateProps = {
+  _form: boolean,
+  _values: any,
+  _valid: boolean,
+  _submitting: boolean,
+};
+
+export type ActionProps = {
+  _addForm: typeof actions.addForm,
+  _removeForm: typeof actions.removeForm,
+  _touchAll: typeof actions.touchAll,
+  _submitStart: typeof actions.submitStart,
+  _submitStop: typeof actions.submitStop,
+};
+
+export type Props = StateProps & ActionProps & IFormProps;
+
 
 class Form extends React.Component<Props, {}> implements React.ChildContextProvider<Context> {
   static defaultProps = {
@@ -51,13 +68,10 @@ class Form extends React.Component<Props, {}> implements React.ChildContextProvi
 
   static propTypes = {
     name: PropTypes.string.isRequired,
-    // TODO this shouldn't be required, but TS bitches about things
     persistent: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
     withRef: PropTypes.func.isRequired,
   };
-
-  static displayName = 'Form';
 
   props: Props;
 
@@ -142,39 +156,19 @@ class Form extends React.Component<Props, {}> implements React.ChildContextProvi
 }
 
 
-export type StateProps = {
-  _form: boolean,
-  _values: any,
-  _valid: boolean,
-  _submitting: boolean,
-};
-
-export type ActionProps = {
-  _addForm: typeof actions.addForm,
-  _removeForm: typeof actions.removeForm,
-  _touchAll: typeof actions.touchAll,
-  _submitStart: typeof actions.submitStart,
-  _submitStop: typeof actions.submitStop,
-};
-
-export type Props = StateProps & ActionProps & IFormProps;
-
-
-const bindActions = {
-  _addForm: actions.addForm,
-  _removeForm: actions.removeForm,
-  _touchAll: actions.touchAll,
-  _submitStart: actions.submitStart,
-  _submitStop: actions.submitStop,
-};
-
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
   _form: Boolean(prop<containers.Form>(props.name, state.reduxForms)),
   _values: selectors.getValues(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),
-}), bindActions)(Form as any);
+}), {
+  _addForm: actions.addForm,
+  _removeForm: actions.removeForm,
+  _touchAll: actions.touchAll,
+  _submitStart: actions.submitStart,
+  _submitStop: actions.submitStop,
+})(Form as any);
 
-Connected.displayName = Form.displayName;
+Connected.displayName = 'Form';
 
 export default Connected;
