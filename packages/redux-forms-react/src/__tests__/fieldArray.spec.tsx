@@ -8,7 +8,7 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import fieldArray from '../FieldArray';
+import fieldArray from '../fieldArray';
 
 const Component = (props: any) => (
   <div className="Component" />
