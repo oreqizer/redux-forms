@@ -23,7 +23,6 @@ export type Connected<T> = React.SFC<T> & {
 };
 
 
-// TODO add option to supply from prop
 export default function connectField<T>(
   Wrapped: React.ComponentClass<T & SuppliedProps>,
 ): Connected<T & InputProps> {
@@ -37,7 +36,7 @@ export default function connectField<T>(
     );
 
     return React.createElement(Wrapped, merge(props, {
-      _form: form,
+      _form: (form as string),
     }));
   };
 
