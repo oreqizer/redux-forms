@@ -27,7 +27,7 @@ Simply:
 
 `yarn add redux-forms`
 
-Or for the oldschool:
+Or:
 
 `npm i redux-forms --save`
 
