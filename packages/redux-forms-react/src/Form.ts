@@ -133,7 +133,7 @@ class Form extends React.Component<Props, {}> implements React.ChildContextProvi
     }
 
     const maybePromise = onSubmit(_values);
-    if (isPromise(maybePromise)) {
+    if (isPromise(maybePromise)) { // TODO test this
       _submitStart(name);
 
       maybePromise.then(() => _submitStop(name));

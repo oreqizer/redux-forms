@@ -354,6 +354,26 @@ describe('#field', () => {
     expect(fieldChange).toBeCalledWith('form', 'test', 'doge', null, true);
   });
 
+  it('should not fire a change action without a field', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        _form="form"
+        _field={null}
+        _fieldChange={fieldChange}
+        _addField={jest.fn()}
+      />
+    ));
+
+    expect(fieldChange).not.toBeCalled();
+
+    const instance: any = wrapper.instance();
+    instance.handleChange(event('doge'));
+
+    expect(fieldChange).not.toBeCalled();
+  });
+
   it('should fire a change action with default value', () => {
     const fieldChange = jest.fn();
     const wrapper = shallow((
@@ -554,6 +574,26 @@ describe('#field', () => {
     instance.handleBlur(event('doge'));
 
     expect(fieldBlur).toBeCalledWith('form', 'test', 'doge km', 'bad format', false);
+  });
+
+  it('should not fire a blur action without a field', () => {
+    const fieldBlur = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        _form="form"
+        _field={null}
+        _fieldBlur={fieldBlur}
+        _addField={jest.fn()}
+      />
+    ));
+
+    expect(fieldBlur).not.toBeCalled();
+
+    const instance: any = wrapper.instance();
+    instance.handleBlur(event('doge'));
+
+    expect(fieldBlur).not.toBeCalled();
   });
 
   it('should not render without a field', () => {

@@ -91,6 +91,18 @@ describe('#fieldArray', () => {
     expect(wrapper.prop('fields').map(R.identity)).toEqual(['array.0', 'array.1']);
   });
 
+  it('should handle map without array', () => {
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        _array={null}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    expect(wrapper.instance().handleMap(R.identity)).toEqual([]);
+  });
+
   it('should handle map of indexes', () => {
     const wrapper = shallow((
       <FieldArray

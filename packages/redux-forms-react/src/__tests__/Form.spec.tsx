@@ -369,11 +369,8 @@ describe('#Form', () => {
 
     expect(withRef).toBeCalled();
   });
-});
 
-
-describe('#connect(Form)', () => {
-  it('should add a form', () => {
+  it('should add a connected form', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
@@ -386,7 +383,7 @@ describe('#connect(Form)', () => {
     expect(store.getState().reduxForms).toEqual({ test: form });
   });
 
-  it('should remove a form', () => {
+  it('should remove a connected form', () => {
     const store = newStore();
     const wrapper = mount((
       <Provider store={store}>
