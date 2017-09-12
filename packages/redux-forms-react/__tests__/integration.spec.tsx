@@ -5,9 +5,7 @@ import { mount } from "enzyme";
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import Form from '../src/Form';
-import fieldDecorator from '../src/field';
-import fieldArray from '../src/fieldArray';
+import { Form, field as fieldDecorator, fieldArray } from '../src/';
 
 const Field = fieldDecorator((props: any) => (
   <input type="text" {...props.input} />
