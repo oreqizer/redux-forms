@@ -100,7 +100,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
       }
 
       if (defaultValue !== next.defaultValue) {
-        const value = next.normalize(next._field.value);
+        const value = (next.normalize as Normalize)(next._field.value);
         const error = next.validate ? next.validate(value) : next._field.error;
         const dirty = next.defaultValue !== value;
 
@@ -109,7 +109,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     newField(props: Props<T>) {
-      const value = props.normalize(props.defaultValue);
+      const value = (props.normalize as Normalize)(props.defaultValue);
       const newField = compose<containers.Field, containers.Field, containers.Field>(
         set(lensProp('value'), value),
         set(lensProp('error'), props.validate ? props.validate(value) : null),
@@ -121,7 +121,11 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     handleChange(ev: React.SyntheticEvent<Target> | any) {
       const { _fieldChange, _form, _field, name, normalize, validate, defaultValue } = this.props;
 
-      const value = normalize(getValue(ev));
+      if (!_field) {
+        return;
+      }
+
+      const value = (normalize as Normalize)(getValue(ev));
       const error = validate ? validate(value) : _field.error;
       const dirty = value !== defaultValue;
 
@@ -137,7 +141,11 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     handleBlur(ev: React.SyntheticEvent<Target> | any) {
       const { _fieldBlur, _form, _field, name, normalize, validate, defaultValue } = this.props;
 
-      const value = normalize(getValue(ev));
+      if (!_field) {
+        return;
+      }
+
+      const value = (normalize as Normalize)(getValue(ev));
       const error = validate ? validate(value) : _field.error;
       const dirty = value !== defaultValue;
 

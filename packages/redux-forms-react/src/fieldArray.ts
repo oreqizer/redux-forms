@@ -93,6 +93,10 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
     handleMap<U>(fn: (el: string, index: number) => U): U[] {
       const { name, _array } = this.props;
 
+      if (!isNumber(_array)) {
+        return [];
+      }
+
       const array = repeat(null, _array);
       return RindexMap(fn, RindexMap((_, i) => `${name}.${i}`, array));
     }
