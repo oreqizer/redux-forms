@@ -3,6 +3,7 @@ import { field } from 'redux-forms-react';
 
 const Input = props => (
   <div>
+    <h3>{props.input.name}</h3>
     <div>Error: {String(props.meta.error)}</div>
     <div>Dirty: {String(props.meta.dirty)}</div>
     <div>Touched: {String(props.meta.touched)}</div>

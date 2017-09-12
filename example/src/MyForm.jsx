@@ -49,10 +49,8 @@ const DeepArray = fieldArray(props => (
     </button>
     {props.fields.map(id =>
       <div key={id}>
-        name:
         <Input name={`${id}.name`} />
         <br />
-        surname:
         <Input name={`${id}.surname`} />
       </div>
     )}
@@ -64,12 +62,10 @@ const validate = value => value.length < 5 ? 'too short' : null;
 const MyForm = props => (
   <Form name="first" onSubmit={props.onSubmit}>
     <h2>My form:</h2>
-    <h4>first Field</h4>
     <Input
       name="test"
       defaultValue="default"
     />
-    <h4>second Field</h4>
     <Input
       name="test2"
       validate={validate}
