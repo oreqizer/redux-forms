@@ -1,4 +1,5 @@
 import React from 'react';
+import { field } from 'redux-forms-react';
 
 const Input = props => (
   <div>
@@ -11,4 +12,4 @@ const Input = props => (
   </div>
 );
 
-export default Input;
+export default field(Input);

@@ -6,7 +6,6 @@ import reduxForms from 'redux-forms';
 import { createLogger } from 'redux-logger';
 
 import MyForm from './src/MyForm';
-import FlatForm from './src/FlatForm';
 
 
 const logger = createLogger({ collapsed: true });
@@ -19,10 +18,7 @@ const onSubmit = (values) => console.log(values);
 
 const Root = () => (
   <Provider store={store}>
-    <div>
-      <MyForm onSubmit={onSubmit} />
-      <FlatForm onSubmit={onSubmit} />
-    </div>
+    <MyForm onSubmit={onSubmit} />
   </Provider>
 );
 
