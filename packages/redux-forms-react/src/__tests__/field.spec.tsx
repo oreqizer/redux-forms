@@ -39,7 +39,7 @@ const options = {
     reduxForms: 'test',
   },
   childContextTypes: {
-    reduxForms: PropTypes.string.isRequired,
+    reduxForms: PropTypes.string,
   },
 };
 

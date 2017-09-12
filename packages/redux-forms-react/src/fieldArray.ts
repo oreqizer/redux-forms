@@ -15,7 +15,7 @@ import { Target } from 'redux-forms/lib/shared/getValue';
 import { isNumber, isEvent } from "redux-forms/lib/shared/helpers";
 import * as actions from 'redux-forms/actions';
 import { Context } from './Form';
-import connectField, { FormProp } from './connectField';
+import connectField, { SuppliedProps } from './connectField';
 
 
 export type SuppliedProps = {
@@ -37,7 +37,7 @@ export type FieldArrayProps = {
   name: string,
 };
 
-type ConnectedProps = FieldArrayProps & FormProp;
+type ConnectedProps = FieldArrayProps & SuppliedProps;
 
 type StateProps = {
   _array?: number,

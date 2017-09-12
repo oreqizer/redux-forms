@@ -19,7 +19,7 @@ const context = {
     reduxForms: 'test',
   },
   childContextTypes: {
-    reduxForms: PropTypes.string.isRequired,
+    reduxForms: PropTypes.string,
   },
 };
 
@@ -31,8 +31,14 @@ describe('#connectField', () => {
     expect(mountFn).toThrowError(/Form/);
   });
 
+  it('should mount with prop', () => {
+    const mountFn = () => mount(<Decorated form="form" />);
+
+    expect(mountFn).not.toThrowError(/Form/);
+  });
+
   it('should keep the original name', () => {
-    const wrapper = mount(<Decorated name="field" />, context);
+    const wrapper = mount(<Decorated />, context);
 
     expect(wrapper.name()).toBe('MyComp');
   });
@@ -42,8 +48,15 @@ describe('#connectField', () => {
   });
 
   it('should provide form name', () => {
-    const wrapper = mount(<Decorated name="field" />, context);
+    const wrapper = mount(<Decorated />, context);
 
     expect(wrapper.find(MyComp).prop('_form')).toBe('test');
+  });
+
+  it('should provide form name from prop', () => {
+    const wrapper = mount(<Decorated form="prop" />);
+
+    expect(wrapper.find(MyComp).prop('_form')).toBe('prop');
+    expect(wrapper.find(MyComp).prop('form')).toBe('prop');
   });
 });

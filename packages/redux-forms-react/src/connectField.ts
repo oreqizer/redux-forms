@@ -8,11 +8,15 @@ import { invariant, isString } from 'redux-forms/lib/shared/helpers';
 import { Context } from './Form';
 
 
-export type FormProp = {
+export type SuppliedProps = {
   _form: string,
 };
 
-export type WrappedField<T> = React.ComponentClass<T & FormProp>;
+export type InputProps = {
+  form?: string,
+};
+
+export type WrappedField<T> = React.ComponentClass<T & SuppliedProps>;
 
 export type Connected<T> = React.SFC<T> & {
   WrappedComponent?: React.ComponentClass<T>,
@@ -20,21 +24,26 @@ export type Connected<T> = React.SFC<T> & {
 
 
 // TODO add option to supply from prop
-export default function connectField<T>(Wrapped: React.ComponentClass<T & FormProp>): Connected<T> {
-  const ConnectedField: Connected<T> = (props: T, { reduxForms }: Context) => {
+export default function connectField<T>(
+  Wrapped: React.ComponentClass<T & SuppliedProps>,
+): Connected<T & InputProps> {
+  const ConnectedField: Connected<T & InputProps> = (props: T & InputProps, { reduxForms }: Context) => {
+    const contextForm = isString(reduxForms) ? reduxForms : null;
+    const form = isString(props.form) ? props.form : contextForm;
     invariant(
-      isString(reduxForms),
-      '[redux-forms] \'field(...)\' and \'fieldArray(...)\' must be a child of the Form component.',
+      isString(form),
+      '[redux-forms] "field(...)" and "fieldArray(...)" must be a child of the Form ' +
+        'component or an explicit "form" prop must be supplied.',
     );
 
     return React.createElement(Wrapped, merge(props, {
-      _form: reduxForms,
+      _form: form,
     }));
   };
 
 
   ConnectedField.contextTypes = {
-    reduxForms: PropTypes.string.isRequired,
+    reduxForms: PropTypes.string,
   };
 
   ConnectedField.displayName = Wrapped.displayName;

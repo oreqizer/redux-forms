@@ -17,7 +17,7 @@ import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/sh
 import getValue, { Target } from 'redux-forms/lib/shared/getValue';
 import { shallowCompare } from 'redux-forms/lib/shared/helpers';
 import * as actions from 'redux-forms/actions';
-import connectField, { FormProp } from './connectField';
+import connectField, { SuppliedProps } from './connectField';
 
 
 export type SuppliedProps = {
@@ -35,7 +35,7 @@ export type FieldProps = {
   validate?: Validate,
 };
 
-type ConnectedProps = FieldProps & FormProp;
+type ConnectedProps = FieldProps & SuppliedProps;
 
 type StateProps = {
   _field: containers.Field | null,
