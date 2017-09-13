@@ -83,23 +83,23 @@ const submitstate = {
 
 describe('#selectors', () => {
   it('should return empty if no reducer - value', () => {
-    expect(selectors.valueSelector('nonexistent', emptystate)).toEqual({});
+    expect(selectors.getValues('nonexistent', emptystate)).toEqual({});
   });
 
   it('should return empty if no reducer - error', () => {
-    expect(selectors.errorSelector('nonexistent', emptystate)).toEqual({});
+    expect(selectors.getErrors('nonexistent', emptystate)).toEqual({});
   });
 
   it('should return the same empty - value', () => {
-    const res1 = selectors.valueSelector('nonexistent', emptystate);
-    const res2 = selectors.valueSelector('nonexistent', emptystate);
+    const res1 = selectors.getValues('nonexistent', emptystate);
+    const res2 = selectors.getValues('nonexistent', emptystate);
 
     expect(res1).toBe(res2);
   });
 
   it('should return the same empty - error', () => {
-    const res1 = selectors.errorSelector('nonexistent', emptystate);
-    const res2 = selectors.errorSelector('nonexistent', emptystate);
+    const res1 = selectors.getErrors('nonexistent', emptystate);
+    const res2 = selectors.getErrors('nonexistent', emptystate);
 
     expect(res1).toBe(res2);
   });
@@ -121,11 +121,11 @@ describe('#selectors', () => {
   });
 
   it('should return empty if no form - value', () => {
-    expect(selectors.valueSelector('nonexistent', state)).toEqual({});
+    expect(selectors.getValues('nonexistent', state)).toEqual({});
   });
 
   it('should return empty if no form - error', () => {
-    expect(selectors.errorSelector('nonexistent', state)).toEqual({});
+    expect(selectors.getErrors('nonexistent', state)).toEqual({});
   });
 
   it('should return empty if no form - valid', () => {
@@ -145,35 +145,35 @@ describe('#selectors', () => {
   });
 
   it('should produce an id memoized value form', () => {
-    const res = selectors.valueSelector('test', state);
-    const res2 = selectors.valueSelector('test', state);
+    const res = selectors.getValues('test', state);
+    const res2 = selectors.getValues('test', state);
 
     expect(res).toBe(res2);
   });
 
   it('should produce a value memoized form', () => {
-    const res = selectors.valueSelector('test', state);
-    const res2 = selectors.valueSelector('test', state2);
+    const res = selectors.getValues('test', state);
+    const res2 = selectors.getValues('test', state2);
 
     expect(res).toBe(res2);
   });
 
   it('should produce an id memoized error form', () => {
-    const res = selectors.errorSelector('test', state);
-    const res2 = selectors.errorSelector('test', state);
+    const res = selectors.getErrors('test', state);
+    const res2 = selectors.getErrors('test', state);
 
     expect(res).toBe(res2);
   });
 
   it('should produce an error memoized form', () => {
-    const res = selectors.errorSelector('test', state);
-    const res2 = selectors.errorSelector('test', state2);
+    const res = selectors.getErrors('test', state);
+    const res2 = selectors.getErrors('test', state2);
 
     expect(res).toBe(res2);
   });
 
   it('should produce nested values', () => {
-    const res = selectors.valueSelector('test', state);
+    const res = selectors.getValues('test', state);
 
     expect(res).toEqual({
       flat: '',
@@ -185,7 +185,7 @@ describe('#selectors', () => {
   });
 
   it('should produce nested errors', () => {
-    const res = selectors.errorSelector('test', state);
+    const res = selectors.getErrors('test', state);
 
     expect(res).toEqual({
       flat: null,

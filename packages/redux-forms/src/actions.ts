@@ -1,5 +1,4 @@
-import { Field } from "./containers";
-import { Value } from "./shared/getValue";
+import { Field } from './containers';
 
 
 export const ADD_FORM = '@@redux-forms/ADD_FORM';
@@ -26,15 +25,14 @@ export const FIELD_FOCUS = '@@redux-forms/FIELD_FOCUS';
 export const FIELD_BLUR = '@@redux-forms/FIELD_BLUR';
 export const FIELD_VALUE = '@@redux-forms/FIELD_VALUE';
 export const FIELD_ERROR = '@@redux-forms/FIELD_ERROR';
+export const FIELD_DIRTY = '@@redux-forms/FIELD_DIRTY';
 
 
 export type AddFormAction = { type: '@@redux-forms/ADD_FORM', payload: {
   name: string,
 } };
 
-export type AddFormCreator = (name: string) => AddFormAction;
-
-export const addForm: AddFormCreator = (name) => ({
+export const addForm = (name: string): AddFormAction => ({
   type: ADD_FORM,
   payload: { name },
 });
@@ -44,9 +42,7 @@ export type RemoveFormAction = { type: '@@redux-forms/REMOVE_FORM', payload: {
   name: string,
 } };
 
-export type RemoveFormCreator = (name: string) => RemoveFormAction;
-
-export const removeForm: RemoveFormCreator = (name) => ({
+export const removeForm = (name: string): RemoveFormAction => ({
   type: REMOVE_FORM,
   payload: { name },
 });
@@ -58,9 +54,7 @@ export type AddFieldAction = { type: '@@redux-forms/ADD_FIELD', payload: {
   field: Field,
 } };
 
-export type AddFieldCreator = (form: string, id: string, field: Field) => AddFieldAction;
-
-export const addField: AddFieldCreator = (form, id, field) => ({
+export const addField = (form: string, id: string, field: Field): AddFieldAction => ({
   type: ADD_FIELD,
   payload: { form, id, field },
 });
@@ -71,9 +65,7 @@ export type RemoveFieldAction = { type: '@@redux-forms/REMOVE_FIELD', payload: {
   id: string,
 } };
 
-export type RemoveFieldCreator = (form: string, id: string) => RemoveFieldAction;
-
-export const removeField: RemoveFieldCreator = (form, id) => ({
+export const removeField = (form: string, id: string): RemoveFieldAction => ({
   type: REMOVE_FIELD,
   payload: { form, id },
 });
@@ -83,9 +75,7 @@ export type TouchAllAction = { type: '@@redux-forms/TOUCH_ALL', payload: {
   form: string,
 } };
 
-export type TouchAllCreator = (form: string) => TouchAllAction;
-
-export const touchAll: TouchAllCreator = (form) => ({
+export const touchAll = (form: string): TouchAllAction => ({
   type: TOUCH_ALL,
   payload: { form },
 });
@@ -95,9 +85,7 @@ export type SubmitStartAction = { type: '@@redux-forms/SUBMIT_START', payload: {
   form: string,
 } };
 
-export type SubmitStartCreator = (form: string) => SubmitStartAction;
-
-export const submitStart: SubmitStartCreator = (form) => ({
+export const submitStart = (form: string): SubmitStartAction => ({
   type: SUBMIT_START,
   payload: { form },
 });
@@ -107,9 +95,7 @@ export type SubmitStopAction = { type: '@@redux-forms/SUBMIT_STOP', payload: {
   form: string,
 } };
 
-export type SubmitStopCreator = (form: string) => SubmitStopAction;
-
-export const submitStop: SubmitStopCreator = (form) => ({
+export const submitStop = (form: string): SubmitStopAction => ({
   type: SUBMIT_STOP,
   payload: { form },
 });
@@ -120,9 +106,7 @@ export type AddArrayAction = { type: '@@redux-forms/ADD_ARRAY', payload: {
   id: string,
 } };
 
-export type AddArrayCreator = (form: string, id: string) => AddArrayAction;
-
-export const addArray: AddArrayCreator = (form, id) => ({
+export const addArray = (form: string, id: string): AddArrayAction => ({
   type: ADD_ARRAY,
   payload: { form, id },
 });
@@ -133,9 +117,7 @@ export type RemoveArrayAction = { type: '@@redux-forms/REMOVE_ARRAY', payload: {
   id: string,
 } };
 
-export type RemoveArrayCreator = (form: string, id: string) => RemoveArrayAction;
-
-export const removeArray: RemoveArrayCreator = (form, id) => ({
+export const removeArray = (form: string, id: string): RemoveArrayAction => ({
   type: REMOVE_ARRAY,
   payload: { form, id },
 });
@@ -146,9 +128,7 @@ export type ArrayPushAction = { type: '@@redux-forms/ARRAY_PUSH', payload: {
   id: string,
 } };
 
-export type ArrayPushCreator = (form: string, id: string) => ArrayPushAction;
-
-export const arrayPush: ArrayPushCreator = (form, id) => ({
+export const arrayPush = (form: string, id: string): ArrayPushAction => ({
   type: ARRAY_PUSH,
   payload: { form, id },
 });
@@ -159,9 +139,7 @@ export type ArrayPopAction = { type: '@@redux-forms/ARRAY_POP', payload: {
   id: string,
 } };
 
-export type ArrayPopCreator = (form: string, id: string) => ArrayPopAction;
-
-export const arrayPop: ArrayPopCreator = (form, id) => ({
+export const arrayPop = (form: string, id: string): ArrayPopAction => ({
   type: ARRAY_POP,
   payload: { form, id },
 });
@@ -172,9 +150,7 @@ export type ArrayUnshiftAction = { type: '@@redux-forms/ARRAY_UNSHIFT', payload:
   id: string,
 } };
 
-export type ArrayUnshiftCreator = (form: string, id: string) => ArrayUnshiftAction;
-
-export const arrayUnshift: ArrayUnshiftCreator = (form, id) => ({
+export const arrayUnshift = (form: string, id: string): ArrayUnshiftAction => ({
   type: ARRAY_UNSHIFT,
   payload: { form, id },
 });
@@ -185,9 +161,7 @@ export type ArrayShiftAction = { type: '@@redux-forms/ARRAY_SHIFT', payload: {
   id: string,
 } };
 
-export type ArrayShiftCreator = (form: string, id: string) => ArrayShiftAction;
-
-export const arrayShift: ArrayShiftCreator = (form, id) => ({
+export const arrayShift = (form: string, id: string): ArrayShiftAction => ({
   type: ARRAY_SHIFT,
   payload: { form, id },
 });
@@ -199,9 +173,7 @@ export type ArrayInsertAction = { type: '@@redux-forms/ARRAY_INSERT', payload: {
   index: number,
 } };
 
-export type ArrayInsertCreator = (form: string, id: string, index: number) => ArrayInsertAction;
-
-export const arrayInsert: ArrayInsertCreator = (form, id, index) => ({
+export const arrayInsert = (form: string, id: string, index: number): ArrayInsertAction => ({
   type: ARRAY_INSERT,
   payload: { form, id, index },
 });
@@ -213,9 +185,7 @@ export type ArrayRemoveAction = { type: '@@redux-forms/ARRAY_REMOVE', payload: {
   index: number,
 } };
 
-export type ArrayRemoveCreator = (form: string, id: string, index: number) => ArrayRemoveAction;
-
-export const arrayRemove: ArrayRemoveCreator = (form, id, index) => ({
+export const arrayRemove = (form: string, id: string, index: number): ArrayRemoveAction => ({
   type: ARRAY_REMOVE,
   payload: { form, id, index },
 });
@@ -228,9 +198,7 @@ export type ArraySwapAction = { type: '@@redux-forms/ARRAY_SWAP', payload: {
   index2: number,
 } };
 
-export type ArraySwapCreator = (form: string, id: string, index1: number, index2: number) => ArraySwapAction;
-
-export const arraySwap: ArraySwapCreator = (form, id, index1, index2) => ({
+export const arraySwap = (form: string, id: string, index1: number, index2: number): ArraySwapAction => ({
   type: ARRAY_SWAP,
   payload: { form, id, index1, index2 },
 });
@@ -243,9 +211,7 @@ export type ArrayMoveAction = { type: '@@redux-forms/ARRAY_MOVE', payload: {
   to: number,
 } };
 
-export type ArrayMoveCreator = (form: string, id: string, from: number, to: number) => ArrayMoveAction;
-
-export const arrayMove: ArrayMoveCreator = (form, id, from, to) => ({
+export const arrayMove = (form: string, id: string, from: number, to: number): ArrayMoveAction => ({
   type: ARRAY_MOVE,
   payload: { form, id, from, to },
 });
@@ -254,16 +220,14 @@ export const arrayMove: ArrayMoveCreator = (form, id, from, to) => ({
 export type FieldChangeAction = { type: '@@redux-forms/FIELD_CHANGE', payload: {
   form: string,
   field: string,
-  value: Value,
+  value: any,
   error: string | null,
   dirty: boolean,
 } };
 
-export type FieldChangeCreator = (
-  form: string, field: string, value: Value, error: string | null, dirty: boolean,
-) => FieldChangeAction;
-
-export const fieldChange: FieldChangeCreator = (form, field, value, error, dirty) => ({
+export const fieldChange = (
+  form: string, field: string, value: any, error: string | null, dirty: boolean,
+): FieldChangeAction => ({
   type: FIELD_CHANGE,
   payload: { form, field, value, error, dirty },
 });
@@ -274,9 +238,7 @@ export type FieldFocusAction = { type: '@@redux-forms/FIELD_FOCUS', payload: {
   field: string,
 } };
 
-export type FieldFocusCreator = (form: string, field: string) => FieldFocusAction;
-
-export const fieldFocus: FieldFocusCreator = (form, field) => ({
+export const fieldFocus = (form: string, field: string): FieldFocusAction => ({
   type: FIELD_FOCUS,
   payload: { form, field },
 });
@@ -285,39 +247,76 @@ export const fieldFocus: FieldFocusCreator = (form, field) => ({
 export type FieldBlurAction = { type: '@@redux-forms/FIELD_BLUR', payload: {
   form: string,
   field: string,
-  value: Value,
+  value: any,
   error: string | null,
   dirty: boolean,
 } };
 
-export type FieldBlurCreator = (
-  form: string, field: string, value: Value, error: string | null, dirty: boolean,
-) => FieldBlurAction;
-
-export const fieldBlur: FieldBlurCreator = (form, field, value, error, dirty) => ({
+export const fieldBlur = (
+  form: string, field: string, value: any, error: string | null, dirty: boolean,
+): FieldBlurAction => ({
   type: FIELD_BLUR,
   payload: { form, field, value, error, dirty },
 });
 
 
+export type FieldValueAction = { type: '@@redux-forms/FIELD_VALUE', payload: {
+  form: string,
+  field: string,
+  value: any,
+} };
+
+export const fieldValue = (form: string, field: string, value: any): FieldValueAction => ({
+  type: FIELD_VALUE,
+  payload: { form, field, value },
+});
+
+
+export type FieldErrorAction = { type: '@@redux-forms/FIELD_ERROR', payload: {
+  form: string,
+  field: string,
+  error: string | null,
+} };
+
+export const fieldError = (form: string, field: string, error: string | null): FieldErrorAction => ({
+  type: FIELD_ERROR,
+  payload: { form, field, error },
+});
+
+
+export type FieldDirtyAction = { type: '@@redux-forms/FIELD_DIRTY', payload: {
+  form: string,
+  field: string,
+  dirty: boolean,
+} };
+
+export const fieldDirty = (form: string, field: string, dirty: boolean): FieldDirtyAction => ({
+  type: FIELD_DIRTY,
+  payload: { form, field, dirty },
+});
+
+
 export type Action =
-    AddFormAction |
-    RemoveFormAction |
-    AddFieldAction |
-    RemoveFieldAction |
-    TouchAllAction |
-    SubmitStartAction |
-    SubmitStopAction |
-    AddArrayAction |
-    RemoveArrayAction |
-    ArrayPushAction |
-    ArrayPopAction |
-    ArrayUnshiftAction |
-    ArrayShiftAction |
-    ArrayInsertAction |
-    ArrayRemoveAction |
-    ArraySwapAction |
-    ArrayMoveAction |
-    FieldChangeAction |
-    FieldFocusAction |
-    FieldBlurAction ;
+    | AddFormAction
+    | RemoveFormAction
+    | AddFieldAction
+    | RemoveFieldAction
+    | TouchAllAction
+    | SubmitStartAction
+    | SubmitStopAction
+    | AddArrayAction
+    | RemoveArrayAction
+    | ArrayPushAction
+    | ArrayPopAction
+    | ArrayUnshiftAction
+    | ArrayShiftAction
+    | ArrayInsertAction
+    | ArrayRemoveAction
+    | ArraySwapAction
+    | ArrayMoveAction
+    | FieldChangeAction
+    | FieldFocusAction
+    | FieldBlurAction
+    | FieldValueAction
+    | FieldErrorAction
+    | FieldDirtyAction;

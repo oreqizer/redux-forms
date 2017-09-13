@@ -53,25 +53,25 @@ export function shallowCompare(props1: Props, props2: Props): boolean {
 
 export type Flat = { [key: string]: any };
 
-// NOTE: ugly imperative code
+// FIXME: ugly code
 // A rewrite would be welcome.
 export function unflatten(obj: Flat) {
   const result = {};
 
   Object.keys(obj)
-    .forEach((prop) => prop.split('.')
+    .forEach((propp) => propp.split('.')
       .reduce((acc: any, key, index, array) => {
-        const k = Number.isNaN(Number(key)) ? key : Number(key);
+        const k = isNaN(Number(key)) ? key : Number(key);
 
         if (index === array.length - 1) {
-          return acc[k] = obj[prop];
+          return acc[k] = obj[propp];
         }
 
         if (acc[k]) {
           return acc[k] = acc[k];
         }
 
-        if (!Number.isNaN(Number(array[index + 1]))) {
+        if (!isNaN(Number(array[index + 1]))) {
           return acc[k] = [];
         }
 

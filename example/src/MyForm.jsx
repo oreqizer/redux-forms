@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field, FieldArray } from 'redux-forms-react';
-import { valueSelector } from 'redux-forms/selectors';
+import { Form, fieldArray } from 'redux-forms-react';
+import { getValues } from 'redux-forms/selectors';
 
 import Input from './Input';
 
-const InputArray = props => (
+const InputArray = fieldArray(props => (
   <div>
     <button onClick={props.fields.push}>
       Push field
@@ -21,9 +21,7 @@ const InputArray = props => (
     </button>
     {props.fields.map((id, index) =>
       <div key={id}>
-        <Field name={id}>
-          <Input />
-        </Field>
+        <Input name={id} />
         <button onClick={(ev) => { ev.preventDefault(); props.fields.insert(index) }}>
           Insert field
         </button>
@@ -39,9 +37,9 @@ const InputArray = props => (
       </div>
     )}
   </div>
-);
+));
 
-const DeepArray = props => (
+const DeepArray = fieldArray(props => (
   <div>
     <button onClick={props.fields.push}>
       Add fields
@@ -51,47 +49,32 @@ const DeepArray = props => (
     </button>
     {props.fields.map(id =>
       <div key={id}>
-        name:
-        <Field name={`${id}.name`}>
-          <Input />
-        </Field>
+        <Input name={`${id}.name`} />
         <br />
-        surname:
-        <Field name={`${id}.surname`}>
-          <Input />
-        </Field>
+        <Input name={`${id}.surname`} />
       </div>
     )}
   </div>
-);
+));
 
 const validate = value => value.length < 5 ? 'too short' : null;
 
 const MyForm = props => (
   <Form name="first" onSubmit={props.onSubmit}>
     <h2>My form:</h2>
-    <h4>first Field</h4>
-    <Field
+    <Input
       name="test"
       defaultValue="default"
-    >
-      <Input />
-    </Field>
-    <h4>second Field</h4>
-    <Field
+    />
+    <Input
       name="test2"
       validate={validate}
-    >
-      <Input placeholder="longer than 5 chars" />
-    </Field>
+      placeholder="longer than 5 chars"
+    />
     <br />
-    <FieldArray name="hobbies">
-      <InputArray />
-    </FieldArray>
+    <InputArray name="hobbies" />
     <br />
-    <FieldArray name="profiles">
-      <DeepArray />
-    </FieldArray>
+    <DeepArray name="profiles" />
     <div>---</div>
     <br />
     Values:
@@ -104,5 +87,5 @@ const MyForm = props => (
 );
 
 export default connect(state => ({
-  values: valueSelector('first', state),
+  values: getValues('first', state),
 }))(MyForm);

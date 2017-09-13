@@ -10,14 +10,12 @@ import {
   identity,
 } from 'ramda';
 
-import { State } from './formsReducer';
+import { State } from './reducer';
 import { Form } from './containers';
 import { unflatten } from './shared/helpers';
-import { Value } from './shared/getValue';
 
 
-export type Values = { [key: string]: Value | Value[] | Values[] };
-
+export type Values = { [key: string]: any | any[] | Values[] };
 export type Error = string | null;
 export type Errors = { [key: string]: Error | Error[] | Errors[] };
 
@@ -37,7 +35,7 @@ const memValue = memoize(compose(
   map(prop('value')),
 ));
 
-export function valueSelector(name: string, state: IState): Values {
+export function getValues(name: string, state: IState): Values {
   const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
@@ -52,7 +50,7 @@ const memError = memoize(compose(
   map(prop('error')),
 ));
 
-export function errorSelector(name: string, state: IState): Errors {
+export function getErrors(name: string, state: IState): Errors {
   const form = path<Form>(['reduxForms', name], state);
   if (!form) {
     return EMPTY;
@@ -81,7 +79,7 @@ export function isValid(name: string, state: IState): boolean {
 
 
 const memTouched = memoize(compose(
-  any(identity),
+  any(Boolean),
   memValues,
   map(prop('touched')),
 ));
@@ -97,7 +95,7 @@ export function isTouched(name: string, state: IState): boolean {
 
 
 const memDirty = memoize(compose(
-  any(identity),
+  any(Boolean),
   memValues,
   map(prop('dirty')),
 ));

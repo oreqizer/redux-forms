@@ -1,10 +1,10 @@
 import Form from './Form';
-import Field from './Field';
-import FieldArray from './FieldArray';
+import field from './field';
+import fieldArray from './fieldArray';
 
 
 export {
   Form,
-  Field,
-  FieldArray,
+  field,
+  fieldArray,
 };

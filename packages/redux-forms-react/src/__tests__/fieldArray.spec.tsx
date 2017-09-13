@@ -8,49 +8,25 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import ConnectedFieldArray from '../FieldArray';
-
-
-// NOTE:
-// We're unwrapping 'FieldArray' from 'connect' and 'connectFieldArray'.
-// Props needed mocking:
-// - _form: string
-// state:
-// - _array: string[]
-// actions:
-// - _addArray: AddArrayCreator
-// - _arrayPush: ArrayPushCreator
-// - _arrayPop: ArrayPopCreator
-// - _arrayUnshift: ArrayUnshiftCreator
-// - _arrayShift: ArrayShiftCreator
-// - _arrayInsert: ArrayInsertCreator
-// - _arrayRemove: ArrayRemoveCreator
-// - _arraySwap: ArraySwapCreator
-const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
+import fieldArray from '../fieldArray';
 
 const Component = (props: any) => (
   <div className="Component" />
 );
+
+const ConnectedFieldArray = fieldArray(Component);
+const FieldArray = (ConnectedFieldArray as any).WrappedComponent.WrappedComponent;
 
 const options = {
   context: {
     reduxForms: 'test',
   },
   childContextTypes: {
-    reduxForms: PropTypes.string.isRequired,
+    reduxForms: PropTypes.string,
   },
 };
 
 const event = { target: { value: 'doge' } };
-
-const eventFn = (pd: () => any) => ({
-  preventDefault: pd,
-  stopPropagation: R.identity,
-});
-
-const MyComp = () => (
-  <div className="MyComp" />
-);
 
 // Any to allow nested property dot notation
 const newStore = () => createStore(combineReducers<any>({
@@ -62,20 +38,7 @@ const newStore = () => createStore(combineReducers<any>({
 const getForm = (state: any) => state.getState().reduxForms.test;
 
 
-describe('#FieldArray', () => {
-  it('should have a correct name', () => {
-    const wrapper = mount((
-      <FieldArray
-        name="array"
-        _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    expect(wrapper.name()).toBe('FieldArray');
-  });
-
+describe('#fieldArray', () => {
   it('should not add an array', () => {
     const addArray = jest.fn();
     const wrapper = mount((
@@ -83,9 +46,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={1}
         _addArray={addArray}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(addArray).not.toBeCalled();
@@ -98,9 +59,7 @@ describe('#FieldArray', () => {
         name="array"
         _form="form"
         _addArray={addArray}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(addArray).toBeCalledWith('form', 'array');
@@ -114,9 +73,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').length).toBe(1);
@@ -128,12 +85,22 @@ describe('#FieldArray', () => {
         name="array"
         _array={2}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').map(R.identity)).toEqual(['array.0', 'array.1']);
+  });
+
+  it('should handle map without array', () => {
+    const wrapper = shallow((
+      <FieldArray
+        name="array"
+        _array={null}
+        _addArray={jest.fn()}
+      />
+    ));
+
+    expect(wrapper.instance().handleMap(R.identity)).toEqual([]);
   });
 
   it('should handle map of indexes', () => {
@@ -142,9 +109,7 @@ describe('#FieldArray', () => {
         name="array"
         _array={2}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.prop('fields').map((_: any, i: number) => i)).toEqual([0, 1]);
@@ -159,33 +124,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPush={push}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').push();
 
     expect(push).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on push', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayPush={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').push(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should not handle pop', () => {
@@ -197,9 +141,7 @@ describe('#FieldArray', () => {
         _array={0}
         _addArray={jest.fn()}
         _arrayPop={pop}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').pop();
@@ -216,33 +158,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayPop={pop}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').pop();
 
     expect(pop).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on pop', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayPop={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').pop(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should handle unshift', () => {
@@ -254,33 +175,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayUnshift={unshift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').unshift();
 
     expect(unshift).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on unshift', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayUnshift={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').unshift(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should not handle shift', () => {
@@ -292,9 +192,7 @@ describe('#FieldArray', () => {
         _array={0}
         _addArray={jest.fn()}
         _arrayShift={shift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').shift();
@@ -311,33 +209,12 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayShift={shift}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').shift();
 
     expect(shift).toBeCalledWith('form', 'array');
-  });
-
-  it('should prevent default on shift', () => {
-    const pd = jest.fn();
-    const wrapper = shallow((
-      <FieldArray
-        name="array"
-        _form="form"
-        _array={1}
-        _addArray={jest.fn()}
-        _arrayShift={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
-    ));
-
-    wrapper.prop('fields').shift(eventFn(pd));
-
-    expect(pd).toBeCalled();
   });
 
   it('should handle insert', () => {
@@ -349,9 +226,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayInsert={insert}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').insert(1);
@@ -368,9 +243,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayRemove={remove}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').remove(1);
@@ -387,9 +260,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arraySwap={swap}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').swap(0, 1);
@@ -406,9 +277,7 @@ describe('#FieldArray', () => {
         _array={1}
         _addArray={jest.fn()}
         _arrayMove={move}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     wrapper.prop('fields').move(0, 1);
@@ -421,9 +290,7 @@ describe('#FieldArray', () => {
       <FieldArray
         name="array"
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.isEmptyRender()).toBe(true);
@@ -435,24 +302,17 @@ describe('#FieldArray', () => {
         name="array"
         _array={1}
         _addArray={jest.fn()}
-      >
-        <Component />
-      </FieldArray>
+      />
     ));
 
     expect(wrapper.find('.Component').length).toBe(1);
   });
-});
 
-
-describe('#connect(FieldArray)', () => {
   it('should not mount without context', () => {
     const store = newStore();
     const wrapperFn = () => mount((
       <Provider store={store}>
-        <ConnectedFieldArray name="test">
-          <MyComp />
-        </ConnectedFieldArray>
+        <ConnectedFieldArray name="test" />
       </Provider>
     ));
 
@@ -460,27 +320,44 @@ describe('#connect(FieldArray)', () => {
   });
 
   it('should have a correct name', () => {
+    const Component2: any = (props: any) => (
+      <div className="Component" />
+    );
+
+    Component2.displayName = 'Array';
+
+    const ConnectedFieldArray2 = fieldArray(Component2);
+
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray2 name="test" />
         </Provider>
       ),
       options,
     );
 
-    expect(wrapper.find(ConnectedFieldArray).name()).toBe('FieldArray');
+    expect(wrapper.find(ConnectedFieldArray2).name()).toBe('fieldArray(Array)');
   });
 
-  it('should add an array', () => {
+  it('should have a correct default name', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
+        </Provider>
+      ),
+      options,
+    );
+
+    expect(wrapper.find(ConnectedFieldArray).name()).toBe('fieldArray(Component)');
+  });
+
+  it('should actually add an array', () => {
+    const store = newStore();
+    const wrapper = mount((
+        <Provider store={store}>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
@@ -493,13 +370,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
 
@@ -510,13 +385,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
     wrapper.prop<any>('fields').pop();
@@ -528,13 +401,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').unshift();
 
@@ -545,13 +416,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').unshift();
     wrapper.prop<any>('fields').shift();
@@ -563,13 +432,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').insert(0);
 
@@ -580,13 +447,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').insert(0);
     wrapper.prop<any>('fields').remove(0);
@@ -598,13 +463,11 @@ describe('#connect(FieldArray)', () => {
     const store = newStore();
     const wrapper = mount((
         <Provider store={store}>
-          <ConnectedFieldArray name="test">
-            <MyComp />
-          </ConnectedFieldArray>
+          <ConnectedFieldArray name="test" />
         </Provider>
       ),
       options,
-    ).find(MyComp);
+    ).find(Component);
 
     wrapper.prop<any>('fields').push();
     wrapper.prop<any>('fields').push();

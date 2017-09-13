@@ -1,6 +1,3 @@
-import { Value } from "./shared/getValue";
-
-
 export const form = {
   fields: {},
   arrays: {},
@@ -26,7 +23,7 @@ export type Form = {
 };
 
 export type Field = {
-  value: Value;
+  value: any;
   visited: boolean;
   touched: boolean;
   active: boolean;

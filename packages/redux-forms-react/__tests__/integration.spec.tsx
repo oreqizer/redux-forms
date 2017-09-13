@@ -5,47 +5,38 @@ import { mount } from "enzyme";
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
-import Form from '../Form';
-import Field from '../Field';
-import FieldArray from '../FieldArray';
+import { Form, field as fieldDecorator, fieldArray } from '../src/';
 
+const Field = fieldDecorator((props: any) => (
+  <input type="text" {...props.input} />
+));
 
-const FlatFields = (props: any) => (
+const FlatFieldsComponent = (props: any) => (
   <div className="FlatFields">
     {props.fields.map((id: string) => (
-      <Field key={id} name={id}>
-        <input type="text"/>
-      </Field>
+      <Field key={id} name={id} />
     ))}
   </div>
 );
+const FlatFields = fieldArray(FlatFieldsComponent);
 
-const DeepFields = (props: any) => (
+const DeepFieldsComponent = (props: any) => (
   <div className="DeepFields">
     {props.fields.map((id: string) => (
       <div className="DeepField" key={id}>
-        <Field name={`${id}.name`}>
-          <input type="text" />
-        </Field>
-        <Field name={`${id}.surname`}>
-          <input type="text" />
-        </Field>
+        <Field name={`${id}.name`} />
+        <Field name={`${id}.surname`} />
       </div>
     ))}
   </div>
 );
+const DeepFields = fieldArray(DeepFieldsComponent);
 
 const MyForm = () => (
   <Form name="test" className="Form">
-    <Field name="title">
-      <input type="text" />
-    </Field>
-    <FieldArray name="flatarray">
-      <FlatFields />
-    </FieldArray>
-    <FieldArray name="deeparray">
-      <DeepFields />
-    </FieldArray>
+    <Field name="title" />
+    <FlatFields name="flatarray" />
+    <DeepFields name="deeparray" />
   </Form>
 );
 
@@ -57,7 +48,7 @@ const newStore = () => createStore(combineReducers<any>({
 const getForm = (store: any) => store.getState().reduxForms.test;
 
 
-describe('#flow', () => {
+describe('#integration', () => {
   it('should initialize properly', () => {
     const store = newStore();
     const wrapper = mount((
@@ -79,7 +70,7 @@ describe('#flow', () => {
       </Provider>
     ));
 
-    wrapper.find(FlatFields).prop('fields').push();
+    wrapper.find(FlatFieldsComponent).prop('fields').push();
 
     const f = getForm(store);
     expect(f.fields).toEqual({ 'title': field, 'flatarray.0': field });
@@ -94,7 +85,7 @@ describe('#flow', () => {
       </Provider>
     ));
 
-    wrapper.find(DeepFields).prop('fields').push();
+    wrapper.find(DeepFieldsComponent).prop('fields').push();
 
     const f = getForm(store);
     expect(f.arrays).toEqual({ flatarray: 0, deeparray: 1 });
