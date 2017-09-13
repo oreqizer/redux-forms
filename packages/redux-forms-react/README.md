@@ -5,8 +5,8 @@
 **React** bindings for `redux-forms`.
 
 Contains:
-* **Form**
-* **Field**
+* **form**
+* **field**
 * **FieldArray**
 
 Check out the [docs](https://oreqizer.gitbooks.io/redux-forms/content) for details.
