@@ -30,11 +30,10 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field).toEqual(field);
   });
 
-  it('should add a field without form', () => {
+  it('should not add a field without form', () => {
     const state: any = reducer({}, actions.addField('form', 'field', field));
 
-    expect(state.form.fields.field).toEqual(field);
-    expect(state.form.arrays).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should remove a field', () => {
@@ -57,7 +56,7 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field2.touched).toBe(true);
   });
 
-  it('should touch all fields without form', () => {
+  it('should not touch all fields without form', () => {
     const state: any = reducer({}, actions.touchAll('form'));
 
     expect(state).toEqual({});
@@ -69,12 +68,10 @@ describe('#formsReducer', () => {
     expect(state.form.submitting).toBe(true);
   });
 
-  it('should start submit without form', () => {
+  it('should not start submit without form', () => {
     const state: any = reducer({}, actions.submitStart('form'));
 
-    expect(state.form.submitting).toBe(true);
-    expect(state.form.fields).toEqual({});
-    expect(state.form.arrays).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should stop submit', () => {
@@ -85,12 +82,10 @@ describe('#formsReducer', () => {
     expect(state.form.submitting).toBe(false);
   });
 
-  it('should stop submit without form', () => {
+  it('should not stop submit without form', () => {
     const state: any = reducer({}, actions.submitStop('form'));
 
-    expect(state.form.submitting).toBe(false);
-    expect(state.form.fields).toEqual({});
-    expect(state.form.arrays).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should add an array', () => {
@@ -101,11 +96,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(0);
   });
 
-  it('should add an array without form', () => {
+  it('should not add an array without form', () => {
     const state: any = reducer({}, actions.addArray('form', 'array'));
 
-    expect(state.form.arrays.array).toBe(0);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should remove an array', () => {
@@ -130,11 +124,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
-  it('should push to an array without form', () => {
+  it('should not push to an array without form', () => {
     const state: any = reducer({}, actions.arrayPush('form', 'array'));
 
-    expect(state.form.arrays.array).toBe(1);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should pop from an array', () => {
@@ -145,11 +138,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(1);
   });
 
-  it('should pop from an array without form', () => {
+  it('should not pop from an array without form', () => {
     const state: any = reducer({}, actions.arrayPop('form', 'array'));
 
-    expect(state.form.arrays.array).toBe(0);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should unshift an array', () => {
@@ -166,11 +158,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
-  it('should unshift an array without form', () => {
+  it('should not unshift an array without form', () => {
     const state: any = reducer({}, actions.arrayUnshift('form', 'array'));
 
-    expect(state.form.arrays.array).toBe(1);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should shift an array', () => {
@@ -187,11 +178,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(1);
   });
 
-  it('should shift an array without form', () => {
+  it('should not shift an array without form', () => {
     const state: any = reducer({ }, actions.arrayShift('form', 'array'));
 
-    expect(state.form.arrays.array).toBe(0);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should insert to an array', () => {
@@ -209,11 +199,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(3);
   });
 
-  it('should insert to an array without form', () => {
+  it('should not insert to an array without form', () => {
     const state: any = reducer({}, actions.arrayInsert('form', 'array', 0));
 
-    expect(state.form.arrays.array).toBe(1);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should remove from an array', () => {
@@ -234,11 +223,10 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
-  it('should remove from an array without form', () => {
+  it('should not remove from an array without form', () => {
     const state: any = reducer({}, actions.arrayRemove('form', 'array', 1));
 
-    expect(state.form.arrays.array).toBe(0);
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should swap fields in an array', () => {
@@ -257,11 +245,10 @@ describe('#formsReducer', () => {
     expect(state.form.fields['array.1']).toBe(field0);
   });
 
-  it('should swap fields in an array without form', () => {
+  it('should not swap fields in an array without form', () => {
     const state: any = reducer({}, actions.arraySwap('form', 'array', 0, 1));
 
-    expect(state.form.arrays).toEqual({});
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should move a field in an array', () => {
@@ -289,7 +276,6 @@ describe('#formsReducer', () => {
     expect(state.form.fields).toEqual({});
   });
 
-  // TODO tests for field without form
   it('should change a field', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
@@ -303,6 +289,12 @@ describe('#formsReducer', () => {
       visited: false,
       active: false,
     });
+  });
+
+  it('should not change a field without form', () => {
+    const state: any = reducer({}, actions.fieldChange('form', 'field', 'doge', 'error', true));
+
+    expect(state.form).toBeUndefined();
   });
 
   it('should not change unwanted props', () => {
@@ -335,6 +327,12 @@ describe('#formsReducer', () => {
       visited: true,
       active: true,
     });
+  });
+
+  it('should not focus a field without form', () => {
+    const state: any = reducer({}, actions.fieldFocus('form', 'field'));
+
+    expect(state.form).toBeUndefined();
   });
 
   it('should not focus unwanted props', () => {
@@ -376,6 +374,12 @@ describe('#formsReducer', () => {
     });
   });
 
+  it('should not blur a field without form', () => {
+    const state: any = reducer({}, actions.fieldBlur('form', 'field', 'value', 'error', true));
+
+    expect(state.form).toBeUndefined();
+  });
+
   it('should not blur unwanted props', () => {
     const newField = {
       ...field,
@@ -397,6 +401,12 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field.value).toBe('value');
   });
 
+  it('should not change field value without form', () => {
+    const state: any = reducer({}, actions.fieldValue('form', 'field', 'value'));
+
+    expect(state.form).toBeUndefined();
+  });
+
   it('should change field error', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
@@ -405,11 +415,23 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field.error).toBe('error');
   });
 
+  it('should not change field error without form', () => {
+    const state: any = reducer({}, actions.fieldError('form', 'field', 'error'));
+
+    expect(state.form).toBeUndefined();
+  });
+
   it('should change field dirty', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
     }, actions.fieldDirty('form', 'field', true));
 
     expect(state.form.fields.field.dirty).toBe(true);
+  });
+
+  it('should not change field dirty without form', () => {
+    const state: any = reducer({}, actions.fieldDirty('form', 'field', true));
+
+    expect(state.form).toBeUndefined();
   });
 });
