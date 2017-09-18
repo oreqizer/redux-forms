@@ -613,6 +613,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        kek="bur"
         _form="form"
         _field={field}
         _addField={jest.fn()}
@@ -632,8 +633,21 @@ describe('#field', () => {
       visited: false,
     });
 
-    expect(wrapper.prop('component')).toBeUndefined();
-    expect(wrapper.prop('field')).toBeUndefined();
+    expect(wrapper.prop('kek')).toBe('bur');
+  });
+
+  it('should overwrite props', () => {
+    const wrapper = shallow((
+      <Field
+        name="test"
+        value="lmao"
+        _form="form"
+        _field={field}
+        _addField={jest.fn()}
+      />
+    ));
+
+    expect(wrapper.prop('input').value).toBe('lmao');
   });
 
   it('should not mount without context', () => {

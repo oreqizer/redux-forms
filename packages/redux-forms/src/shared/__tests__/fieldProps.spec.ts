@@ -29,6 +29,10 @@ const props = {
   // field
   // ---
   _field: {},
+
+  // custom
+  // ---
+  kek: 'bur',
 };
 
 const props2 = {
@@ -69,5 +73,11 @@ describe('#fieldProps', () => {
       ...props,
       _field: true,
     });
+  });
+
+  it('should keep custom props', () => {
+    const result: any = fieldProps(props);
+
+    expect(result.rest.kek).toBe('bur');
   });
 });

@@ -160,14 +160,14 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
         return null;
       }
 
-      const props = merge(_field, {
+      const inputProps = merge(_field, {
         name,
         onChange: this.handleChange,
         onFocus: this.handleFocus,
         onBlur: this.handleBlur,
       });
 
-      const { input, meta, rest } = fieldProps(props);
+      const { input, meta, rest } = fieldProps(merge(inputProps, this.props));
 
       // TODO SFC not compatibile with class... wtf TS
       return React.createElement(Component as any, merge(rest, {
