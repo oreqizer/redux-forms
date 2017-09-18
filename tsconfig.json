@@ -7,11 +7,9 @@
     "declaration": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
   },
-  "include": [
-    "types/"
-  ],
   "exclude": [
     "example",
     "node_modules"

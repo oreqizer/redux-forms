@@ -4392,7 +4392,7 @@ querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
-ramda@~0.24.1:
+ramda@^0.24.1, ramda@~0.24.1:
   version "0.24.1"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
 
@@ -4540,6 +4540,12 @@ redent@^1.0.0:
   dependencies:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
+
+redux-forms@~1.0.0-1:
+  version "1.0.0-1"
+  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-1.0.0-1.tgz#624a6d5043cf3a1fe007c247550d2f89acddb91b"
+  dependencies:
+    ramda "^0.24.1"
 
 redux@^3.6.0, redux@~3.7.1:
   version "3.7.1"

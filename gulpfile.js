@@ -16,7 +16,6 @@ const base = [
 const srcts = [
   './types/*',
   './packages/*/src/**/*.{ts,tsx}',
-  '!./packages/redux-forms/src/**/*.{ts,tsx}',
   '!**/__tests__/**',
 ];
 
@@ -32,6 +31,7 @@ const tsOptions = {
   noImplicitAny: true,
   strictNullChecks: true,
   allowSyntheticDefaultImports: true,
+  moduleResolution: 'node',
 };
 
 const mapDest = (path) => path.replace(/(packages\/[^/]+)\/src\//, '$1/lib/');
@@ -39,21 +39,21 @@ const mapDest = (path) => path.replace(/(packages\/[^/]+)\/src\//, '$1/lib/');
 
 gulp.task('default', ['babel']);
 
-gulp.task('ts:base', () =>
-  gulp.src(base)
-    .pipe(plumber())
-    .pipe(through.obj((file, enc, callback) => {
-      gutil.log(`Compiling ${chalk.blue(file.path)}...`);
-      callback(null, file);
-    }))
-    .pipe(ts(tsOptions))
-    .pipe(through.obj((file, enc, callback) => {
-      file.path = mapDest(file.path);
-      callback(null, file);
-    }))
-    .pipe(gulp.dest('./packages/redux-forms/lib/')));
+// gulp.task('ts:base', () =>
+//   gulp.src(base)
+//     .pipe(plumber())
+//     .pipe(through.obj((file, enc, callback) => {
+//       gutil.log(`Compiling ${chalk.blue(file.path)}...`);
+//       callback(null, file);
+//     }))
+//     .pipe(ts(tsOptions))
+//     .pipe(through.obj((file, enc, callback) => {
+//       file.path = mapDest(file.path);
+//       callback(null, file);
+//     }))
+//     .pipe(gulp.dest('./packages/redux-forms/lib/')));
 
-gulp.task('ts', ['ts:base'], () =>
+gulp.task('ts', /*['ts:base'],*/ () =>
   gulp.src(srcts)
     .pipe(plumber())
     .pipe(through.obj((file, enc, callback) => {

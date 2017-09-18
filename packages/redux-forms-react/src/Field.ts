@@ -14,7 +14,7 @@ import {
 
 import * as containers from 'redux-forms/lib/containers';
 import fieldProps, { boolField, InputProps, MetaProps } from 'redux-forms/lib/shared/fieldProps';
-import getValue, { Value, Target } from 'redux-forms/lib/shared/getValue';
+import getValue, { Target } from 'redux-forms/lib/shared/getValue';
 import { shallowCompare } from 'redux-forms/lib/shared/helpers';
 import * as actions from 'redux-forms/actions';
 import connectField, { ContextProps } from './connectField';
@@ -29,13 +29,13 @@ export type FieldProps = {
   name: string,
   validate?: Validate,
   normalize?: Normalize,
-  defaultValue?: Value,
+  defaultValue?: any,
   children?: React.ReactElement<any>,  // TODO find out how to specify children
 };
 
-export type Validate = (value: Value) => string | null;
+export type Validate = (value: any) => string | null;
 
-export type Normalize = (value: Value) => Value;
+export type Normalize = (value: any) => any;
 
 
 class Field extends React.Component<Props, {}> {
@@ -108,7 +108,7 @@ class Field extends React.Component<Props, {}> {
     props._addField(props._form, props.name, newField);
   }
 
-  handleChange(ev: React.SyntheticEvent<Target> | Value) {
+  handleChange(ev: React.SyntheticEvent<Target> | any) {
     const { _fieldChange, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
@@ -124,7 +124,7 @@ class Field extends React.Component<Props, {}> {
     _fieldFocus(_form, name);
   }
 
-  handleBlur(ev: React.SyntheticEvent<Target> | Value) {
+  handleBlur(ev: React.SyntheticEvent<Target> | any) {
     const { _fieldBlur, _form, name, normalize, validate, defaultValue } = this.props;
 
     const value = normalize(getValue(ev));
@@ -169,7 +169,7 @@ type ConnectedProps = FieldProps & ContextProps;
 type DefaultProps = {
   validate: Validate,
   normalize: Normalize,
-  defaultValue: Value,
+  defaultValue: any,
 };
 
 type StateProps = {

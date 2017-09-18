@@ -28,13 +28,13 @@ const reactReduxExternal = {
 const ext = production ? '.min.js' : '.js';
 
 
-module.exports = [{
+module.exports = [/*{
   entry: path.join(__dirname, 'packages/redux-forms/src/index.ts'),
   outputPath: path.join(__dirname, 'packages/redux-forms/dist'),
   outputFilename: 'redux-forms' + ext,
   outputLibrary: 'ReduxForms',
   externals: {},
-}, {
+},*/ {
   entry: path.join(__dirname, 'packages/redux-forms-react/src/index.ts'),
   outputPath: path.join(__dirname, 'packages/redux-forms-react/dist'),
   outputFilename: 'redux-forms-react' + ext,

@@ -65,6 +65,7 @@
     "react-dom": "~15.6.1",
     "react-redux": "~5.0.5",
     "redux": "~3.7.1",
+    "redux-forms": "~1.0.0-1",
     "rimraf": "~2.6.1",
     "through2": "~2.0.3",
     "ts-loader": "~2.2.0",
