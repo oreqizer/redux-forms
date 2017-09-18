@@ -1,6 +1,6 @@
 {
   "name": "redux-forms-react",
-  "version": "1.0.0-4",
+  "version": "1.0.0-5",
   "description": "A simple form management for React & Redux.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
