@@ -3,6 +3,9 @@ import {
   dissocPath,
   over,
   lensPath,
+  ifElse,
+  identity,
+  has,
   map,
   set,
   lensProp,
@@ -64,9 +67,14 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case ADD_FIELD:
-      return assocPath<Field, State>(
-        [a.payload.form, 'fields', a.payload.id], a.payload.field, state,
-      );
+      return compose(
+        assocPath<Field, State>([a.payload.form, 'fields', a.payload.id], a.payload.field),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case REMOVE_FIELD:
       return dissocPath<State>(
@@ -74,17 +82,34 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case TOUCH_ALL:
-      return over(
-        lensPath([a.payload.form, 'fields']),
-        map(set(lensProp('touched'), true)),
-        state,
-      );
+      return ifElse(
+        has(a.payload.form),
+        over(
+          lensPath([a.payload.form, 'fields']),
+          map(set(lensProp('touched'), true)),
+        ),
+        identity,
+      )(state);
 
     case SUBMIT_START:
-      return set(lensPath([a.payload.form, 'submitting']), true, state);
+      return compose<State, State, State>(
+        set(lensPath([a.payload.form, 'submitting']), true),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case SUBMIT_STOP:
-      return set(lensPath([a.payload.form, 'submitting']), false, state);
+      return compose<State, State, State>(
+        set(lensPath([a.payload.form, 'submitting']), false),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     // Array
     // ---

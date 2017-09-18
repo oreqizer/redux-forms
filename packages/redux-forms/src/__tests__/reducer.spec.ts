@@ -30,6 +30,13 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field).toEqual(field);
   });
 
+  it('should add a field without form', () => {
+    const state: any = reducer({}, actions.addField('form', 'field', field));
+
+    expect(state.form.fields.field).toEqual(field);
+    expect(state.form.arrays).toEqual({});
+  });
+
   it('should remove a field', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
@@ -50,18 +57,40 @@ describe('#formsReducer', () => {
     expect(state.form.fields.field2.touched).toBe(true);
   });
 
-  it('should touch start submit', () => {
+  it('should touch all fields without form', () => {
+    const state: any = reducer({}, actions.touchAll('form'));
+
+    expect(state).toEqual({});
+  });
+
+  it('should start submit', () => {
     const state: any = reducer({ form }, actions.submitStart('form'));
 
     expect(state.form.submitting).toBe(true);
   });
 
-  it('should touch stop submit', () => {
+  it('should start submit without form', () => {
+    const state: any = reducer({}, actions.submitStart('form'));
+
+    expect(state.form.submitting).toBe(true);
+    expect(state.form.fields).toEqual({});
+    expect(state.form.arrays).toEqual({});
+  });
+
+  it('should stop submit', () => {
     const state: any = reducer({
       form: { ...form, submitting: true },
     }, actions.submitStop('form'));
 
     expect(state.form.submitting).toBe(false);
+  });
+
+  it('should stop submit without form', () => {
+    const state: any = reducer({}, actions.submitStop('form'));
+
+    expect(state.form.submitting).toBe(false);
+    expect(state.form.fields).toEqual({});
+    expect(state.form.arrays).toEqual({});
   });
 
   it('should add an array', () => {
