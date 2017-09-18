@@ -270,11 +270,10 @@ describe('#formsReducer', () => {
     expect(state.form.fields['array.2']).toBe(field0);
   });
 
-  it('should move a field in an array without form', () => {
+  it('should not move a field in an array without form', () => {
     const state: any = reducer({}, actions.arrayMove('form', 'array', 0, 2));
 
-    expect(state.form.arrays).toEqual({});
-    expect(state.form.fields).toEqual({});
+    expect(state.form).toBeUndefined();
   });
 
   it('should change a field', () => {

@@ -133,14 +133,14 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_PUSH:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         over(lensPath([a.payload.form, 'arrays', a.payload.id]), RarrayInc),
         identity,
       )(state);
 
     case ARRAY_POP:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
           ifElse(lt(0), RarrayDec, always(0)),
@@ -150,7 +150,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_UNSHIFT:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         compose<State, State, State>(
           over(
             lensPath([a.payload.form, 'fields']),
@@ -166,7 +166,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_SHIFT:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         compose<State, State, State>(
           over(
             lensPath([a.payload.form, 'fields']),
@@ -182,7 +182,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_INSERT:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         compose<State, State, State>(
           over(
             lensPath([a.payload.form, 'fields']),
@@ -198,7 +198,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_REMOVE:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         compose<State, State, State>(
           over(
             lensPath([a.payload.form, 'fields']),
@@ -214,7 +214,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
 
     case ARRAY_SWAP:
       return ifElse(
-        has(a.payload.form),
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         over(
           lensPath([a.payload.form, 'fields']),
           arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
@@ -223,16 +223,13 @@ export default function formsReducer(state: State = {}, a: Action): State {
       )(state);
 
     case ARRAY_MOVE:
-      return compose<State, State, State>(
+      return ifElse(
+        pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
         over(
           lensPath([a.payload.form, 'fields']),
           arrayMove(a.payload.id, a.payload.from, a.payload.to),
         ),
-        ifElse(
-          has(a.payload.form),
-          identity,
-          assoc(a.payload.form, form),
-        ),
+        identity,
       )(state);
 
     // Field
