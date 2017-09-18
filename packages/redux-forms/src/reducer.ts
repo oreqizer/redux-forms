@@ -22,7 +22,7 @@ import {
 } from 'ramda';
 
 import { form, field, Form, Field } from './containers';
-import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './arrays';
+import { arrayUnshift, arrayShift, arraySwap, arrayMove, arrayCleanup } from './arrays';
 import { isNumber } from './shared/helpers';
 
 import {
@@ -120,10 +120,16 @@ export default function formsReducer(state: State = {}, a: Action): State {
       )(state);
 
     case REMOVE_ARRAY:
-      // TODO remove any associated fields
-      return dissocPath<State>(
-        [a.payload.form, 'arrays', a.payload.id], state,
-      );
+      return compose<State, State, State>(
+        over(
+          lensPath([a.payload.form, 'arrays']),
+          arrayCleanup(a.payload.id),
+        ),
+        over(
+          lensPath([a.payload.form, 'fields']),
+          arrayCleanup(a.payload.id),
+        ),
+      )(state);
 
     case ARRAY_PUSH:
       return ifElse(

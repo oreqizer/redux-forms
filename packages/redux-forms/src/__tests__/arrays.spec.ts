@@ -1,4 +1,4 @@
-import { arrayUnshift, arrayShift, arraySwap, arrayMove } from '../arrays';
+import { arrayUnshift, arrayShift, arraySwap, arrayMove, arrayCleanup } from '../arrays';
 
 import { field } from '../containers';
 
@@ -183,5 +183,22 @@ describe('#arrays', () => {
     expect(res['flat.2']).toBe(field1);
     expect(res['flat.3']).toBe(field2);
     expect(res['flat.4']).toBe(field4);
+  });
+
+  it('should cleanup fields', () => {
+    const res = arrayCleanup('medium')(fields);
+
+    expect(res['flat.0']).toBe(field0);
+
+    expect(res['medium.0.nest.0']).toBeUndefined();
+    expect(res['medium.0.nest.1']).toBeUndefined();
+    expect(res['medium.0.nest.2']).toBeUndefined();
+    expect(res['medium.0.nest.3']).toBeUndefined();
+    expect(res['medium.1.nest.0']).toBeUndefined();
+    expect(res['medium.1.nest.1']).toBeUndefined();
+    expect(res['medium.1.nest.2']).toBeUndefined();
+    expect(res['medium.1.nest.3']).toBeUndefined();
+
+    expect(res['rec.0.rec.0.rec.0']).toBe(field0);
   });
 });

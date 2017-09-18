@@ -106,6 +106,7 @@ describe('#formsReducer', () => {
     const state: any = reducer({
       form: {
         ...form,
+        fields: { 'array.0': field },
         arrays: { array: 1 },
       },
     }, actions.removeArray('form', 'array'));

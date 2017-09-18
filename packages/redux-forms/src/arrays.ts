@@ -12,6 +12,9 @@ import {
   any,
   map,
   identity,
+  not,
+  startsWith,
+  pickBy,
 } from 'ramda';
 
 import { Field } from "./containers";
@@ -129,4 +132,8 @@ export function arrayMove(path: string, index1: number, index2: number) {
       arrayShift(path, index1),
     )(fields);
   };
+}
+
+export function arrayCleanup(path: string) {
+  return pickBy(compose(not, (_, key) => startsWith(path, key)));
 }
