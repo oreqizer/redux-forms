@@ -135,5 +135,5 @@ export function arrayMove(path: string, index1: number, index2: number) {
 }
 
 export function arrayCleanup(path: string) {
-  return pickBy(compose(not, (_, key) => startsWith(path, key)));
+  return pickBy(compose(not, (_: Field, key: string) => startsWith(path, key)));
 }
