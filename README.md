@@ -96,6 +96,127 @@ That's it! This is how you mount the most basic form. For more advanced usage, c
 * [selectors](https://oreqizer.gitbooks.io/redux-forms/content/selectors.html)
 * [actions](https://oreqizer.gitbooks.io/redux-forms/content/actions.html)
 
+## Migrating from 0.11.x
+
+The API in `redux-forms-react` for `Field` and `FieldArray` changed from the `0.11.x` version. The reasons are:
+
+* less magic with supplied props
+* better type support in both _TypeScript_ and _Flow_
+* easier unit testing
+* less overhead with imports
+
+### Field -> field
+
+The `Field` higher order component changed to a `field` decorator. 
+
+> Note: native components are no longer supported, you have to provide a regular component.
+
+This is how you upgrade your fields:
+
+**Before:**
+```js
+// Input.js
+const Input = props => (
+  <input type="text" {...props.input} />
+);
+
+export default Input;
+
+// MyForm.js
+const MyForm = props => (
+  <Form name="contact">
+    <div>
+      <label htmlFor="name">Name</label>
+      <Field name="name">
+        <Input />
+      </Field>
+    </div>
+    <button type="submit">Submit</button>
+  </Form>
+);
+```
+
+**After:**
+```js
+// Input.js
+const Input = props => (
+  <input type="text" {...props.input} />
+);
+
+export default field(Input);
+
+// MyForm.js
+const MyForm = props => (
+  <Form name="contact">
+    <div>
+      <label htmlFor="name">Name</label>
+      <InputField name="name" />
+    </div>
+    <button type="submit">Submit</button>
+  </Form>
+);
+```
+
+### FieldArray -> fieldArray
+
+The `FieldArray` higher order component changed to a `fieldArray` decorator.
+
+This is how you upgrade your field arrays:
+
+**Before:**
+```js
+// Inputs.js
+const Inputs = props => (
+  <div className="Inputs">
+    {props.fields.map(id => (
+      <Field key={id} name={id}>
+        <Input />
+      </Field>
+    ))}
+    <button className="Inputs-btn" onClick={props.fields.push}>
+      Add field
+    </button>
+  </div>
+);
+
+export default Inputs;
+
+// MyForm.js
+const MyForm = props => (
+  <Form name="contact">
+    <FieldArray name="name">
+      <Inputs />
+    </FieldArray>
+    <button type="submit">Submit</button>
+  </Form>
+);
+```
+
+**After:**
+```js
+// Inputs.js
+const Inputs = props => (
+  <div className="Inputs">
+    {props.fields.map(id => (
+      <InputField key={id} name={id} />
+    ))}
+    <button className="Inputs-btn" onClick={props.fields.push}>
+      Add field
+    </button>
+  </div>
+);
+
+export default fieldArray(Inputs);
+
+// MyForm.js
+const MyForm = props => (
+  <Form name="contact">
+    <InputsArray name="name" />
+    <button type="submit">Submit</button>
+  </Form>
+);
+```
+
 ## License
 
 MIT
