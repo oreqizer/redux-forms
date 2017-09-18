@@ -101,6 +101,13 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(0);
   });
 
+  it('should add an array without form', () => {
+    const state: any = reducer({}, actions.addArray('form', 'array'));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
+  });
+
   it('should remove an array', () => {
     const state: any = reducer({
       form: {
@@ -123,12 +130,26 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
+  it('should push to an array without form', () => {
+    const state: any = reducer({}, actions.arrayPush('form', 'array'));
+
+    expect(state.form.arrays.array).toBe(1);
+    expect(state.form.fields).toEqual({});
+  });
+
   it('should pop from an array', () => {
     const state: any = reducer({
       form: { ...form, arrays: { array: 2 } },
     }, actions.arrayPop('form', 'array'));
 
     expect(state.form.arrays.array).toBe(1);
+  });
+
+  it('should pop from an array without form', () => {
+    const state: any = reducer({}, actions.arrayPop('form', 'array'));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
   });
 
   it('should unshift an array', () => {
@@ -145,6 +166,13 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
+  it('should unshift an array without form', () => {
+    const state: any = reducer({}, actions.arrayUnshift('form', 'array'));
+
+    expect(state.form.arrays.array).toBe(1);
+    expect(state.form.fields).toEqual({});
+  });
+
   it('should shift an array', () => {
     const state: any = reducer({
       form: {
@@ -157,6 +185,13 @@ describe('#formsReducer', () => {
     expect(state.form.fields['array.0']).toBeDefined();
     expect(state.form.fields['array.1']).toBeUndefined();
     expect(state.form.arrays.array).toBe(1);
+  });
+
+  it('should shift an array without form', () => {
+    const state: any = reducer({ }, actions.arrayShift('form', 'array'));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
   });
 
   it('should insert to an array', () => {
@@ -172,6 +207,13 @@ describe('#formsReducer', () => {
     expect(state.form.fields['array.1']).toBeUndefined();
     expect(state.form.fields['array.2']).toBeDefined();
     expect(state.form.arrays.array).toBe(3);
+  });
+
+  it('should insert to an array without form', () => {
+    const state: any = reducer({}, actions.arrayInsert('form', 'array', 0));
+
+    expect(state.form.arrays.array).toBe(1);
+    expect(state.form.fields).toEqual({});
   });
 
   it('should remove from an array', () => {
@@ -192,6 +234,13 @@ describe('#formsReducer', () => {
     expect(state.form.arrays.array).toBe(2);
   });
 
+  it('should remove from an array without form', () => {
+    const state: any = reducer({}, actions.arrayRemove('form', 'array', 1));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
+  });
+
   it('should swap fields in an array', () => {
     const field0 = { ...field, value: '0' };
     const field1 = { ...field, value: '1' };
@@ -206,6 +255,13 @@ describe('#formsReducer', () => {
 
     expect(state.form.fields['array.0']).toBe(field1);
     expect(state.form.fields['array.1']).toBe(field0);
+  });
+
+  it('should swap fields in an array without form', () => {
+    const state: any = reducer({}, actions.arraySwap('form', 'array', 0, 1));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
   });
 
   it('should move a field in an array', () => {
@@ -224,6 +280,13 @@ describe('#formsReducer', () => {
     expect(state.form.fields['array.0']).toBe(field1);
     expect(state.form.fields['array.1']).toBe(field2);
     expect(state.form.fields['array.2']).toBe(field0);
+  });
+
+  it('should move a field in an array without form', () => {
+    const state: any = reducer({}, actions.arrayMove('form', 'array', 0, 2));
+
+    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.fields).toEqual({});
   });
 
   it('should change a field', () => {

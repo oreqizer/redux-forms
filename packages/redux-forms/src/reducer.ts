@@ -6,16 +6,21 @@ import {
   ifElse,
   identity,
   has,
+  hasIn,
   map,
   set,
   lensProp,
   inc,
   dec,
+  lt,
+  always,
+  pathSatisfies,
   compose,
 } from 'ramda';
 
 import { form, field, Form, Field } from './containers';
 import { arrayUnshift, arrayShift, arraySwap, arrayMove } from './arrays';
+import { isNumber } from './shared/helpers';
 
 import {
   Action,
@@ -114,9 +119,16 @@ export default function formsReducer(state: State = {}, a: Action): State {
     // Array
     // ---
     case ADD_ARRAY:
-      return assocPath<number, State>(
-        [a.payload.form, 'arrays', a.payload.id], 0, state,
-      );
+      return compose<State, State, State>(
+        assocPath<number, State>(
+          [a.payload.form, 'arrays', a.payload.id], 0,
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case REMOVE_ARRAY:
       return dissocPath<State>(
@@ -124,21 +136,43 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case ARRAY_PUSH:
-      return over(
-        lensPath([a.payload.form, 'arrays', a.payload.id]),
-        inc,
-        state,
-      );
+      return compose<State, State, State, State>(
+        over(
+          lensPath([a.payload.form, 'arrays', a.payload.id]),
+          inc,
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case ARRAY_POP:
-      return over(
-        lensPath([a.payload.form, 'arrays', a.payload.id]),
-        dec,
-        state,
-      );
+      return compose<State, State, State, State>(
+        over(
+          lensPath([a.payload.form, 'arrays', a.payload.id]),
+          ifElse(lt(0), dec, always(0)),
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case ARRAY_UNSHIFT:
-      return compose<State, State, State>(
+      return compose<State, State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayUnshift(a.payload.id, 0),
@@ -147,22 +181,42 @@ export default function formsReducer(state: State = {}, a: Action): State {
           lensPath([a.payload.form, 'arrays', a.payload.id]),
           inc,
         ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
       )(state);
 
     case ARRAY_SHIFT:
-      return compose<State, State, State>(
+      return compose<State, State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayShift(a.payload.id, 0),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          dec,
+          ifElse(lt(0), dec, always(0)),
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
         ),
       )(state);
 
     case ARRAY_INSERT:
-      return compose<State, State, State>(
+      return compose<State, State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayUnshift(a.payload.id, a.payload.index + 1),
@@ -171,33 +225,75 @@ export default function formsReducer(state: State = {}, a: Action): State {
           lensPath([a.payload.form, 'arrays', a.payload.id]),
           inc,
         ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
       )(state);
 
     case ARRAY_REMOVE:
-      return compose<State, State, State>(
+      return compose<State, State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayShift(a.payload.id, a.payload.index),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          dec,
+          ifElse(lt(0), dec, always(0)),
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
         ),
       )(state);
 
     case ARRAY_SWAP:
-      return over(
-        lensPath([a.payload.form, 'fields']),
-        arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
-        state,
-      );
+      return compose<State, State, State, State>(
+        over(
+          lensPath([a.payload.form, 'fields']),
+          arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     case ARRAY_MOVE:
-      return over(
-        lensPath([a.payload.form, 'fields']),
-        arrayMove(a.payload.id, a.payload.from, a.payload.to),
-        state,
-      );
+      return compose<State, State, State, State>(
+        over(
+          lensPath([a.payload.form, 'fields']),
+          arrayMove(a.payload.id, a.payload.from, a.payload.to),
+        ),
+        ifElse(
+          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
+          identity,
+          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assocPath<Form, State>([a.payload.form], form),
+        ),
+      )(state);
 
     // Field
     // ---
