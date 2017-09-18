@@ -134,6 +134,6 @@ export function arrayMove(path: string, index1: number, index2: number) {
   };
 }
 
-export function arrayCleanup(path: string) {
+export function arrayCleanup(path: string): (fields: Fields) => Fields {
   return pickBy(compose(not, (_: Field, key: string) => startsWith(path, key)));
 }
