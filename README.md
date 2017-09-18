@@ -12,8 +12,8 @@ A simple form manager for **Redux**. Bindings available for **React**!
 
 ## Size
 
-* `redux-forms` alone is **6kb** gzipped.
-* `redux-forms-react` is **9kb** with `redux-forms` included!
+* `redux-forms` alone is **7kb** gzipped.
+* `redux-forms-react` is **10kb** with `redux-forms` included!
 
 **Dependencies**
 
