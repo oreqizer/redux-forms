@@ -170,7 +170,7 @@ const bindActions = {
 
 const Connected = connect<StateProps, ActionProps, IFormProps>((state, props: IFormProps) => ({
   _form: Boolean(prop<containers.Form>(props.name, state.reduxForms)),
-  _values: selectors.valueSelector(props.name, state),
+  _values: selectors.getValues(props.name, state),
   _valid: selectors.isValid(props.name, state),
   _submitting: selectors.isSubmitting(props.name, state),
 }), bindActions)(Form);

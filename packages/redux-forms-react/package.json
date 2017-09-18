@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "ramda": "^0.24.1",
-    "redux-forms": "^0.11.1"
+    "redux-forms": "^1.0.0-1"
   },
   "files": [
     "dist",
