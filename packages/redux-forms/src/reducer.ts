@@ -1,5 +1,7 @@
 import {
+  assoc,
   assocPath,
+  dissoc,
   dissocPath,
   over,
   lensPath,
@@ -13,6 +15,7 @@ import {
   inc,
   dec,
   lt,
+  defaultTo,
   always,
   pathSatisfies,
   compose,
@@ -56,6 +59,8 @@ export type State = {
   [form: string]: Form,
 };
 
+const RarrayInc = compose(inc, defaultTo(0));
+const RarrayDec = compose(dec, defaultTo(0));
 
 export default function formsReducer(state: State = {}, a: Action): State {
   switch (a.type) {
@@ -67,9 +72,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
       );
 
     case REMOVE_FORM:
-      return dissocPath<State>(
-        [a.payload.name], state,
-      );
+      return dissoc<State>(a.payload.name, state);
 
     case ADD_FIELD:
       return compose(
@@ -77,7 +80,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
@@ -102,7 +105,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
@@ -112,7 +115,7 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
@@ -126,207 +129,235 @@ export default function formsReducer(state: State = {}, a: Action): State {
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case REMOVE_ARRAY:
+      // TODO remove any associated fields
       return dissocPath<State>(
         [a.payload.form, 'arrays', a.payload.id], state,
       );
 
     case ARRAY_PUSH:
-      return compose<State, State, State, State>(
+      return compose<State, State, State>(
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          inc,
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          RarrayInc,
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_POP:
-      return compose<State, State, State, State>(
+      return compose<State, State, State>(
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          ifElse(lt(0), dec, always(0)),
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          ifElse(lt(0), RarrayDec, always(0)),
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_UNSHIFT:
-      return compose<State, State, State, State, State>(
+      return compose<State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayUnshift(a.payload.id, 0),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          inc,
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          RarrayInc,
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_SHIFT:
-      return compose<State, State, State, State, State>(
+      return compose<State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayShift(a.payload.id, 0),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          ifElse(lt(0), dec, always(0)),
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          ifElse(lt(0), RarrayDec, always(0)),
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_INSERT:
-      return compose<State, State, State, State, State>(
+      return compose<State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayUnshift(a.payload.id, a.payload.index + 1),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          inc,
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          RarrayInc,
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_REMOVE:
-      return compose<State, State, State, State, State>(
+      return compose<State, State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayShift(a.payload.id, a.payload.index),
         ),
         over(
           lensPath([a.payload.form, 'arrays', a.payload.id]),
-          ifElse(lt(0), dec, always(0)),
-        ),
-        ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
+          ifElse(lt(0), RarrayDec, always(0)),
         ),
         ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_SWAP:
-      return compose<State, State, State, State>(
+      return compose<State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arraySwap(a.payload.id, a.payload.index1, a.payload.index2),
         ),
         ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
-        ),
-        ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     case ARRAY_MOVE:
-      return compose<State, State, State, State>(
+      return compose<State, State, State>(
         over(
           lensPath([a.payload.form, 'fields']),
           arrayMove(a.payload.id, a.payload.from, a.payload.to),
         ),
         ifElse(
-          pathSatisfies(isNumber, [a.payload.form, 'arrays', a.payload.id]),
-          identity,
-          assocPath([a.payload.form, 'arrays', a.payload.id], 0),
-        ),
-        ifElse(
           has(a.payload.form),
           identity,
-          assocPath<Form, State>([a.payload.form], form),
+          assoc(a.payload.form, form),
         ),
       )(state);
 
     // Field
     // ---
     case FIELD_CHANGE:
-      return compose<State, State, State, State>(
-          assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+      return compose<State, State, State, State, State, State>(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
       )(state);
 
     case FIELD_FOCUS:
-      return compose<State, State, State>(
-          assocPath([a.payload.form, 'fields', a.payload.field, 'active'], true),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'visited'], true),
+      return compose<State, State, State, State, State>(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'active'], true),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'visited'], true),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
       )(state);
 
     case FIELD_BLUR:
-      return compose<State, State, State, State, State, State>(
-          assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
-          assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
+      // too many args
+      return (compose as any)(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'active'], false),
+        assocPath([a.payload.form, 'fields', a.payload.field, 'touched'], true),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
       )(state);
 
     case FIELD_VALUE:
-      return assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value, state);
+      return compose<State, State, State, State>(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'value'], a.payload.value),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
+      )(state);
 
     case FIELD_ERROR:
-      return assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error, state);
+      return compose<State, State, State, State>(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'error'], a.payload.error),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
+      )(state);
 
     case FIELD_DIRTY:
-      return assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty, state);
+      return compose<State, State, State, State>(
+        assocPath([a.payload.form, 'fields', a.payload.field, 'dirty'], a.payload.dirty),
+        ifElse(
+          pathSatisfies(Boolean, [a.payload.form, 'fields', a.payload.field]),
+          identity,
+          assocPath([a.payload.form, 'fields', a.payload.field], field),
+        ),
+        ifElse(
+          has(a.payload.form),
+          identity,
+          assoc(a.payload.form, form),
+        ),
+      )(state);
 
     default:
       return state;

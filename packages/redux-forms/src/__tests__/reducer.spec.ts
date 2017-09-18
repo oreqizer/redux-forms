@@ -260,7 +260,7 @@ describe('#formsReducer', () => {
   it('should swap fields in an array without form', () => {
     const state: any = reducer({}, actions.arraySwap('form', 'array', 0, 1));
 
-    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.arrays).toEqual({});
     expect(state.form.fields).toEqual({});
   });
 
@@ -285,10 +285,11 @@ describe('#formsReducer', () => {
   it('should move a field in an array without form', () => {
     const state: any = reducer({}, actions.arrayMove('form', 'array', 0, 2));
 
-    expect(state.form.arrays.array).toBe(0);
+    expect(state.form.arrays).toEqual({});
     expect(state.form.fields).toEqual({});
   });
 
+  // TODO tests for field without form
   it('should change a field', () => {
     const state: any = reducer({
       form: { ...form, fields: { field } },
