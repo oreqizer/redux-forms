@@ -8,6 +8,7 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
+import * as actions from 'redux-forms/actions';
 import fieldArray from '../fieldArray';
 
 const Component = (props: any) => (
@@ -57,6 +58,7 @@ describe('#fieldArray', () => {
     const wrapper = mount((
       <FieldArray
         name="array"
+        _hasForm
         _form="form"
         _addArray={addArray}
       />
@@ -338,6 +340,21 @@ describe('#fieldArray', () => {
     );
 
     expect(wrapper.find(ConnectedFieldArray2).name()).toBe('fieldArray(Array)');
+  });
+
+  it('should rerender on form add', () => {
+    const store = newStore();
+    const wrapper = mount((
+      <Provider store={store}>
+        <ConnectedFieldArray form="nope" name="test" />
+      </Provider>
+    )).find(FieldArray);
+
+    expect(wrapper.isEmptyRender()).toBe(true);
+
+    store.dispatch(actions.addForm('nope'));
+
+    expect(wrapper.isEmptyRender()).toBe(false);
   });
 
   it('should have a correct default name', () => {

@@ -7,6 +7,7 @@ import {
   path,
   repeat,
   merge,
+  prop,
 } from 'ramda';
 
 import { IReduxFormsState } from 'redux-forms/lib/index';
@@ -40,6 +41,7 @@ export type FieldArrayProps = {
 type ConnectedProps = FieldArrayProps & SuppliedProps;
 
 type StateProps = {
+  _hasForm: boolean,
   _array?: number,
 };
 
@@ -83,9 +85,17 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
     }
 
     componentWillMount() {
-      const { _form, name, _array, _addArray } = this.props;
+      this.maybeAddArray(this.props);
+    }
 
-      if (!_array) {
+    componentWillReceiveProps(nextProps: Props<T>) {
+      this.maybeAddArray(nextProps);
+    }
+
+    maybeAddArray(props: Props<T>) {
+      const { _form, _hasForm, name, _array, _addArray } = props;
+
+      if (_hasForm && !isNumber(_array)) {
         _addArray(_form, name);
       }
     }
@@ -181,6 +191,8 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
 
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
     (state: IReduxFormsState, props: ConnectedProps & T) => ({
+      state: console.log(state.reduxForms) || state.reduxForms,
+      _hasForm: Boolean(prop(props._form, state.reduxForms)),
       _array: path<number>([props._form, 'arrays', props.name], state.reduxForms),
     }),
     {

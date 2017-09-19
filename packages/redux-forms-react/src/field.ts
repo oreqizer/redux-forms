@@ -9,6 +9,7 @@ import {
   lensProp,
   merge,
   path,
+  prop,
 } from 'ramda';
 
 import { IReduxFormsState } from 'redux-forms/lib/index';
@@ -38,6 +39,7 @@ export type FieldProps = {
 type ConnectedProps = FieldProps & SuppliedProps;
 
 type StateProps = {
+  _hasForm: boolean,
   _field: containers.Field | null,
 };
 
@@ -86,16 +88,18 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     componentWillMount() {
-      if (!this.props._field) {
-        this.newField(this.props);
+      const { _hasForm, _field } = this.props;
+
+      if (_hasForm && !_field) {
+        this.addField(this.props);
       }
     }
 
     componentWillReceiveProps(next: Props<T>) {
-      const { _fieldChange, _form, name, defaultValue } = this.props;
+      const { defaultValue } = this.props;
 
-      if (!next._field) {
-        this.newField(next);
+      if (next._hasForm && !next._field) {
+        this.addField(next);
         return;
       }
 
@@ -104,18 +108,20 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
         const error = next.validate ? next.validate(value) : next._field.error;
         const dirty = next.defaultValue !== value;
 
-        _fieldChange(_form, name, value, error, dirty);
+        next._fieldChange(next._form, next.name, value, error, dirty);
       }
     }
 
-    newField(props: Props<T>) {
-      const value = (props.normalize as Normalize)(props.defaultValue);
-      const newField = compose<containers.Field, containers.Field, containers.Field>(
-        set(lensProp('value'), value),
-        set(lensProp('error'), props.validate ? props.validate(value) : null),
-      )(containers.field);
+    addField(props: Props<T>) {
+      if (props._hasForm && !props._field) {
+        const value = (props.normalize as Normalize)(props.defaultValue);
+        const newField = compose<containers.Field, containers.Field, containers.Field>(
+          set(lensProp('value'), value),
+          set(lensProp('error'), props.validate ? props.validate(value) : null),
+        )(containers.field);
 
-      props._addField(props._form, props.name, newField);
+        props._addField(props._form, props.name, newField);
+      }
     }
 
     handleChange(ev: React.SyntheticEvent<Target> | any) {
@@ -179,6 +185,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
     (state: IReduxFormsState, props: ConnectedProps & T) => ({
+      _hasForm: Boolean(prop(props._form, state.reduxForms)),
       _field: path<containers.Field>([props._form, 'fields', props.name], state.reduxForms),
     }),
     {

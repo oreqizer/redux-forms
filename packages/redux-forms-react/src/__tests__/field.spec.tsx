@@ -8,6 +8,7 @@ import * as R from 'ramda';
 
 import reducer from 'redux-forms/lib/index';
 import { form, field } from 'redux-forms/lib/containers';
+import * as actions from 'redux-forms/actions';
 import fieldDecorator from '../field';
 
 
@@ -73,6 +74,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -88,6 +90,7 @@ describe('#field', () => {
       <Field
         name="test"
         defaultValue="doge"
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -106,6 +109,7 @@ describe('#field', () => {
       <Field
         name="test"
         validate={validate}
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -124,6 +128,7 @@ describe('#field', () => {
       <Field
         name="test"
         normalize={normalize}
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -143,6 +148,7 @@ describe('#field', () => {
         name="test"
         validate={validate}
         normalize={normalize}
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -164,6 +170,7 @@ describe('#field', () => {
         defaultValue="asdf"
         validate={validate}
         normalize={normalize}
+        _hasForm
         _form="form"
         _field={null}
         _addField={addField}
@@ -181,6 +188,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -198,6 +206,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -215,6 +224,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -235,6 +245,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -255,6 +266,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -275,6 +287,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -296,6 +309,7 @@ describe('#field', () => {
     const wrapper = shallow((
       <Field
         name="test"
+        _hasForm
         _form="form"
         _field={null}
         _addField={jest.fn()}
@@ -695,6 +709,21 @@ describe('#field', () => {
     ), options);
 
     expect(wrapper.find(ConnectedField).name()).toBe('field(Component)');
+  });
+
+  it('should rerender on form add', () => {
+    const store = newStore();
+    const wrapper = mount((
+      <Provider store={store}>
+        <ConnectedField form="nope" name="test" />
+      </Provider>
+    )).find(Field);
+
+    expect(wrapper.isEmptyRender()).toBe(true);
+
+    store.dispatch(actions.addForm('nope'));
+
+    expect(wrapper.isEmptyRender()).toBe(false);
   });
 
   it('should add a field', () => {
