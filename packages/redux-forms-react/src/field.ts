@@ -103,7 +103,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
         return;
       }
 
-      if (defaultValue !== next.defaultValue) {
+      if (next._field && defaultValue !== next.defaultValue) {
         const value = (next.normalize as Normalize)(next._field.value);
         const error = next.validate ? next.validate(value) : next._field.error;
         const dirty = next.defaultValue !== value;

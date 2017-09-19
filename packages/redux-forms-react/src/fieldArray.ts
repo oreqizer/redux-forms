@@ -191,7 +191,6 @@ function fieldArray<T>(Component: React.ComponentType<T & SuppliedProps>): React
 
   const connector = connect<StateProps, ActionProps, ConnectedProps & T>(
     (state: IReduxFormsState, props: ConnectedProps & T) => ({
-      state: console.log(state.reduxForms) || state.reduxForms,
       _hasForm: Boolean(prop(props._form, state.reduxForms)),
       _array: path<number>([props._form, 'arrays', props.name], state.reduxForms),
     }),
