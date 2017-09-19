@@ -65,6 +65,7 @@ const MyForm = props => (
     <Input
       name="test"
       defaultValue="default"
+      kek="bur"
     />
     <Input
       name="test2"

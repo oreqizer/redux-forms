@@ -9,7 +9,11 @@ const Input = props => (
     <div>Touched: {String(props.meta.touched)}</div>
     <div>Visited: {String(props.meta.visited)}</div>
     <div>Active: {String(props.meta.active)}</div>
-    <input {...props.input} />
+    <input
+      {...props.input}
+      type={props.type}
+      placeholder={props.placeholder}
+    />
   </div>
 );
 

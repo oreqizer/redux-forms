@@ -2025,15 +2025,15 @@ readdirp@^2.0.0:
     set-immediate-shim "^1.0.1"
 
 redux-forms-react@^1.0.0-1:
-  version "1.0.0-1"
-  resolved "https://registry.yarnpkg.com/redux-forms-react/-/redux-forms-react-1.0.0-1.tgz#9e3fc0cc8717fbeebac15974745f2c80cff3fbf1"
+  version "1.0.0-5"
+  resolved "https://registry.yarnpkg.com/redux-forms-react/-/redux-forms-react-1.0.0-5.tgz#a952266eabd2d2547c3b734d93eebf4b6bb9f25d"
   dependencies:
     ramda "^0.24.1"
-    redux-forms "^1.0.0-0"
+    redux-forms "^1.0.0-2"
 
-redux-forms@^1.0.0-0:
-  version "1.0.0-0"
-  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-1.0.0-0.tgz#835168ac19feb2303ae5c51e1838850bdbf9e19e"
+redux-forms@^1.0.0-0, redux-forms@^1.0.0-2:
+  version "1.0.0-2"
+  resolved "https://registry.yarnpkg.com/redux-forms/-/redux-forms-1.0.0-2.tgz#002265e542180517a5f8323ac826664588bdb255"
   dependencies:
     ramda "^0.24.1"
 
