@@ -71,10 +71,8 @@ export type MetaProp =
 const IGNORE_PROPS = [
   ...INPUT_PROPS,
   ...META_PROPS,
-  'validate',
   'normalize',
   'defaultValue',
-  '_form',
   '_addField',
   '_fieldChange',
   '_fieldFocus',
