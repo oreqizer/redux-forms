@@ -16,7 +16,7 @@
     "url": "https://github.com/oreqizer/redux-forms/issues"
   },
   "dependencies": {
-    "ramda": "^0.24.1"
+    "ramda": "^0.25.0"
   },
   "files": [
     "dist",

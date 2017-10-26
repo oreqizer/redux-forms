@@ -17,13 +17,13 @@
     "url": "https://github.com/oreqizer/redux-forms/issues"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.8",
-    "react": "^15.5.4",
-    "react-redux": "^5.0.4",
-    "redux": "^3.6.0"
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
   },
   "dependencies": {
-    "ramda": "^0.24.1",
+    "ramda": "^0.25.0",
     "redux-forms": "^1.0.0-2"
   },
   "files": [
