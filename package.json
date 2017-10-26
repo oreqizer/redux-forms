@@ -21,9 +21,11 @@
       "ts",
       "tsx",
       "js",
+      "jsx",
       "json"
     ],
     "transform": {
+      ".jsx?": "babel-jest",
       ".tsx?": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "setupFiles": [

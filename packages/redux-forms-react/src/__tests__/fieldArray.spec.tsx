@@ -348,13 +348,14 @@ describe('#fieldArray', () => {
       <Provider store={store}>
         <ConnectedFieldArray form="nope" name="test" />
       </Provider>
-    )).find(FieldArray);
+    ));
 
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(wrapper.find(FieldArray).isEmptyRender()).toBe(true);
 
     store.dispatch(actions.addForm('nope'));
+    wrapper.update();
 
-    expect(wrapper.isEmptyRender()).toBe(false);
+    expect(wrapper.find(FieldArray).isEmptyRender()).toBe(false);
   });
 
   it('should have a correct default name', () => {

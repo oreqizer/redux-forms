@@ -786,13 +786,14 @@ describe('#field', () => {
       <Provider store={store}>
         <ConnectedField form="nope" name="test" />
       </Provider>
-    )).find(Field);
+    ));
 
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(wrapper.find(Field).isEmptyRender()).toBe(true);
 
     store.dispatch(actions.addForm('nope'));
+    wrapper.update();
 
-    expect(wrapper.isEmptyRender()).toBe(false);
+    expect(wrapper.find(Field).isEmptyRender()).toBe(false);
   });
 
   it('should add a field', () => {
