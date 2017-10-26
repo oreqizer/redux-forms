@@ -143,11 +143,13 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     updateField(props: Props<T>) {
-      const value = (props.normalize as Normalize)(props._field.value);
-      const error = props.validate ? props.validate(value) : props._field.error;
-      const dirty = props.defaultValue !== value;
+      if (props._field) {
+        const value = (props.normalize as Normalize)(props._field.value);
+        const error = props.validate ? props.validate(value) : props._field.error;
+        const dirty = props.defaultValue !== value;
 
-      props._fieldChange(props._form, props.name, value, error, dirty);
+        props._fieldChange(props._form, props.name, value, error, dirty);
+      }
     }
 
     handleChange(ev: React.SyntheticEvent<Target> | any) {
