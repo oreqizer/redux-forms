@@ -349,6 +349,38 @@ describe('#field', () => {
     expect(fieldChange).toBeCalledWith('form', 'test', '', null, true);
   });
 
+  it('should change a field when validator changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        _form="form"
+        _field={field}
+        _fieldChange={fieldChange}
+      />
+    ));
+
+    wrapper.setProps({ validate: () => 'error' });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', '', 'error', false);
+  });
+
+  it('should change a field when normalizer changes', () => {
+    const fieldChange = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        _form="form"
+        _field={{ ...field, value: 'kek' }}
+        _fieldChange={fieldChange}
+      />
+    ));
+
+    wrapper.setProps({ normalize: (str) => str.toUpperCase() });
+
+    expect(fieldChange).toBeCalledWith('form', 'test', 'KEK', null, true);
+  });
+
   it('should fire a change action', () => {
     const fieldChange = jest.fn();
     const wrapper = shallow((

@@ -96,7 +96,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     componentWillReceiveProps(next: Props<T>) {
-      const { defaultValue } = this.props;
+      const { defaultValue, validate, normalize } = this.props;
 
       if (next._hasForm && !next._field) {
         this.addField(next);
@@ -104,11 +104,18 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
       }
 
       if (next._field && defaultValue !== next.defaultValue) {
-        const value = (next.normalize as Normalize)(next._field.value);
-        const error = next.validate ? next.validate(value) : next._field.error;
-        const dirty = next.defaultValue !== value;
+        this.updateField(next);
+        return;
+      }
 
-        next._fieldChange(next._form, next.name, value, error, dirty);
+      if (next._field && validate !== next.validate) {
+        this.updateField(next);
+        return;
+      }
+
+      if (next._field && normalize !== next.normalize) {
+        this.updateField(next);
+        return;
       }
     }
 
@@ -122,6 +129,14 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
         props._addField(props._form, props.name, newField);
       }
+    }
+
+    updateField(props: Props<T>) {
+      const value = (props.normalize as Normalize)(props._field.value);
+      const error = props.validate ? props.validate(value) : props._field.error;
+      const dirty = props.defaultValue !== value;
+
+      props._fieldChange(props._form, props.name, value, error, dirty);
     }
 
     handleChange(ev: React.SyntheticEvent<Target> | any) {
