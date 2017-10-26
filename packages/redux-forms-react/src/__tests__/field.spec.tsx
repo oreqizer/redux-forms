@@ -333,6 +333,43 @@ describe('#field', () => {
     });
   });
 
+  it('should not remove field on unmount', () => {
+    const removeField = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        _hasForm
+        _form="form"
+        _field={null}
+        _addField={jest.fn()}
+        _removeField={removeField}
+      />
+    ));
+
+    wrapper.unmount();
+
+    expect(removeField).not.toBeCalledWith('form', 'test');
+  });
+
+  it('should remove field on unmount', () => {
+    const removeField = jest.fn();
+    const wrapper = shallow((
+      <Field
+        name="test"
+        cleanup
+        _hasForm
+        _form="form"
+        _field={null}
+        _addField={jest.fn()}
+        _removeField={removeField}
+      />
+    ));
+
+    wrapper.unmount();
+
+    expect(removeField).toBeCalledWith('form', 'test');
+  });
+
   it('should change a field when default value changes', () => {
     const fieldChange = jest.fn();
     const wrapper = shallow((

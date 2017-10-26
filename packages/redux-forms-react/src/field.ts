@@ -34,6 +34,7 @@ export type FieldProps = {
   normalize?: Normalize,
   defaultValue?: any,
   validate?: Validate,
+  cleanup?: boolean,
 };
 
 type ConnectedProps = FieldProps & SuppliedProps;
@@ -45,6 +46,7 @@ type StateProps = {
 
 type ActionProps = {
   _addField: typeof actions.addField,
+  _removeField: typeof actions.removeField,
   _fieldChange: typeof actions.fieldChange,
   _fieldFocus: typeof actions.fieldFocus,
   _fieldBlur: typeof actions.fieldBlur,
@@ -58,6 +60,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     static defaultProps = {
       normalize: identity,
       defaultValue: '',
+      cleanup: false,
     };
 
     static propTypes = {
@@ -92,6 +95,14 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
 
       if (_hasForm && !_field) {
         this.addField(this.props);
+      }
+    }
+
+    componentWillUnmount() {
+      const { _form, name, cleanup, _removeField } = this.props;
+
+      if (cleanup) {
+        _removeField(_form, name);
       }
     }
 
@@ -205,6 +216,7 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }),
     {
       _addField: actions.addField,
+      _removeField: actions.removeField,
       _fieldChange: actions.fieldChange,
       _fieldFocus: actions.fieldFocus,
       _fieldBlur: actions.fieldBlur,
