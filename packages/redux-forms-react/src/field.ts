@@ -131,15 +131,13 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
     }
 
     addField(props: Props<T>) {
-      if (props._hasForm && !props._field) {
-        const value = (props.normalize as Normalize)(props.defaultValue);
-        const newField = compose<containers.Field, containers.Field, containers.Field>(
-          set(lensProp('value'), value),
-          set(lensProp('error'), props.validate ? props.validate(value) : null),
-        )(containers.field);
+      const value = (props.normalize as Normalize)(props.defaultValue);
+      const newField = compose<containers.Field, containers.Field, containers.Field>(
+        set(lensProp('value'), value),
+        set(lensProp('error'), props.validate ? props.validate(value) : null),
+      )(containers.field);
 
-        props._addField(props._form, props.name, newField);
-      }
+      props._addField(props._form, props.name, newField);
     }
 
     updateField(props: Props<T>) {
