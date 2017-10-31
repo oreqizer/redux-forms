@@ -114,17 +114,17 @@ function field<T>(Component: React.ComponentType<T & SuppliedProps>): React.Comp
         return;
       }
 
-      if (next._field && defaultValue !== next.defaultValue) {
+      if (defaultValue !== next.defaultValue) {
         this.updateField(next);
         return;
       }
 
-      if (next._field && validate !== next.validate) {
+      if (validate !== next.validate) {
         this.updateField(next);
         return;
       }
 
-      if (next._field && normalize !== next.normalize) {
+      if (normalize !== next.normalize) {
         this.updateField(next);
         return;
       }
